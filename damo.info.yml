@@ -1,0 +1,37 @@
+name: 'Digital Media Assets Management'
+type: profile
+description: 'Distribution for quickly starting a new Digital Media Assets Management system with Drupal'
+
+#distribution:
+#  name: 'Digital Media Assets Management'
+
+# install:
+dependencies:
+  # Core.
+  - drupal:system (>=8.7)
+  - drupal:media
+  - drupal:taxonomy
+  - drupal:file
+  - drupal:image
+  - drupal:jsonapi
+  - drupal:rest
+  - drupal:basic_auth
+  - drupal:user
+  - drupal:taxonomy
+  # Contrib
+  - jsonapi_extras:jsonapi_extras
+  - focal_point:focal_point
+  - media_upload:media_upload
+  - maillog:maillog
+  # damo
+  - damo:media_assets
+  - damo:media_assets_api
+  - damo:media_assets_download
+  - damo:media_assets_library
+  - damo:media_collection
+  - damo:media_statistics
+#  - dbee:dbee
+#  - field_encrypt:field_encrypt
+
+# @todo: TBD.
+# themes:
