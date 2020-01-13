@@ -2,6 +2,8 @@ name: 'Digital Media Assets Management'
 type: profile
 description: 'Distribution for quickly starting a new Digital Media Assets Management system with Drupal'
 
+core_version_requirement: ^8.8 || ^9
+
 #distribution:
 #  name: 'Digital Media Assets Management'
 
