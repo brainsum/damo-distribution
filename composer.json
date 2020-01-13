@@ -1,5 +1,5 @@
 {
-    "name": "brainsum/damo-distribution",
+    "name": "brainsum/damo",
     "description": "Distribution for quickly starting a new Digital Media Assets Management system with Drupal",
     "type": "drupal-profile",
     "license": "GPL-2.0-or-later",
@@ -18,11 +18,32 @@
         "drupal-8": {
             "type": "composer",
             "url": "https://packages.drupal.org/8"
+        },
+        "dropzone": {
+            "type": "package",
+            "package": {
+                "name": "enyo-drupal/dropzone",
+                "version": "v4.3.0",
+                "type": "drupal-library",
+                "dist": {
+                    "url": "https://github.com/enyo/dropzone/archive/v4.3.0.zip",
+                    "type": "zip"
+                }
+            }
         }
     },
     "require": {
         "php": "^7.2",
-        "drupal/core": "^8.7"
+        "ext-json": "*",
+        "ext-zip": "*",
+        "brainsum/media_upload": "^3.0",
+        "drupal/core": "^8.7",
+        "drupal/focal_point": "^1.2",
+        "drupal/image_effects": "^3.0",
+        "drupal/jsonapi_extras": "^3.13",
+        "drupal/maillog": "1.x-dev",
+        "drupal/search_api": "^1.15",
+        "enyo-drupal/dropzone": "^4.3"
     },
     "extra": {
         "patches": {},

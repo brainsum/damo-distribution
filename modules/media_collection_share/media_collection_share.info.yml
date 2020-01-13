@@ -2,7 +2,7 @@ name: 'Media collection share'
 type: module
 description: 'Share feature for the media_collection module.'
 core: 8.x
-package: 'Media'
+package: 'Digital Assets Management'
 dependencies:
   - media_collection:media_collection
   - maillog:maillog
