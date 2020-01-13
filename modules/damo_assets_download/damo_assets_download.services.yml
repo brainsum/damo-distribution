@@ -1,0 +1,29 @@
+services:
+  damo_assets_download.file_response_builder:
+    class: Drupal\damo_assets_download\Service\FileResponseBuilder
+    arguments:
+      - '@transliteration'
+
+  damo_assets_download.asset_file_handler:
+    class: Drupal\damo_assets_download\Service\AssetFileHandler
+    arguments:
+      - '@file_system'
+
+  damo_assets_download.asset_archiver:
+    class:  Drupal\damo_assets_download\Service\AssetArchiver
+
+  damo_assets_download.file_manager:
+    class: Drupal\damo_assets_download\Service\FileManager
+    arguments:
+      - '@entity_type.manager'
+      - '@stream_wrapper_manager'
+
+  damo_assets_download.asset_download_handler:
+    class:  Drupal\damo_assets_download\Service\AssetDownloadHandler
+    arguments:
+      - '@damo_assets_download.asset_file_handler'
+      - '@damo_assets_download.asset_archiver'
+      - '@damo_assets_download.file_manager'
+      - '@file_system'
+      - '@datetime.time'
+      - '@date.formatter'

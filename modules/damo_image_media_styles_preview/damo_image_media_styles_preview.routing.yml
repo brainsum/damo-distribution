@@ -1,0 +1,7 @@
+damo_image_media_styles_preview.form:
+  path: '/media/{entity_id}'
+  defaults:
+    _title: 'Filter social media assets'
+    _form: '\Drupal\damo_image_media_styles_preview\Form\MediaAssetFilterForm'
+  requirements:
+    _permission: 'access content' # @fixme

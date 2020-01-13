@@ -1,0 +1,16 @@
+name: 'Media Assets API'
+type: module
+description: 'Media assets API functionality'
+core: 8.x
+# core_version_requirement: ^8.8 || ^9
+package: 'Digital Assets Management'
+
+dependencies:
+  - drupal:system (>=8.7)
+  - drupal:jsonapi
+  - drupal:rest
+  - drupal:basic_auth
+  - drupal:user
+  - drupal:taxonomy
+  - drupal:image
+  - jsonapi_extras:jsonapi_extras

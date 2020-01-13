@@ -1,0 +1,40 @@
+{
+    "name": "brainsum/damo_assets",
+    "description": "Assets module for media assets.",
+    "type": "drupal-module",
+    "license": "GPL-2.0-or-later",
+    "authors": [
+        {
+            "name": "mhavelant",
+            "email": "mhavelant@brainsum.com"
+        }
+    ],
+    "repositories": {
+        "drupal-8": {
+            "type": "composer",
+            "url": "https://packages.drupal.org/8"
+        },
+        "dropzone": {
+            "type": "package",
+            "package": {
+                "name": "enyo-drupal/dropzone",
+                "version": "v4.3.0",
+                "type": "drupal-library",
+                "dist": {
+                    "url": "https://github.com/enyo/dropzone/archive/v4.3.0.zip",
+                    "type": "zip"
+                }
+            }
+        }
+    },
+    "require": {
+        "brainsum/media_upload": "^3.0",
+        "drupal/core": "^8.7",
+        "enyo-drupal/dropzone": "^4.3"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "config": {
+        "sort-packages": true
+    }
+}

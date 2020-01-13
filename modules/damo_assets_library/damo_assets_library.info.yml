@@ -1,0 +1,15 @@
+name: "Media Assets Library"
+type: module
+description: Media assets library functionality.
+core: 8.x
+package: 'Digital Assets Management'
+dependencies:
+  - drupal:system (>=8.4)
+  - drupal:media
+  - drupal:file
+  - drupal:image
+#  - dbee:dbee
+#  - field_encrypt:field_encrypt
+#  - filehash:filehash
+#  - dropzonejs:dropzonejs
+#  - dropzonejs_eb_widget:dropzonejs_eb_widget

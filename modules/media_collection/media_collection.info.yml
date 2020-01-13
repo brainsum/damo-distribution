@@ -1,0 +1,13 @@
+name: 'Media collection'
+type: module
+description: 'Collection/Basket/Cart feature for media items.'
+core: 8.x
+package: 'Digital Assets Management'
+dependencies:
+  - drupal:system (>=8.7)
+  - drupal:media
+  - drupal:image
+  - drupal:file
+  - drupal:user
+  - drupal:jsonapi
+  - damo_assets_download:damo_assets_download

@@ -1,0 +1,7 @@
+langcode: en
+status: true
+dependencies: {  }
+name: 'Focus area'
+vid: focus_area
+description: 'Collects the terms related to the Tieto''s focus areas.'
+weight: 0

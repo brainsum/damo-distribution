@@ -1,0 +1,11 @@
+services:
+  damo_assets_api.normalizer.media_entity:
+    class: Drupal\damo_assets_api\Normalizer\MediaEntityNormalizer
+    arguments: ['@entity_type.manager']
+    tags:
+      - { name: normalizer, priority: 9 }
+
+  damo_assets_api.route_subscriber:
+    class: Drupal\damo_assets_api\Routing\RouteSubscriber
+    tags:
+      - { name: event_subscriber }
