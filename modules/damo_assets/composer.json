@@ -30,6 +30,9 @@
     "require": {
         "brainsum/media_upload": "^3.0",
         "drupal/core": "^8.7",
+        "drupal/dropzonejs": "^2.0",
+        "drupal/entity_browser": "^2.2",
+        "drupal/userprotect": "^1.1",
         "enyo-drupal/dropzone": "^4.3"
     },
     "minimum-stability": "dev",

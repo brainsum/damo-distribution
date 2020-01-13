@@ -8,8 +8,4 @@ dependencies:
   - drupal:media
   - drupal:file
   - drupal:image
-#  - dbee:dbee
-#  - field_encrypt:field_encrypt
-#  - filehash:filehash
-#  - dropzonejs:dropzonejs
-#  - dropzonejs_eb_widget:dropzonejs_eb_widget
+  - filehash:filehash

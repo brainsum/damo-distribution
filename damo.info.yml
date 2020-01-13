@@ -8,8 +8,14 @@ core_version_requirement: ^8.8 || ^9
 #  name: 'Digital Media Assets Management'
 
 # Soft dependencies; these may be uninstalled.
-# install:
-# - maillog:maillog # @todo: Maybe add this here.
+install:
+  # Core.
+  - drupal:admin_toolbar
+  - drupal:dblog
+  # Contrib.
+  - admin_toolbar:admin_toolbar
+  - adminimal_admin_toolbar:adminimal_admin_toolbar
+  - maillog:maillog # Maybe set as optional.
 
 # Hard dependencies.
 dependencies:
@@ -36,12 +42,17 @@ dependencies:
   - drupal:user
   - drupal:views
   # Contrib
+  - better_exposed_filters:better_exposed_filters
+  - better_formats:better_formats
+  - dropzonejs:dropzonejs
+  - dropzonejs:dropzonejs_eb_widget
   - focal_point:focal_point
+  - filehash:filehash
   - image_effects:image_effects
   - jsonapi_extras:jsonapi_extras
-  - maillog:maillog # Maybe set as optional.
   - media_upload:media_upload
   - search_api:search_api
+  - userprotect:userprotect
 
 # @todo: TBD.
 # themes:
