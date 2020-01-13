@@ -5,33 +5,42 @@ description: 'Distribution for quickly starting a new Digital Media Assets Manag
 #distribution:
 #  name: 'Digital Media Assets Management'
 
+# Soft dependencies; these may be uninstalled.
 # install:
+# - maillog:maillog # @todo: Maybe add this here.
+
+# Hard dependencies.
 dependencies:
+  # damo
+  - damo:damo_assets
+  - damo:damo_assets_api
+  - damo:damo_assets_download
+  - damo:damo_assets_library
+  - damo:damo_assets_lister
+  - damo:damo_assets_statistics
+  - damo:damo_image_media_styles_preview
+  - damo:media_collection
+  - damo:media_collection_share
   # Core.
-  - drupal:system (>=8.7)
-  - drupal:media
-  - drupal:taxonomy
+  - drupal:basic_auth
+  - drupal:block
   - drupal:file
   - drupal:image
   - drupal:jsonapi
+  - drupal:media
   - drupal:rest
-  - drupal:basic_auth
-  - drupal:user
+  - drupal:system (>=8.7)
   - drupal:taxonomy
+  - drupal:user
+  - drupal:views
   # Contrib
-  - jsonapi_extras:jsonapi_extras
   - focal_point:focal_point
+  - image_effects:image_effects
+  - jsonapi_extras:jsonapi_extras
+  - maillog:maillog # Maybe set as optional.
   - media_upload:media_upload
-  - maillog:maillog
-  # damo
-  - damo:media_assets
-  - damo:media_assets_api
-  - damo:media_assets_download
-  - damo:media_assets_library
-  - damo:media_collection
-  - damo:media_statistics
-#  - dbee:dbee
-#  - field_encrypt:field_encrypt
+  - search_api:search_api
 
 # @todo: TBD.
 # themes:
+#   - damo:damo_theme

@@ -10,5 +10,5 @@ dependencies:
   - drupal:file
   - drupal:image
   - media_upload:media_upload
-  - damo_assets_download:damo_assets_download
+  - damo:damo_assets_download
 #  - userprotect:userprotect # @todo: PrivacyPolicy block suggests this.
