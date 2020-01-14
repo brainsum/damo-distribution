@@ -36,24 +36,51 @@
         "php": "^7.2",
         "ext-json": "*",
         "ext-zip": "*",
+        "brainsum/jquery_ui_datepicker": "^2.1",
         "brainsum/media_upload": "^3.0",
         "drupal/adminimal_admin_toolbar": "^1.10",
         "drupal/better_exposed_filters": "^4.0@alpha",
         "drupal/better_formats": "1.x-dev",
         "drupal/core": "^8.7",
         "drupal/dropzonejs": "^2.0@alpha",
-        "drupal/entity_browser": "^2.2",
+        "drupal/entity_browser": "^2.3",
+        "drupal/entity_embed": "^1.0",
+        "drupal/exception_mailer": "3.x-dev",
+        "drupal/exif": "^1.2",
+        "drupal/field_group": "^1.0",
         "drupal/filehash": "^1.4",
         "drupal/focal_point": "^1.2",
         "drupal/image_effects": "^3.0",
         "drupal/jsonapi_extras": "^3.13",
         "drupal/maillog": "1.x-dev",
+        "drupal/maxlength": "^1.0@beta",
+        "drupal/media_entity_imagemagick": "^3.0",
+        "drupal/media_entity_video": "^2.0",
+        "drupal/r4032login": "^1.1",
+        "drupal/redirect_after_login": "^2.5",
         "drupal/search_api": "^1.15",
+        "drupal/taxonomy_access_fix": "^2.7",
+        "drupal/term_merge": "^1.0@alpha",
         "drupal/userprotect": "^1.1",
+        "drupal/video_embed_field": "^2.2",
         "enyo-drupal/dropzone": "^4.3"
     },
     "extra": {
-        "patches": {},
+        "patches": {
+            "drupal/core": {
+                "Datetime form element cannot validate when using a format without seconds": "https://www.drupal.org/files/issues/2019-07-24/drupal-datetime_form_element_cannot_validate_without_seconds-2723159-53.patch",
+                "Summary attributes bugfix": "https://www.drupal.org/files/issues/2018-12-17/core-undefined-index-summary_attributes-2998194-9.patch",
+                "Add permission 'View unpublished {bundle} media'": "https://www.drupal.org/files/issues/2019-11-27/2936652-media-view-any-unpublished-per-bundle-25.patch",
+                "Implement a generic revision UI [note, core test fail with this]": "https://www.drupal.org/files/issues/2019-03-16/2350939-64.patch"
+            },
+            "drupal/exception_mailer": {
+                "Extending module to sending emails on errors too.": "https://www.drupal.org/files/issues/2019-07-04/3050402-extending-module-to-sending-emails-on-errors-too-8.patch",
+                "Replace 'administrator' role with 'maintainer, removed response setting, left out access denied errors'.": "patches/exception-mailer-role-update-remove-response-setting-leave-out-access-denied-errors.patch"
+            },
+            "drupal/filehash": {
+                "Check duplicates only for media last revision. Link media on duplicate.": "patches/filehash-validate-last-media-revision-link-media.patch"
+            }
+        },
         "drupal-scaffold": {
             "locations": {
                 "web-root": "web/"

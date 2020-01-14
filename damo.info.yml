@@ -11,11 +11,17 @@ core_version_requirement: ^8.8 || ^9
 install:
   # Core.
   - drupal:admin_toolbar
+  - drupal:breakpoint
+  - drupal:config
   - drupal:dblog
+  - drupal:dynamic_page_cache
+  - drupal:page_cache
   # Contrib.
   - admin_toolbar:admin_toolbar
   - adminimal_admin_toolbar:adminimal_admin_toolbar
-  - maillog:maillog # Maybe set as optional.
+  - exception_mailer:exception_mailer
+  - maillog:maillog
+  - search_api:search_api
 
 # Hard dependencies.
 dependencies:
@@ -32,11 +38,16 @@ dependencies:
   # Core.
   - drupal:basic_auth
   - drupal:block
+  - drupal:ckeditor
+  - drupal:editor
+  - drupal:field
   - drupal:file
+  - drupal:filter
   - drupal:image
   - drupal:jsonapi
   - drupal:media
   - drupal:rest
+  - drupal:serialization
   - drupal:system (>=8.7)
   - drupal:taxonomy
   - drupal:user
@@ -46,13 +57,27 @@ dependencies:
   - better_formats:better_formats
   - dropzonejs:dropzonejs
   - dropzonejs:dropzonejs_eb_widget
-  - focal_point:focal_point
+  - entity_browser:entity_browser_entity_form
+  - entity_embed:entity_embed
+  - exif:exif
+  - field_group:field_group
   - filehash:filehash
+  - focal_point:focal_point
   - image_effects:image_effects
   - jsonapi_extras:jsonapi_extras
+  - jquery_ui_datepicker:jquery_ui_datepicker
+  - maxlength:maxlength
+  - media_entity_imagemagick:media_entity_imagemagick
+  - media_entity_video:media_entity_video
   - media_upload:media_upload
-  - search_api:search_api
+  - r4032login:r4032login
+  - redirect_after_login:redirect_after_login
+  - taxonomy_access_fix:taxonomy_access_fix
+  - term_merge:term_merge
   - userprotect:userprotect
+  - video_embed_field:video_embed_field
+  - video_embed_field:video_embed_media
+  - video_embed_field:video_embed_wysiwyg
 
 # @todo: TBD.
 # themes:
