@@ -51,6 +51,7 @@
         "drupal/filehash": "^1.4",
         "drupal/focal_point": "^1.2",
         "drupal/image_effects": "^3.0",
+        "drupal/inline_entity_form": "^1.0@RC",
         "drupal/jsonapi_extras": "^3.13",
         "drupal/maillog": "1.x-dev",
         "drupal/maxlength": "^1.0@beta",
