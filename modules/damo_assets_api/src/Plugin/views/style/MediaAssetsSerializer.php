@@ -23,6 +23,13 @@ use function reset;
 class MediaAssetsSerializer extends Serializer {
 
   /**
+   * The entity type manager.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
+  private $entityTypeManager;
+
+  /**
    * Taxonomy term storage.
    *
    * @var \Drupal\taxonomy\TermStorageInterface
@@ -68,8 +75,7 @@ class MediaAssetsSerializer extends Serializer {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $serializer, $serializer_formats, $serializer_format_providers);
 
     $this->termStorage = $entityTypeManager->getStorage('taxonomy_term');
-    // @todo: FIXME.
-    $this->imageStyleList = ImageStyleLoader::loadImageStylesList($entityTypeManager);
+    $this->entityTypeManager = $entityTypeManager;
   }
 
   /**
@@ -85,7 +91,7 @@ class MediaAssetsSerializer extends Serializer {
       $total_items = $this->view->pager->getTotalItems();
     }
     $damo_assets = [];
-    foreach ($this->imageStyleList as $key => $style) {
+    foreach ($this->fetchImageStyleList() as $key => $style) {
       $damo_assets[$key] = $style->label();
     }
     $terms = $this->termStorage->loadTree('category');
@@ -125,6 +131,25 @@ class MediaAssetsSerializer extends Serializer {
       $content_type,
       ['views_style_plugin' => $this]
     );
+  }
+
+  /**
+   * Array of image styles.
+   *
+   * @return \Drupal\image\ImageStyleInterface[]
+   *   The image style list.
+   *
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+   *
+   * @todo: Temporary.
+   */
+  protected function fetchImageStyleList(): array {
+    if (empty($this->imageStyleList)) {
+      $this->imageStyleList = ImageStyleLoader::loadImageStylesList($this->entityTypeManager);
+    }
+
+    return $this->imageStyleList;
   }
 
 }

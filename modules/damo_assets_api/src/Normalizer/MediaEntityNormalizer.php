@@ -60,7 +60,6 @@ class MediaEntityNormalizer extends ContentEntityNormalizer {
     $this->termStorage = $entityTypeManager->getStorage('taxonomy_term');
 
     $this->supportedInterfaceOrClass = MediaInterface::class;
-    $this->imageStyleList = ImageStyleLoader::loadImageStylesList($entityTypeManager);
   }
 
   /**
@@ -96,7 +95,7 @@ class MediaEntityNormalizer extends ContentEntityNormalizer {
         /** @var \Drupal\file\FileInterface $file */
         $file = $this->fileStorage->load($field->first()->getEntity()->get('thumbnail')->target_id);
 
-        foreach ($this->imageStyleList as $key => $style) {
+        foreach ($this->fetchImageStyleList() as $key => $style) {
           $attributes['assets'][$key] = $style->buildUrl($file->getFileUri());
         }
       }
@@ -117,6 +116,25 @@ class MediaEntityNormalizer extends ContentEntityNormalizer {
     }
 
     return $attributes;
+  }
+
+  /**
+   * Array of image styles.
+   *
+   * @return \Drupal\image\ImageStyleInterface[]
+   *   The image style list.
+   *
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+   *
+   * @todo: Temporary.
+   */
+  protected function fetchImageStyleList(): array {
+    if (empty($this->imageStyleList)) {
+      $this->imageStyleList = ImageStyleLoader::loadImageStylesList($this->entityTypeManager);
+    }
+
+    return $this->imageStyleList;
   }
 
   /**
