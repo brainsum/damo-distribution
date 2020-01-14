@@ -80,6 +80,9 @@
             },
             "drupal/filehash": {
                 "Check duplicates only for media last revision. Link media on duplicate.": "patches/filehash-validate-last-media-revision-link-media.patch"
+            },
+            "drupal/media_entity_video": {
+                "Core media compatibility issues": "https://www.drupal.org/files/issues/2020-01-05/media_entity_video-2930974-8.patch"
             }
         },
         "drupal-scaffold": {
