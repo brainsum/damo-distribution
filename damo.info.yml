@@ -45,7 +45,9 @@ dependencies:
   - drupal:filter
   - drupal:image
   - drupal:jsonapi
+  - drupal:language
   - drupal:media
+  - drupal:path
   - drupal:rest
   - drupal:serialization
   - drupal:system (>=8.7)
