@@ -1,0 +1,25 @@
+langcode: en
+status: true
+dependencies: {  }
+id: authenticated
+label: 'Authenticated user'
+weight: 1
+is_admin: false
+permissions:
+  - 'access gallery_media_library entity browser pages'
+  - 'access media asset library'
+  - 'access media asset navigation block'
+  - 'access site-wide contact form'
+  - 'add marketing activity entities'
+  - 'add upload entities'
+  - 'create gdpr tasks'
+  - 'restful get entity:marketing_activity'
+  - 'use text format restricted_html'
+  - userprotect.account.edit
+  - userprotect.mail.edit
+  - userprotect.pass.edit
+  - 'view gdpr data summary'
+  - 'view gdpr tasks'
+  - 'view media'
+  - 'view shared media collection entities'
+  - 'view shared media collection item entities'

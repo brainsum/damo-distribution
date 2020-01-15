@@ -1,0 +1,28 @@
+langcode: en
+status: true
+dependencies: {  }
+id: agency
+label: Agency
+weight: 5
+is_admin: null
+permissions:
+  - 'access image_browser entity browser pages'
+  - 'access media_embed entity browser pages'
+  - 'access media_library entity browser pages'
+  - 'add media collection (shared) entities'
+  - 'add terms in category'
+  - 'add terms in keyword'
+  - 'create media'
+  - 'dropzone upload files'
+  - 'edit media collection (shared) entities'
+  - 'edit terms in category'
+  - 'edit terms in keyword'
+  - 'unpublish own media'
+  - 'upload media'
+  - 'view media'
+  - 'view own published media'
+  - 'view own unpublished media'
+  - 'view shared media collection entities'
+  - 'view shared media collection item entities'
+  - 'view terms in category'
+  - 'view terms in keyword'

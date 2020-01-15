@@ -15,7 +15,11 @@ install:
   - drupal:config
   - drupal:dblog
   - drupal:dynamic_page_cache
+  - drupal:language
   - drupal:page_cache
+  - drupal:rest
+  - drupal:toolbar
+  - drupal:update
   # Contrib.
   - admin_toolbar:admin_toolbar
   - adminimal_admin_toolbar:adminimal_admin_toolbar
@@ -45,13 +49,12 @@ dependencies:
   - drupal:filter
   - drupal:image
   - drupal:jsonapi
-  - drupal:language
   - drupal:media
   - drupal:path
-  - drupal:rest
   - drupal:serialization
   - drupal:system (>=8.7)
   - drupal:taxonomy
+  - drupal:text
   - drupal:user
   - drupal:views
   # Contrib
@@ -59,6 +62,7 @@ dependencies:
   - better_formats:better_formats
   - dropzonejs:dropzonejs
   - dropzonejs:dropzonejs_eb_widget
+  - entity_browser:entity_browser
   - entity_browser:entity_browser_entity_form
   - entity_embed:entity_embed
   - exif:exif

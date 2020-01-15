@@ -17,3 +17,22 @@ to core media from Video Embed Field.
 ```
 
 So we should consider removing it.
+
+### media_entity_video
+
+Add patch: https://www.drupal.org/project/media_entity_video/issues/2900466
+Note, this likely conflicts with the already applied core fix patch.
+
+
+### exception_mailer
+
+Move patch to web (e.g d.org or github).
+
+
+### filehash
+
+Move patch to web (e.g d.org or github).
+
+### exif
+
+SXMP library is not available

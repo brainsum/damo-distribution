@@ -1,0 +1,76 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.category
+id: taxonomy_term--category
+disabled: false
+path: taxonomy_term/category
+resourceType: taxonomy_term--category
+resourceFields:
+  tid:
+    disabled: true
+    fieldName: tid
+    publicName: tid
+    enhancer:
+      id: ''
+  uuid:
+    fieldName: uuid
+    publicName: uuid
+    enhancer:
+      id: ''
+    disabled: false
+  langcode:
+    disabled: true
+    fieldName: langcode
+    publicName: langcode
+    enhancer:
+      id: ''
+  vid:
+    disabled: true
+    fieldName: vid
+    publicName: vid
+    enhancer:
+      id: ''
+  name:
+    fieldName: name
+    publicName: name
+    enhancer:
+      id: ''
+    disabled: false
+  description:
+    disabled: true
+    fieldName: description
+    publicName: description
+    enhancer:
+      id: ''
+  weight:
+    disabled: true
+    fieldName: weight
+    publicName: weight
+    enhancer:
+      id: ''
+  parent:
+    disabled: true
+    fieldName: parent
+    publicName: parent
+    enhancer:
+      id: ''
+  changed:
+    disabled: true
+    fieldName: changed
+    publicName: changed
+    enhancer:
+      id: ''
+  default_langcode:
+    disabled: true
+    fieldName: default_langcode
+    publicName: default_langcode
+    enhancer:
+      id: ''
+  path:
+    disabled: true
+    fieldName: path
+    publicName: path
+    enhancer:
+      id: ''

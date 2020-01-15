@@ -1,0 +1,12 @@
+name: DAMo
+mail: dev+damo@example.com # @todo: TBD
+slogan: DAMo
+page:
+  403: ''
+  404: ''
+  front: /media-assets-library
+admin_compact_mode: false
+weight_select_max: 100
+langcode: en
+default_langcode: en
+mail_notification: ''

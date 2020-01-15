@@ -1,0 +1,28 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.media.field_focus_area
+    - media.type.image
+    - taxonomy.vocabulary.focus_area
+id: media.image.field_focus_area
+field_name: field_focus_area
+entity_type: media
+bundle: image
+label: 'Focus area'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      focus_area: focus_area
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

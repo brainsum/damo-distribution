@@ -1,0 +1,43 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.media.field_iptc_caption
+    - media.type.image
+  module:
+    - better_formats
+    - text
+third_party_settings:
+  better_formats:
+    allowed_formats_toggle: 0
+    allowed_formats:
+      restricted_html: restricted_html
+      blogs: 0
+      full_html: 0
+      newsletter: 0
+      website_content: 0
+    default_order_toggle: 0
+    default_order_wrapper:
+      formats:
+        blogs:
+          weight: '0'
+        full_html:
+          weight: '0'
+        newsletter:
+          weight: '0'
+        restricted_html:
+          weight: '0'
+        website_content:
+          weight: '0'
+id: media.image.field_iptc_caption
+field_name: field_iptc_caption
+entity_type: media
+bundle: image
+label: 'IPTC caption'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text_long
