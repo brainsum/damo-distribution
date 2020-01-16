@@ -1,7 +1,0 @@
-langcode: en
-status: true
-dependencies: {  }
-name: Industry
-vid: industry
-description: 'Collects the terms related to the Tieto’s industries.'
-weight: 0
