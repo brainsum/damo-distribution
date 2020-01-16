@@ -598,9 +598,9 @@ display:
         - user
         - user.permissions
       tags: {  }
-  page_1:
+  asset_search:
     display_plugin: page
-    id: page_1
+    id: asset_search
     display_title: Assets
     position: 1
     display_options:
@@ -616,6 +616,7 @@ display:
         weight: 0
         context: '0'
         menu_name: main
+      exposed_block: true
     cache_metadata:
       max-age: -1
       contexts:
