@@ -26,6 +26,7 @@ install:
   - exception_mailer:exception_mailer
   - maillog:maillog
   - search_api:search_api
+  - search_api_db:search_api_db
 
 # Hard dependencies.
 dependencies:

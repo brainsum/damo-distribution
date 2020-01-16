@@ -4,7 +4,7 @@ slogan: DAMo
 page:
   403: ''
   404: ''
-  front: /media-assets-library
+  front: /assets
 admin_compact_mode: false
 weight_select_max: 100
 langcode: en
