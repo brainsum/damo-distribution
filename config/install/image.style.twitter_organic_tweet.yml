@@ -20,7 +20,7 @@ effects:
     id: image_effects_watermark
     weight: 2
     data:
-      watermark_image: modules/custom/damo_image_media_styles_preview/images/watermark/dam-logo.png
+      watermark_image: profiles/contrib/damo-distribution/modules/damo_image_media_styles_preview/images/watermark/dam-logo.png
       watermark_width: 20%
       watermark_height: ''
       placement: right-bottom
