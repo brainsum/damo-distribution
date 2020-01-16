@@ -36,7 +36,7 @@
         "php": "^7.2",
         "ext-json": "*",
         "ext-zip": "*",
-        "brainsum/damo-theme": "^0.1",
+        "brainsum/damo_theme": "^0.2",
         "brainsum/jquery_ui_datepicker": "^2.1",
         "brainsum/media_upload": "^3.0",
         "drupal/adminimal_admin_toolbar": "^1.10",
