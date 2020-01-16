@@ -1,0 +1,38 @@
+cdn_provider: ''
+breadcrumb: 1
+navbar_inverse: 1
+navbar_position: static-top
+region_wells:
+  sidebar_second: ''
+button_iconize: 0
+forms_smart_descriptions: 0
+table_hover: 0
+table_responsive: 1
+modal_enabled: 0
+modal_animation: 0
+modal_show: 0
+popover_enabled: 0
+popover_animation: 0
+popover_placement: 'auto right'
+popover_selector: '[data-toggle="popover"]'
+popover_title: Help
+popover_trigger_autoclose: 1
+tooltip_placement: 'auto top'
+tooltip_selector: '[data-toggle="tooltip"]'
+favicon:
+  mimetype: image/vnd.microsoft.icon
+  path: ''
+  url: '/themes/contrib/bootstrap/favicon.ico'
+  use_default: true
+features:
+  comment_user_picture: true
+  comment_user_verification: true
+  favicon: true
+  node_user_picture: false
+logo:
+  path: ''
+  url: ''
+  use_default: true
+schemas:
+  bootstrap: 8000
+  damo_theme: 8000

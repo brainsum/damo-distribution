@@ -86,6 +86,5 @@ dependencies:
   - video_embed_field:video_embed_media
   - video_embed_field:video_embed_wysiwyg
 
-# @todo: TBD.
-# themes:
-#   - damo:damo_theme
+themes:
+  - damo_theme
