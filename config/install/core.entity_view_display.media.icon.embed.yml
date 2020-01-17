@@ -7,7 +7,6 @@ dependencies:
     - field.field.media.icon.field_custom_thumbnail
     - field.field.media.icon.field_description
     - field.field.media.icon.field_file
-    - field.field.media.icon.field_focus_area
     - field.field.media.icon.field_keywords
     - media.type.icon
   module:
@@ -30,7 +29,6 @@ hidden:
   field_category: true
   field_custom_thumbnail: true
   field_description: true
-  field_focus_area: true
   field_keywords: true
   langcode: true
   name: true

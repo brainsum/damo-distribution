@@ -3,7 +3,6 @@ status: true
 dependencies:
   config:
     - field.field.media.video.field_category
-    - field.field.media.video.field_focus_area
     - field.field.media.video.field_id
     - field.field.media.video.field_keywords
     - field.field.media.video.field_source
@@ -19,12 +18,6 @@ mode: default
 content:
   field_category:
     weight: 3
-    settings: {  }
-    third_party_settings: {  }
-    type: options_select
-    region: content
-  field_focus_area:
-    weight: 5
     settings: {  }
     third_party_settings: {  }
     type: options_select

@@ -4,11 +4,9 @@ dependencies:
   config:
     - field.field.media.image.field_category
     - field.field.media.image.field_expiration_date
-    - field.field.media.image.field_focus_area
     - field.field.media.image.field_gps_gpslatitude
     - field.field.media.image.field_gps_gpslongitude
     - field.field.media.image.field_image
-    - field.field.media.image.field_industry
     - field.field.media.image.field_iptc_by_line
     - field.field.media.image.field_iptc_caption
     - field.field.media.image.field_iptc_object_name
@@ -38,12 +36,6 @@ content:
     third_party_settings: {  }
     type: jquery_ui_datepicker
     region: content
-  field_focus_area:
-    weight: 5
-    settings: {  }
-    third_party_settings: {  }
-    type: options_select
-    region: content
   field_gps_gpslatitude:
     weight: 6
     settings:
@@ -71,12 +63,6 @@ content:
       offsets: '50,50'
     third_party_settings: {  }
     type: image_focal_point
-    region: content
-  field_industry:
-    weight: 4
-    settings: {  }
-    third_party_settings: {  }
-    type: options_select
     region: content
   field_iptc_by_line:
     weight: 8

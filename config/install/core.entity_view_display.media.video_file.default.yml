@@ -4,7 +4,6 @@ dependencies:
   config:
     - field.field.media.video_file.field_category
     - field.field.media.video_file.field_custom_thumbnail
-    - field.field.media.video_file.field_focus_area
     - field.field.media.video_file.field_keywords
     - field.field.media.video_file.field_video_file
     - media.type.video_file
@@ -17,14 +16,6 @@ mode: default
 content:
   field_category:
     weight: 2
-    label: inline
-    settings:
-      link: false
-    third_party_settings: {  }
-    type: entity_reference_label
-    region: content
-  field_focus_area:
-    weight: 4
     label: inline
     settings:
       link: false

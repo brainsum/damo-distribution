@@ -6,7 +6,6 @@ dependencies:
     - field.field.media.logo.field_category
     - field.field.media.logo.field_custom_thumbnail
     - field.field.media.logo.field_file
-    - field.field.media.logo.field_focus_area
     - field.field.media.logo.field_keywords
     - field.field.media.logo.field_logo_description
     - image.style.gallery_item
@@ -55,7 +54,6 @@ hidden:
   created: true
   field_custom_thumbnail: true
   field_file: true
-  field_focus_area: true
   field_logo_description: true
   langcode: true
   search_api_excerpt: true

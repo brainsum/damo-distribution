@@ -4,8 +4,6 @@ dependencies:
   config:
     - search_api.index.database_media
     - taxonomy.vocabulary.category
-    - taxonomy.vocabulary.focus_area
-    - taxonomy.vocabulary.industry
   module:
     - better_exposed_filters
     - search_api
@@ -70,22 +68,6 @@ display:
                 advanced:
                   rewrite:
                     filter_rewrite_values: ''
-                  collapsible: false
-                  is_secondary: false
-              media_focus_area:
-                plugin_id: default
-                advanced:
-                  sort_options: false
-                  rewrite:
-                    filter_rewrite_values: '- Any -|SELECT ORIENTATION'
-                  collapsible: false
-                  is_secondary: false
-              media_industry:
-                plugin_id: default
-                advanced:
-                  sort_options: false
-                  rewrite:
-                    filter_rewrite_values: '- Any -|SELECT TYPE'
                   collapsible: false
                   is_secondary: false
               media_category:
@@ -350,112 +332,6 @@ display:
             default_group_multiple: {  }
             group_items: {  }
           plugin_id: search_api_boolean
-        media_focus_area:
-          id: media_focus_area
-          table: search_api_index_database_media
-          field: media_focus_area
-          relationship: none
-          group_type: group
-          admin_label: ''
-          operator: or
-          value: {  }
-          group: 1
-          exposed: true
-          expose:
-            operator_id: media_focus_area_op
-            label: ''
-            description: ''
-            use_operator: false
-            operator: media_focus_area_op
-            operator_limit_selection: false
-            operator_list: {  }
-            identifier: media_focus_area
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-              anonymous: '0'
-              dam: '0'
-              keyword_contributor: '0'
-              media_api: '0'
-              agency: '0'
-              manager: '0'
-              administrator: '0'
-              maintainer: '0'
-            reduce: false
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
-          reduce_duplicates: false
-          type: select
-          limit: true
-          vid: focus_area
-          hierarchy: true
-          error_message: true
-          plugin_id: search_api_term
-        media_industry:
-          id: media_industry
-          table: search_api_index_database_media
-          field: media_industry
-          relationship: none
-          group_type: group
-          admin_label: ''
-          operator: or
-          value: {  }
-          group: 1
-          exposed: true
-          expose:
-            operator_id: media_industry_op
-            label: ''
-            description: ''
-            use_operator: false
-            operator: media_industry_op
-            operator_limit_selection: false
-            operator_list: {  }
-            identifier: media_industry
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-              anonymous: '0'
-              dam: '0'
-              keyword_contributor: '0'
-              media_api: '0'
-              agency: '0'
-              manager: '0'
-              administrator: '0'
-              maintainer: '0'
-            reduce: false
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
-          reduce_duplicates: false
-          type: select
-          limit: true
-          vid: industry
-          hierarchy: true
-          error_message: true
-          plugin_id: search_api_term
         media_category:
           id: media_category
           table: search_api_index_database_media

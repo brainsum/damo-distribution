@@ -1,23 +1,21 @@
 langcode: en
 status: true
 dependencies:
+  config:
+    - field.storage.media.field_category
+    - field.storage.media.field_file
+    - field.storage.media.field_files
+    - field.storage.media.field_image
+    - field.storage.media.field_images
+    - field.storage.media.field_keywords
+    - field.storage.media.field_template_file
+    - field.storage.media.field_video_file
+    - search_api.server.local_database_server
   module:
     - media
     - file
     - taxonomy
     - search_api
-  config:
-    - field.storage.media.field_file
-    - field.storage.media.field_files
-    - field.storage.media.field_image
-    - field.storage.media.field_images
-    - field.storage.media.field_category
-    - field.storage.media.field_focus_area
-    - field.storage.media.field_industry
-    - field.storage.media.field_keywords
-    - field.storage.media.field_template_file
-    - field.storage.media.field_video_file
-    - search_api.server.local_database_server
 id: database_media
 name: database_media
 description: 'DB Index for media entities.'
@@ -91,22 +89,6 @@ field_settings:
     dependencies:
       config:
         - field.storage.media.field_category
-  media_focus_area:
-    label: 'Focus area'
-    datasource_id: 'entity:media'
-    property_path: field_focus_area
-    type: integer
-    dependencies:
-      config:
-        - field.storage.media.field_focus_area
-  media_industry:
-    label: Industry
-    datasource_id: 'entity:media'
-    property_path: field_industry
-    type: integer
-    dependencies:
-      config:
-        - field.storage.media.field_industry
   media_keywords:
     label: Keywords
     datasource_id: 'entity:media'
@@ -178,8 +160,6 @@ processor_settings:
   hierarchy:
     fields:
       media_category: taxonomy_term-parent
-      media_focus_area: taxonomy_term-parent
-      media_industry: taxonomy_term-parent
       media_keywords: taxonomy_term-parent
     weights:
       preprocess_index: -45

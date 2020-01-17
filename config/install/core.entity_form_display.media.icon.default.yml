@@ -6,7 +6,6 @@ dependencies:
     - field.field.media.icon.field_custom_thumbnail
     - field.field.media.icon.field_description
     - field.field.media.icon.field_file
-    - field.field.media.icon.field_focus_area
     - field.field.media.icon.field_keywords
     - image.style.thumbnail
     - media.type.icon
@@ -49,12 +48,6 @@ content:
       progress_indicator: throbber
     third_party_settings: {  }
     type: file_generic
-    region: content
-  field_focus_area:
-    weight: 5
-    settings: {  }
-    third_party_settings: {  }
-    type: options_select
     region: content
   field_keywords:
     weight: 4
