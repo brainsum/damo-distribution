@@ -275,10 +275,6 @@ Shared collection
     flex-basis: 150px;
 }
 
-.media_collection .collection-links-wrapper a {
-    flex: 1;
-}
-
 .media_collection .collection-links-wrapper a:hover,
 .media_collection .collection-links-wrapper a:focus {
     color: #666 !important;
@@ -286,20 +282,17 @@ Shared collection
 
 .media_collection .collection-links-wrapper .collection_download_btn {
     order: 1;
-    max-width: 180px;
 }
 
 .media_collection .collection-links-wrapper .empty_the_collection_btn {
     order: 3;
     background-color: #e2e2e2;
     color: black;
-    max-width: 239px;
     margin-left: auto;
 }
 
 .media_collection .collection-links-wrapper .collection_share_btn {
     order: 2;
-    max-width: 430px;
 }
 
 .shared_media_collection .collection-links-wrapper {
