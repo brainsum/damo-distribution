@@ -102,12 +102,12 @@ body {
     visibility: hidden;
 }
 
-/* .title {
+.path-collection .title {
     font-size: 13px;
     margin-bottom: 0;
     color: white;
     font-weight: 700;
-} */
+}
 
 .keywords {
     color: rgb(191, 191, 191);
