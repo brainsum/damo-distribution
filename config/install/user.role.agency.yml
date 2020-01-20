@@ -9,6 +9,7 @@ permissions:
   - 'access image_browser entity browser pages'
   - 'access media_embed entity browser pages'
   - 'access media_library entity browser pages'
+  - 'access toolbar'
   - 'add media collection (shared) entities'
   - 'add terms in category'
   - 'add terms in keyword'
