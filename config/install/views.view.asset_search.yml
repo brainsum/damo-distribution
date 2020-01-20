@@ -27,7 +27,7 @@ display:
         options:
           perm: 'access media asset library'
       cache:
-        type: tag
+        type: search_api_tag
         options: {  }
       query:
         type: views_query
