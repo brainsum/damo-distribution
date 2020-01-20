@@ -165,7 +165,7 @@ class AssetPreviewListMarkup {
       ->load($image->target_id);
 
     if (NULL === $file) {
-      $this->messenger->addMessage('The image "' . $image->getName() . '" is not found.', 'error');
+      $this->messenger()->addMessage("The image '{$image->getName()}' is not found.", 'error');
       return [];
     }
 
@@ -178,7 +178,7 @@ class AssetPreviewListMarkup {
       );
     }
     catch (InvalidArgumentException $exception) {
-      $this->messenger->addMessage($exception->getMessage(), 'error');
+      $this->messenger()->addMessage($exception->getMessage(), 'error');
       return [];
     }
 
