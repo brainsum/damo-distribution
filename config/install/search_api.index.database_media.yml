@@ -21,6 +21,14 @@ name: database_media
 description: 'DB Index for media entities.'
 read_only: false
 field_settings:
+  author:
+    label: 'Authored by'
+    datasource_id: 'entity:media'
+    property_path: uid
+    type: integer
+    dependencies:
+      module:
+        - media
   changed:
     label: Changed
     datasource_id: 'entity:media'
