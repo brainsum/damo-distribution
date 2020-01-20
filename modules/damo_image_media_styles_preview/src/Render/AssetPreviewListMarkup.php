@@ -483,8 +483,9 @@ class AssetPreviewListMarkup {
   protected function getImageUri(File $file): ?string {
     /** @var \Drupal\Core\Image\Image $imageLoaded */
     $imageLoaded = $this->imageFactory->get($file->getFileUri());
+
     if (!$imageLoaded->isValid()) {
-      throw new InvalidArgumentException('The file with id ' . $file->id() . ' is not an image.');
+      throw new InvalidArgumentException("The given file (ID {$file->id()}) is missing, or not a valid image.");
     }
 
     return $imageLoaded->getSource();
