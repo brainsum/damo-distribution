@@ -150,6 +150,10 @@ function damo_assets_preprocess_html(array &$variables) {
       $variables['attributes']['class'][] = 'media--add';
       break;
   }
+
+  if (_damo_assets_request_to_type(Drupal::request()) !== 'image') {
+    $variables['attributes']['class'][] = 'no-filter';
+  }
 }
 
 /**
