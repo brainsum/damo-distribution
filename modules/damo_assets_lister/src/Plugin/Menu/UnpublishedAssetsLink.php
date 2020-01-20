@@ -71,8 +71,8 @@ class UnpublishedAssetsLink extends MenuLinkDefault {
       return 'view.unpublished_assets.user_unpublished_assets';
     }
 
-    // @note: This is not going to cause issues, but shouldn't be reachable
-    // under normal circumstances either.
+    // @note: This shouldn't be reachable under normal circumstances either.
+    // @todo: Add proper return point.
     return '';
   }
 
