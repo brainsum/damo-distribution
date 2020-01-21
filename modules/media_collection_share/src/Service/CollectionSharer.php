@@ -179,11 +179,7 @@ final class CollectionSharer {
       return FALSE;
     }
 
-    if (!$this->compareCollectionsByItems($reference, $test)) {
-      return FALSE;
-    }
-
-    return TRUE;
+    return $this->compareCollectionsByItems($reference, $test);
   }
 
   /**
