@@ -59,7 +59,6 @@ permissions:
   - 'edit any video media'
   - 'edit any video_file media'
   - 'edit media collection (shared) entities'
-  - 'edit media collection entities'
   - 'edit own guideline media'
   - 'edit own icon media'
   - 'edit own image media'

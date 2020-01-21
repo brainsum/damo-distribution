@@ -67,11 +67,14 @@ function media_collection_share_preprocess_media_collection(array &$variables) {
     ];
   }
 
-  if ($collection->itemCount() > 0) {
+  $currentUser = Drupal::currentUser();
+  $shareFormUrl =  Url::fromRoute('media_collection_share.collection.share_form');
+
+  if ($collection->itemCount() > 0 && $shareFormUrl->access($currentUser)) {
     $variables['additional_collection_data']['render']['links']['share'] = [
       '#type' => 'link',
       '#title' => new TranslatableMarkup('Share the current state of this collection'),
-      '#url' => Url::fromRoute('media_collection_share.collection.share_form'),
+      '#url' => $shareFormUrl,
       '#attributes' => [
         'class' => [
           'use-ajax',
