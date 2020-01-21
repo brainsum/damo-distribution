@@ -34,11 +34,15 @@ class BulkMediaUploadForm extends ContribForm {
   ) {
     $form = parent::buildForm($form, $form_state, $type);
 
+
+    $isImage = $type !== NULL && $type->id() === 'image';
+
+    // @todo: Load these from type configs, don't hardcode.
     $form['category'] = [
       '#type' => 'entity_autocomplete',
       '#title' => $this->t('Category'),
       '#target_type' => 'taxonomy_term',
-      '#required' => TRUE,
+      '#required' => $isImage,
       '#tags' => TRUE,
       '#selection_handler' => 'default:taxonomy_term',
       '#selection_settings' => [
@@ -46,16 +50,12 @@ class BulkMediaUploadForm extends ContribForm {
         'auto_create' => TRUE,
         'match_operator' => 'CONTAINS',
       ],
-      '#autocreate' => [
-        'bundle' => 'category',
-      ],
     ];
 
     $form['keywords'] = [
       '#type' => 'entity_autocomplete',
       '#title' => $this->t('Keywords'),
       '#target_type' => 'taxonomy_term',
-      '#required' => TRUE,
       '#tags' => TRUE,
       '#selection_handler' => 'default:taxonomy_term',
       '#selection_settings' => [
@@ -68,7 +68,7 @@ class BulkMediaUploadForm extends ContribForm {
       ],
     ];
 
-    if ($type !== NULL && $type->id() === 'image') {
+    if ($isImage) {
       $form['image_alt_text'] = [
         '#type' => 'textfield',
         '#title' => $this->t('Image alt text'),
