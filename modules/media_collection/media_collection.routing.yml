@@ -4,8 +4,7 @@ media_collection.collection.current_user:
     _controller: '\Drupal\media_collection\Controller\CollectionController:currentUserCollection'
     _title: 'My collection'
   requirements:
-    # @todo: Refine.
-    _permission: 'edit media collection entities'
+    _permission: 'add media collection entities,edit own media collection entities,add media collection item entities,edit own media collection item entities'
 
 media_collection.collection.current_user.asset_download:
   path: '/collection/download'
@@ -14,7 +13,7 @@ media_collection.collection.current_user.asset_download:
     _title: 'Asset download'
   requirements:
     # @todo: Add custom permission for download.
-    _permission: 'edit media collection entities'
+    _permission: 'view own media collection entities,view own media collection item entities'
 
 media_collection.collection.current_user.clear:
   path: '/collection/clear'
@@ -22,7 +21,7 @@ media_collection.collection.current_user.clear:
     _controller: '\Drupal\media_collection\Controller\CollectionController:clearCollectionForCurrentUser'
     _title: 'Empty the collection'
   requirements:
-    _permission: 'edit media collection entities'
+    _permission: 'delete own media collection entities,delete own media collection item entities'
 
 # Admin paths.
 media_collection.collection.given_user:
