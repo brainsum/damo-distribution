@@ -36,15 +36,6 @@ function damo_assets_lister_toolbar() {
             'class' => ['toolbar-icon', 'toolbar-icon-unpublished-assets'],
           ],
         ],
-        'tray' => [
-          'links' => [
-            '#theme' => 'links',
-            '#links' => [],
-            '#attributes' => [
-              'class' => ['toolbar-menu'],
-            ],
-          ],
-        ],
         '#weight' => -10,
         // @todo: Attach custom lib with custom icons.
         // Previously used: shortcut/drupal.shortcut.
