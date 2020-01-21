@@ -2,20 +2,20 @@ langcode: en
 status: true
 dependencies:
   config:
-    - views.view.asset_search
+    - views.view.unpublished_assets
   module:
     - system
     - views
   theme:
     - damo_theme
-id: damo_theme_exposed_asset_search_form
+id: exposedformunpublished_assetsuser_unpublished_assets
 theme: damo_theme
 region: navigation
-weight: -3
+weight: 0
 provider: null
-plugin: 'views_exposed_filter_block:asset_search-asset_search'
+plugin: 'views_exposed_filter_block:unpublished_assets-user_unpublished_assets'
 settings:
-  id: 'views_exposed_filter_block:asset_search-asset_search'
+  id: 'views_exposed_filter_block:unpublished_assets-user_unpublished_assets'
   label: ''
   provider: views
   label_display: '0'
@@ -23,6 +23,6 @@ settings:
 visibility:
   request_path:
     id: request_path
-    pages: "<front>\r\n/assets"
+    pages: /admin/assets/my-unpublished
     negate: false
     context_mapping: {  }

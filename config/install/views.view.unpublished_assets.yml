@@ -4,6 +4,7 @@ dependencies:
   config:
     - search_api.index.database_media
   module:
+    - better_exposed_filters
     - search_api
     - user
 id: unpublished_assets
@@ -34,7 +35,7 @@ display:
           skip_access: false
           preserve_facet_query_args: false
       exposed_form:
-        type: basic
+        type: bef
         options:
           submit_button: Apply
           reset_button: false
@@ -43,6 +44,26 @@ display:
           expose_sort_order: true
           sort_asc_label: Asc
           sort_desc_label: Desc
+          text_input_required: 'Select any filter and click on Apply to see results'
+          text_input_required_format: full_html
+          bef:
+            general:
+              autosubmit: false
+              autosubmit_exclude_textfield: false
+              autosubmit_hide: false
+              input_required: false
+              allow_secondary: false
+              secondary_label: 'Advanced options'
+            sort:
+              plugin_id: default
+              advanced:
+                combine: false
+                combine_rewrite: ''
+                reset: false
+                reset_label: ''
+                collapsible: false
+                collapsible_label: 'Sort options'
+                is_secondary: false
       pager:
         type: full
         options:
@@ -301,6 +322,7 @@ display:
       arguments: {  }
       defaults:
         arguments: false
+      exposed_block: true
     cache_metadata:
       max-age: -1
       contexts:
@@ -418,6 +440,7 @@ display:
           break_phrase: false
           not: false
           plugin_id: search_api
+      exposed_block: true
     cache_metadata:
       max-age: -1
       contexts:
