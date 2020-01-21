@@ -1,6 +1,0 @@
-damo_assets_lister.unpublished_assets:
-  class: Drupal\damo_assets_lister\Plugin\Menu\UnpublishedAssetsLink
-  title: 'Assets waiting for approval'
-  parent: system.admin
-  description: 'All assets waiting for approval.'
-  weight: -8
