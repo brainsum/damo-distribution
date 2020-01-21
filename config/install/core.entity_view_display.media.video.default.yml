@@ -2,7 +2,6 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.media.video.field_category
     - field.field.media.video.field_id
     - field.field.media.video.field_keywords
     - field.field.media.video.field_source
@@ -15,14 +14,6 @@ targetEntityType: media
 bundle: video
 mode: default
 content:
-  field_category:
-    weight: 2
-    label: inline
-    settings:
-      link: false
-    third_party_settings: {  }
-    type: entity_reference_label
-    region: content
   field_keywords:
     weight: 4
     label: inline

@@ -11,7 +11,7 @@ entity_type: media
 bundle: template
 label: Keywords
 description: ''
-required: true
+required: false
 translatable: true
 default_value: {  }
 default_value_callback: ''

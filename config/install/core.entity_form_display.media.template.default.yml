@@ -2,7 +2,6 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.media.template.field_category
     - field.field.media.template.field_custom_thumbnail
     - field.field.media.template.field_keywords
     - field.field.media.template.field_template_description
@@ -20,12 +19,6 @@ targetEntityType: media
 bundle: template
 mode: default
 content:
-  field_category:
-    weight: 3
-    settings: {  }
-    third_party_settings: {  }
-    type: options_select
-    region: content
   field_custom_thumbnail:
     weight: 6
     settings:

@@ -3,7 +3,6 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.media.shared_collection_item
-    - field.field.media.guideline.field_category
     - field.field.media.guideline.field_custom_thumbnail
     - field.field.media.guideline.field_files
     - field.field.media.guideline.field_images
@@ -18,14 +17,6 @@ targetEntityType: media
 bundle: guideline
 mode: shared_collection_item
 content:
-  field_category:
-    weight: 2
-    label: inline
-    settings:
-      link: false
-    third_party_settings: {  }
-    type: entity_reference_label
-    region: content
   field_keywords:
     weight: 3
     label: inline
