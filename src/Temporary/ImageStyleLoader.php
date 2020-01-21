@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\media_collection\Temporary;
+namespace Drupal\damo\Temporary;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use InvalidArgumentException;

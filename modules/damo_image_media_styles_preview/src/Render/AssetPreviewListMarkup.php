@@ -7,6 +7,7 @@ use Drupal\Core\Link;
 use Drupal\Core\Messenger\MessengerTrait;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Url;
+use Drupal\damo\Temporary\ImageStyleLoader;
 use Drupal\file\Entity\File;
 use Drupal\image\Plugin\Field\FieldType\ImageItem;
 use Drupal\media\MediaInterface;
@@ -172,7 +173,7 @@ class AssetPreviewListMarkup {
     try {
       $derivativeImages = $this->getTableRows(
         $this->getImageUri($file),
-        $this->getImageStyleList(),
+        ImageStyleLoader::loadImageStylesList($this->entityTypeManager),
         $this->getFocalPointValue($file, $image),
         $media
       );
@@ -519,55 +520,6 @@ class AssetPreviewListMarkup {
     );
 
     return "{$relativePosition['x']}x{$relativePosition['y']}";
-  }
-
-  /**
-   * Build a list of image styles that are needed for the crop list.
-   *
-   * @return \Drupal\image\ImageStyleInterface[]
-   *   An array of image styles.
-   *
-   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
-   * @throws \InvalidArgumentException
-   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
-   *
-   * @todo: This shouldn't be public, refactor.
-   */
-  public function getImageStyleList(): array {
-    // @todo: Generalize; add a checkbox to the image styles instead of this static list.
-    $styleList = [
-      'other_hi_res_no_badge',
-      'facebook_organic',
-      'facebook_organic_no_badge',
-      'facebook_paid_campaign',
-      'facebook_paid_campaign_no_badge',
-      'instagram_photo_size',
-      'instagram_photo_size_no_badge',
-      'instagram_paid_campaign',
-      'instagram_paid_campaign_no_badge',
-      'linkedin_organic_or_paid_image',
-      'linkedin_organic_or_paid_image_no_badge',
-      'linkedin_personal_account_newsfeed_update_organic',
-      'linkedin_personal_account_newsfeed_update_organic_no_badge',
-      'twitter_website_card_paid_campaign',
-      'twitter_website_card_paid_campaign_no_badge',
-      'twitter_in_stream_photo',
-      'twitter_in_stream_photo_no_badge',
-      'twitter_organic_tweet',
-      'twitter_organic_tweet_no_badge',
-      'ms_powerpoint_no_badge',
-    ];
-
-    /** @var \Drupal\Core\Config\Entity\ConfigEntityStorage $styleStorage */
-    $styleStorage = $this->entityTypeManager->getStorage('image_style');
-    /** @var \Drupal\image\ImageStyleInterface[] $styles */
-    $styles = $styleStorage->loadMultiple($styleList);
-
-    if (empty($styles)) {
-      throw new InvalidArgumentException('No applicable image styles found.');
-    }
-
-    return $styles;
   }
 
 }

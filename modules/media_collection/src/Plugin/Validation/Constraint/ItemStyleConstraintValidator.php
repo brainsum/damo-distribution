@@ -3,7 +3,7 @@
 namespace Drupal\media_collection\Plugin\Validation\Constraint;
 
 use Drupal;
-use Drupal\media_collection\Temporary\ImageStyleLoader;
+use Drupal\damo\Temporary\ImageStyleLoader;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use function array_keys;
