@@ -4,7 +4,7 @@ dependencies:
   module:
     - focal_point
 name: ms_powerpoint_no_badge
-label: PowerPoint
+label: 'PowerPoint (no badge)'
 effects:
   b62ba3be-3443-4797-9caf-4fb7bed566eb:
     uuid: b62ba3be-3443-4797-9caf-4fb7bed566eb

@@ -31,6 +31,7 @@ class ImageStyleLoader {
   public static function loadImageStylesList(EntityTypeManagerInterface $entityTypeManager): array {
     // @todo: Generalize; add a checkbox to the image styles instead of this static list.
     $styleList = [
+      'other_hi_res',
       'other_hi_res_no_badge',
       'facebook_organic',
       'facebook_organic_no_badge',
@@ -50,6 +51,7 @@ class ImageStyleLoader {
       'twitter_in_stream_photo_no_badge',
       'twitter_organic_tweet',
       'twitter_organic_tweet_no_badge',
+      'ms_powerpoint',
       'ms_powerpoint_no_badge',
     ];
 

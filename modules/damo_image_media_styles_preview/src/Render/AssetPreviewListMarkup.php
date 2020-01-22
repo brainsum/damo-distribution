@@ -278,7 +278,6 @@ class AssetPreviewListMarkup {
         $styleData = array_values($styleConfig)[0]['data'];
       }
 
-      // @todo: Why the label??
       $hasBadge = strpos($styleLabel, '(no badge)') ? FALSE : TRUE;
 
       if (empty($styleData['width']) || empty($styleData['height'])) {
@@ -322,11 +321,6 @@ class AssetPreviewListMarkup {
       );
       $identifier = strtolower($identifier);
 
-      // @todo: This is a hack.
-      if (in_array($identifier, ['original-ratio', 'powerpoint'], TRUE)) {
-        $identifier .= '-no-badge';
-      }
-
       // Column 3: Metadata.
       $rows['images'][$rowNumber]['metadata'] = [
         'class' => [
@@ -344,12 +338,13 @@ class AssetPreviewListMarkup {
         ],
       ];
       $group = explode('-', $identifier)[0];
+
       $controller[$group][$rowNumber] = [
         'label' => $styleLabel,
         'badge' => $hasBadge,
         'identifier' => $identifier,
         'style' => $styleLabel,
-        'download_link' => Link::fromTextAndUrl(t('Download'), $url),
+        'download_link' => Link::fromTextAndUrl($this->t('Download'), $url),
       ];
 
       // This is equivalent to a "media_collection is installed" condition.
@@ -508,7 +503,8 @@ class AssetPreviewListMarkup {
    */
   protected function getFocalPointValue(File $file, ImageItem $image): string {
     // Load the focal point anchors for the file.
-    $pos = $this->focalPointManager->getCropEntity($file, 'focal_point')
+    $pos = $this->focalPointManager
+      ->getCropEntity($file, 'focal_point')
       ->anchor();
 
     // Get the relative coordinates.
