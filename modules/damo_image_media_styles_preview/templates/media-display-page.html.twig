@@ -1,7 +1,7 @@
 <div class="media-page-wrapper">
   <div class="images-wrapper left-wrapper">
     {% for row in rows.images %}
-      <div class="image {{ row.metadata.data.identifier }} {% if loop.first %}active{% endif %}" identifier="{{ row.metadata.data.identifier }}">{{ row.image.data }}</div>
+      <div class="image {{ row.metadata.data.identifier }} {% if loop.index == 2 %}active{% endif %}" identifier="{{ row.metadata.data.identifier }}">{{ row.image.data }}</div>
     {% endfor %}
   </div>
   <div class="right-wrapper">
@@ -10,15 +10,19 @@
       <input type="checkbox" id="watermark" name="watermark" value="on"> <label for="watermark">Add the Company logo to the image</label>
       {% for key, links in rows.controllers %}
         <div class="controller {{ key }}">
-          {% for link in links %}
-            <div class="link {% if loop.parent.loop.first %}active{% endif %}" identifier="{{ link.identifier }}">
-              {{ link.download_link }}
-            </div>
+          {% for index, link in links %}
+            {% if link.identifier %}
+              <div class="link {% if loop.parent.loop.first and index == 1 %}active{% endif %}" identifier="{{ link.identifier }}">
+                {{ link.download_link }}
+              </div>
+            {% endif %}
 
             {% if link.media_collection.add_to_collection_link %}
-              <div class="link {% if loop.parent.loop.first %}active{% endif %}" identifier="{{ link.identifier }}">
-                {{ link.media_collection.add_to_collection_link }}
-              </div>
+              {% if link.identifier %}
+                <div class="link {% if loop.parent.loop.first and index == 1 %}active{% endif %}" identifier="{{ link.identifier }}">
+                  {{ link.media_collection.add_to_collection_link }}
+                </div>
+              {% endif %}
             {% endif %}
           {% endfor %}
         </div>
