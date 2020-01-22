@@ -9,6 +9,7 @@ use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Markup;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\Core\Url;
 use Drupal\media\MediaInterface;
 use Drupal\views\ViewExecutable;
 use Symfony\Component\HttpFoundation\Request;
@@ -255,6 +256,14 @@ function damo_assets_preprocess_entity_add_list(array &$variables) {
 
   if ($routeName !== 'entity.media.add_page') {
     return;
+  }
+
+  if (isset($variables['bundles']['image']['add_link'])) {
+    $imageBulkAddUrl = new Url('media_upload.bulk_media_upload', [
+      'type' => 'image',
+    ]);
+    // The 'add_link' is an instance of \Drupal\Core\Link.
+    $variables['bundles']['image']['add_link']->setUrl($imageBulkAddUrl);
   }
 
   foreach ($variables['bundles'] as $bundle_name => $bundles) {
