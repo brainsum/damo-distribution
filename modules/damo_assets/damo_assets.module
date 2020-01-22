@@ -215,15 +215,6 @@ function damo_assets_views_pre_view(ViewExecutable $view, $display_id, array &$a
 }
 
 /**
- * Implements hook_menu_local_actions_alter().
- */
-function damo_assets_menu_local_actions_alter(array &$local_actions) {
-  if (isset($local_actions['media_upload.bulk_media_upload_list'])) {
-    $local_actions['media_upload.bulk_media_upload_list']['title'] = t('Upload content in bulk');
-  }
-}
-
-/**
  * Implements hook_views_post_render().
  */
 function damo_assets_views_post_render(ViewExecutable $view) {
@@ -357,4 +348,18 @@ function _damo_assets_generate_field_view(MediaInterface $media, string $name, a
   }
 
   return NULL;
+}
+
+/**
+ * Implements hook_menu_local_actions_alter().
+ */
+function damo_assets_menu_local_actions_alter(array &$actions) {
+  unset($actions['media_upload.bulk_media_upload_list']);
+}
+
+/**
+ * Implements hook_menu_links_discovered_alter().
+ */
+function damo_assets_menu_links_discovered_alter(array &$links) {
+  unset($links['media_upload.bulk_media_upload_list']);
 }
