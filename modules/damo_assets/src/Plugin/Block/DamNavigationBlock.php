@@ -122,7 +122,7 @@ class DamNavigationBlock extends BlockBase implements ContainerFactoryPluginInte
    *   The data.
    */
   protected function getTypeMapping(): array {
-    return [
+    $mapping = [
       'image' => [
         'type' => 'image',
         'title' => $this->t('Images'),
@@ -154,6 +154,8 @@ class DamNavigationBlock extends BlockBase implements ContainerFactoryPluginInte
         'route_param' => ['icon'],
       ],
     ];
+    _damo_assets_order_bundles($mapping);
+    return $mapping;
   }
 
   /**

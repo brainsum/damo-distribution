@@ -250,9 +250,62 @@ function damo_assets_views_post_render(ViewExecutable $view) {
  * Implements hook_preprocess_HOOK().
  */
 function damo_assets_preprocess_entity_add_list(array &$variables) {
+  // @todo: Fix "media bulk" page ordering, too?
+  $routeName = Drupal::routeMatch()->getRouteName();
+
+  if ($routeName !== 'entity.media.add_page') {
+    return;
+  }
+
   foreach ($variables['bundles'] as $bundle_name => $bundles) {
     unset($variables['bundles'][$bundle_name]['description']);
   }
+
+  _damo_assets_order_bundles($variables['bundles']);
+}
+
+/**
+ * Order an array of media bundles keyed by their bundle machine names.
+ *
+ * @param array $bundles
+ *   Associative array with media bundles as keys.
+ */
+function _damo_assets_order_bundles(array &$bundles) {
+  $ordering = _damo_assets_assets_type_ordering();
+
+  uksort($bundles, static function($first, $second) use ($ordering) {
+    if (!isset($ordering[$first], $ordering[$second])) {
+      return 0;
+    }
+
+    if ($ordering[$first] === $ordering[$second]) {
+      return 0;
+    }
+
+    return $ordering[$first] > $ordering[$second] ? 1 : -1;
+  });
+}
+
+/**
+ * Returns ordering of bundles.
+ *
+ * Intended to be used in menus.
+ *
+ * @return array
+ *   The types with weights.
+ *
+ * @todo: Add 3rd party settings to media types, order by that instead.
+ */
+function _damo_assets_assets_type_ordering(): array {
+  return [
+    'image' => 0,
+    'video' => 10,
+    'video_file' => 10,
+    'template' => 30,
+    'logo' => 40,
+    'guideline' => 50,
+    'icon' => 60,
+  ];
 }
 
 /**
