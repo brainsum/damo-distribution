@@ -8,7 +8,6 @@ is_admin: null
 permissions:
   - 'access image_browser entity browser pages'
   - 'access media asset usage statistics'
-  - 'access media overview'
   - 'access media_embed entity browser pages'
   - 'access media_library entity browser pages'
   - 'access shortcuts'
