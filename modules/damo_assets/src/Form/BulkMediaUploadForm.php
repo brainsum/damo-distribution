@@ -3,11 +3,18 @@
 namespace Drupal\damo_assets\Form;
 
 use Drupal\Component\Render\PlainTextOutput;
+use Drupal\Core\Entity\EntityFieldManagerInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Logger\LoggerChannelFactoryInterface;
+use Drupal\Core\Utility\Token;
 use Drupal\media\MediaTypeInterface;
 use Drupal\media_upload\Form\BulkMediaUploadForm as ContribForm;
+use Drupal\taxonomy\TermInterface;
 use Exception;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use function array_map;
 use function explode;
 use function file_get_contents;
 use function file_save_data;
@@ -18,11 +25,63 @@ use function trim;
 /**
  * Customized version of the form.
  *
+ * @see \Drupal\media_upload\Form\BulkMediaUploadForm
  * @package Drupal\damo_assets\Form
  *
- * @see \Drupal\media_upload\Form\BulkMediaUploadForm
  */
 class BulkMediaUploadForm extends ContribForm {
+
+  /**
+   * Term storage.
+   *
+   * @var \Drupal\taxonomy\TermStorageInterface
+   */
+  protected $termStorage;
+
+  /**
+   * {@inheritdoc}
+   *
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+   */
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('entity_type.manager'),
+      $container->get('entity_field.manager'),
+      $container->get('logger.factory'),
+      $container->get('token'),
+      $container->get('file_system')
+    );
+  }
+
+  /**
+   * BulkMediaUploadForm constructor.
+   *
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
+   *   Entity type manager.
+   * @param \Drupal\Core\Entity\EntityFieldManagerInterface $entityFieldManager
+   *   Entity field manager.
+   * @param \Drupal\Core\Logger\LoggerChannelFactoryInterface $logger
+   *   Logger for the media_upload module.
+   * @param \Drupal\Core\Utility\Token $token
+   *   Token service.
+   * @param \Drupal\Core\File\FileSystemInterface $fileSystem
+   *   The file system.
+   *
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+   */
+  public function __construct(
+    EntityTypeManagerInterface $entityTypeManager,
+    EntityFieldManagerInterface $entityFieldManager,
+    LoggerChannelFactoryInterface $logger,
+    Token $token,
+    FileSystemInterface $fileSystem
+  ) {
+    parent::__construct($entityTypeManager, $entityFieldManager, $logger, $token, $fileSystem);
+
+    $this->termStorage = $entityTypeManager->getStorage('taxonomy_term');
+  }
 
   /**
    * {@inheritdoc}
@@ -34,25 +93,8 @@ class BulkMediaUploadForm extends ContribForm {
   ) {
     $form = parent::buildForm($form, $form_state, $type);
 
-
-    $isImage = $type !== NULL && $type->id() === 'image';
-
-    // @todo: Load these from type configs, don't hardcode.
-    // @todo: Change to https://api.drupal.org/api/drupal/core%21lib%21Drupal%21Core%21Render%21Element%21Select.php/class/Select/8.8.x
-    $form['category'] = [
-      '#type' => 'entity_autocomplete',
-      '#title' => $this->t('Category'),
-      '#target_type' => 'taxonomy_term',
-      '#required' => $isImage,
-      '#tags' => TRUE,
-      '#selection_handler' => 'default:taxonomy_term',
-      '#selection_settings' => [
-        'target_bundles' => ['category'],
-        'auto_create' => TRUE,
-        'match_operator' => 'CONTAINS',
-      ],
-    ];
-
+    // @todo: Load additional fields from type configs, don't hardcode.
+    // @todo: Use same widget as on the type form.
     $form['keywords'] = [
       '#type' => 'entity_autocomplete',
       '#title' => $this->t('Keywords'),
@@ -69,7 +111,17 @@ class BulkMediaUploadForm extends ContribForm {
       ],
     ];
 
-    if ($isImage) {
+    if ($type !== NULL && $type->id() === 'image') {
+      $form['category'] = [
+        '#type' => 'select',
+        '#title' => $this->t('Category'),
+        '#options' => array_map(static function (TermInterface $term) {
+          return $term->label();
+        }, $this->termStorage->loadByProperties(['vid' => 'category'])),
+        '#multiple' => TRUE,
+        '#required' => TRUE,
+      ];
+
       $form['image_alt_text'] = [
         '#type' => 'textfield',
         '#title' => $this->t('Image alt text'),
