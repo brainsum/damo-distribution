@@ -38,6 +38,7 @@ class BulkMediaUploadForm extends ContribForm {
     $isImage = $type !== NULL && $type->id() === 'image';
 
     // @todo: Load these from type configs, don't hardcode.
+    // @todo: Change to https://api.drupal.org/api/drupal/core%21lib%21Drupal%21Core%21Render%21Element%21Select.php/class/Select/8.8.x
     $form['category'] = [
       '#type' => 'entity_autocomplete',
       '#title' => $this->t('Category'),
