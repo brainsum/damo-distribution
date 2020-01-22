@@ -266,7 +266,7 @@ function damo_assets_preprocess_entity_add_list(array &$variables) {
 /**
  * Implements hook_preprocess_HOOK().
  */
-function media_asset_preprocess_media(array &$variables) {
+function damo_assets_preprocess_media(array &$variables) {
   /* @todo:
    * Find a better way, e.g specifying a custom thumbnail field from config
    * on the UI.
