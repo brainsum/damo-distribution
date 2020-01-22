@@ -282,7 +282,7 @@ function damo_assets_preprocess_entity_add_list(array &$variables) {
 function _damo_assets_order_bundles(array &$bundles) {
   $ordering = _damo_assets_assets_type_ordering();
 
-  uksort($bundles, static function($first, $second) use ($ordering) {
+  uksort($bundles, static function ($first, $second) use ($ordering) {
     if (!isset($ordering[$first], $ordering[$second])) {
       return 0;
     }
@@ -354,18 +354,20 @@ function damo_assets_preprocess_media(array &$variables) {
  */
 function damo_assets_media_view_alter(array &$build, MediaInterface $media, EntityViewDisplayInterface $display) {
   // @todo: Find a better way.
-  $unsupportedBundles = [
-    'image',
+  // Image is handled entirely differently.
+  if ($build['#view_mode'] !== 'full' || $media->bundle() === 'image') {
+    return;
+  }
+
+  $videoBundles = [
     'video',
     'video_file',
   ];
 
-  if (
-    $build['#view_mode'] === 'full'
-    && !in_array($media->bundle(), $unsupportedBundles, TRUE)
-  ) {
-    $build['preview_image'] = [];
+  $build['asset_preview'] = [];
 
+  if (!in_array($media->bundle(), $videoBundles, TRUE)) {
+    // @todo: Get this from the default view, don't hardcode.
     $displayOptions = [
       'type' => 'image',
       'weight' => '10',
@@ -379,10 +381,48 @@ function damo_assets_media_view_alter(array &$build, MediaInterface $media, Enti
     ];
 
     if ($preview = _damo_assets_generate_field_view($media, 'field_custom_thumbnail', $displayOptions)) {
-      $build['preview_image'] = $preview;
+      $build['asset_preview'] = $preview;
     }
     elseif ($preview = _damo_assets_generate_field_view($media, 'thumbnail', $displayOptions)) {
-      $build['preview_image'] = $preview;
+      $build['asset_preview'] = $preview;
+    }
+  }
+  elseif ($media->bundle() === 'video') {
+    // @todo: Get this from the default view, don't hardcode.
+    $displayOptions = [
+      'type' => 'video_embed_field_video',
+      'weight' => '1',
+      'label' => 'hidden',
+      'settings' => [
+        'responsive' => 'true',
+        'width' => '854',
+        'height' => '480',
+        'autoplay' => 'false',
+      ],
+      'third_party_settings' => [],
+      'region' => 'content',
+    ];
+
+    if ($preview = _damo_assets_generate_field_view($media, 'field_video', $displayOptions)) {
+      $build['asset_preview'] = $preview;
+    }
+  }
+  elseif ($media->bundle() === 'video_file') {
+    // @todo: Get this from the default view, don't hardcode.
+    $displayOptions = [
+      'type' => 'video_player_html5',
+      'weight' => '1',
+      'label' => 'hidden',
+      'settings' => [
+        'video_attributes' => 'controls preload="auto"',
+        'provide_download_link' => 0,
+      ],
+      'third_party_settings' => [],
+      'region' => 'content',
+    ];
+
+    if ($preview = _damo_assets_generate_field_view($media, 'field_video_file', $displayOptions)) {
+      $build['asset_preview'] = $preview;
     }
   }
 }
