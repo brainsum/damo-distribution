@@ -5,6 +5,7 @@
  * Module file for the Media Asset module.
  */
 
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Markup;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
@@ -293,4 +294,67 @@ function damo_assets_preprocess_media(array &$variables) {
       unset($variables['content']['field_custom_thumbnail']);
     }
   }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view_alter().
+ */
+function damo_assets_media_view_alter(array &$build, MediaInterface $media, EntityViewDisplayInterface $display) {
+  // @todo: Find a better way.
+  $unsupportedBundles = [
+    'image',
+    'video',
+    'video_file',
+  ];
+
+  if (
+    $build['#view_mode'] === 'full'
+    && !in_array($media->bundle(), $unsupportedBundles, TRUE)
+  ) {
+    $build['preview_image'] = [];
+
+    $displayOptions = [
+      'type' => 'image',
+      'weight' => '10',
+      'label' => 'hidden',
+      'settings' => [
+        'image_style' => 'crop_thumbnail',
+        'image_link' => '',
+      ],
+      'third_party_settings' => [],
+      'region' => 'content',
+    ];
+
+    if ($preview = _damo_assets_generate_field_view($media, 'field_custom_thumbnail', $displayOptions)) {
+      $build['preview_image'] = $preview;
+    }
+    elseif ($preview = _damo_assets_generate_field_view($media, 'thumbnail', $displayOptions)) {
+      $build['preview_image'] = $preview;
+    }
+  }
+}
+
+/**
+ * Return the view array of a given field.
+ *
+ * @param \Drupal\media\MediaInterface $media
+ *   The media.
+ * @param string $name
+ *   The field name.
+ * @param array $options
+ *   Render options.
+ *
+ * @return array|null
+ *   The render array or NULL.
+ */
+function _damo_assets_generate_field_view(MediaInterface $media, string $name, array $options): ?array {
+  if (
+    $media->hasField($name)
+    && ($field = $media->get($name))
+    && !$field->isEmpty()
+  ) {
+    return $field->view($options);
+  }
+
+  return NULL;
 }

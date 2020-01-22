@@ -8,30 +8,22 @@ dependencies:
     - field.field.media.logo.field_logo_description
     - media.type.logo
   module:
-    - file
     - text
 id: media.logo.default
 targetEntityType: media
 bundle: logo
 mode: default
 content:
-  field_file:
-    type: file_url_plain
-    weight: 5
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    region: content
   field_keywords:
     type: entity_reference_label
-    weight: 2
+    weight: 1
     region: content
     label: inline
     settings:
       link: false
     third_party_settings: {  }
   field_logo_description:
-    weight: 4
+    weight: 2
     label: inline
     settings: {  }
     third_party_settings: {  }
@@ -40,7 +32,7 @@ content:
   name:
     type: string
     weight: 0
-    label: inline
+    label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
@@ -48,6 +40,7 @@ content:
 hidden:
   created: true
   field_custom_thumbnail: true
+  field_file: true
   langcode: true
   search_api_excerpt: true
   thumbnail: true
