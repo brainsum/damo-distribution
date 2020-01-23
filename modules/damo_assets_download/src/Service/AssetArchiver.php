@@ -100,7 +100,7 @@ class AssetArchiver {
    */
   private function addFileToArchive(ZipArchive $archive, FileArchivingData $fileData): ZipArchive {
     if ($archive->locateName($fileData->archiveTargetPath) === FALSE) {
-      $archive->addFile($fileData->systemPath, $fileData->archiveTargetPath);
+      $archive->addFile($fileData->systemPath, ltrim($fileData->archiveTargetPath, '/'));
     }
 
     return $archive;
