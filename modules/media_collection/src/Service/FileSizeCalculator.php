@@ -170,6 +170,8 @@ final class FileSizeCalculator {
    *
    * @return int
    *   The file size.
+   *
+   * @todo: Move to damo_assets_download?
    */
   private function calculateImageMediaSize(MediaInterface $media, ImageStyleInterface $imageStyle): int {
     $size = 0;
@@ -212,6 +214,8 @@ final class FileSizeCalculator {
    *
    * @return int
    *   The file size.
+   *
+   * @todo: Move to damo_assets_download?
    */
   private function calculateMediaSize(MediaInterface $media): int {
     // @todo: Maybe get these dynamically.
@@ -267,6 +271,8 @@ final class FileSizeCalculator {
    *
    * @return int
    *   The file size, or 0 on error.
+   *
+   * @todo: Move to damo_assets_download?
    */
   private function fileSizeByPath(string $path): int {
     $fileSize = (new SplFileInfo($path))->getSize();
