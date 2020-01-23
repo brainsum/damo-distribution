@@ -6,6 +6,7 @@
  */
 
 use Drupal\Core\Cache\Cache;
+use Drupal\Core\Entity\ContentEntityDeleteForm;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
@@ -534,11 +535,16 @@ function media_collection_preprocess_page_title(array &$variables) {
 }
 
 /**
- * Implements hook_form_FORM_ID_alter().
+ * Implements hook_form_BASE_FORM_ID_alter().
  */
-function media_collection_form_media_image_delete_form_alter(array &$form, FormStateInterface $form_state, $form_id) {
+function media_collection_form_media_confirm_form_alter(array &$form, FormStateInterface $form_state) {
   /** @var \Drupal\Core\Entity\ContentEntityDeleteForm $formObject */
   $formObject = $form_state->getFormObject();
+
+  if (get_class($formObject) !== ContentEntityDeleteForm::class) {
+    return;
+  }
+
   /** @var \Drupal\media\MediaInterface $media */
   $media = $formObject->getEntity();
 
@@ -555,4 +561,31 @@ function media_collection_form_media_image_delete_form_alter(array &$form, FormS
     Drupal::messenger()
       ->addWarning(t('This asset is in a collection. Removing it is going to change collections for you or other users.'));
   }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_predelete().
+ */
+function media_collection_media_predelete(MediaInterface $media) {
+  $itemStorage = Drupal::entityTypeManager()
+    ->getStorage('media_collection_item');
+  $itemStorage->delete($itemStorage->loadByProperties(['media' => $media->id()]));
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_predelete().
+ */
+function media_collection_media_collection_item_predelete(MediaCollectionItemInterface $item) {
+  /** @var \Drupal\media_collection\Entity\MediaCollectionInterface $parentCollection */
+  $parentCollection = $item->get('parent')->entity;
+
+  if (!$parentCollection) {
+    // @todo: Log, items should always have a parent entity.
+    return;
+  }
+
+  $parentCollection->removeItem($item);
+  // Maybe:
+  // empty($parentCollection->items()) ? $parentCollection->delete() : $parentCollection->save();.
+  $parentCollection->save();
 }

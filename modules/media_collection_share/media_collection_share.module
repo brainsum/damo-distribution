@@ -68,7 +68,7 @@ function media_collection_share_preprocess_media_collection(array &$variables) {
   }
 
   $currentUser = Drupal::currentUser();
-  $shareFormUrl =  Url::fromRoute('media_collection_share.collection.share_form');
+  $shareFormUrl = Url::fromRoute('media_collection_share.collection.share_form');
 
   if ($collection->itemCount() > 0 && $shareFormUrl->access($currentUser)) {
     $variables['additional_collection_data']['render']['links']['share'] = [
@@ -104,10 +104,12 @@ function media_collection_share_preprocess_shared_media_collection(array &$varia
 
   $variables['additional_collection_data']['data']['icons'] = [
     'regular' => [
-      'uri' => Url::fromUri(file_create_url("$assetsDir/collection-icon.png"))->getUri(),
+      'uri' => Url::fromUri(file_create_url("$assetsDir/collection-icon.png"))
+        ->getUri(),
     ],
     'blue' => [
-      'uri' => Url::fromUri(file_create_url("$assetsDir/collection-icon-blue.png"))->getUri(),
+      'uri' => Url::fromUri(file_create_url("$assetsDir/collection-icon-blue.png"))
+        ->getUri(),
     ],
   ];
 
@@ -136,7 +138,8 @@ function media_collection_share_preprocess_shared_media_collection(array &$varia
    */
   $variables['additional_collection_data']['render']['share_date'] = [
     '#markup' => new TranslatableMarkup('It was shared on %share_date', [
-      '%share_date' => Drupal::service('date.formatter')->format($sharedCollection->getCreatedTime(), 'custom', 'jS M Y'),
+      '%share_date' => Drupal::service('date.formatter')
+        ->format($sharedCollection->getCreatedTime(), 'custom', 'jS M Y'),
     ]),
   ];
   $variables['additional_collection_data']['render']['size_info'] = [
@@ -172,7 +175,8 @@ function media_collection_share_preprocess_shared_media_collection(array &$varia
     '#type' => 'link',
     '#title' => new TranslatableMarkup('Download all'),
     '#url' => Url::fromRoute('media_collection_share.collection.shared.asset_download', [
-      'date' => Drupal::service('date.formatter')->format($sharedCollection->getCreatedTime(), 'custom', 'Y-m-d'),
+      'date' => Drupal::service('date.formatter')
+        ->format($sharedCollection->getCreatedTime(), 'custom', 'Y-m-d'),
       'uuid' => $sharedCollection->uuid(),
     ]),
     '#attributes' => [
@@ -296,7 +300,8 @@ function media_collection_share_media_collection_item_access(MediaCollectionItem
  * @todo: Move to service.
  */
 function _media_collection_share_is_item_shared(MediaCollectionItemInterface $item): bool {
-  return $item->hasField('shared_parent') && !$item->get('shared_parent')->isEmpty();
+  return $item->hasField('shared_parent') && !$item->get('shared_parent')
+      ->isEmpty();
 }
 
 /**
@@ -314,7 +319,8 @@ function _media_collection_share_on_shared_collection_url(MediaCollectionItemInt
   if (
     !$item->hasField('shared_parent')
     || $item->get('shared_parent')->isEmpty()
-    || Drupal::routeMatch()->getRouteName() !== 'media_collection_share.collection.shared'
+    || Drupal::routeMatch()
+      ->getRouteName() !== 'media_collection_share.collection.shared'
   ) {
     return FALSE;
   }
@@ -361,13 +367,31 @@ function media_collection_share_mail($key, &$message, $params) {
  * Implements hook_entity_view_mode_alter().
  */
 function media_collection_share_entity_view_mode_alter(&$view_mode, EntityInterface $entity, $context) {
-//  $request = \Drupal::request();
-//  $route = $request->attributes->get('_route', NULL);
-//
-//  if (
-//    $route === 'media_collection_share.collection.shared'
-//    && $entity->getEntityTypeId() === 'media'
-//  ) {
-//    $view_mode = 'shared_collection_item';
-//  }
+  //  $request = \Drupal::request();
+  //  $route = $request->attributes->get('_route', NULL);
+  //
+  //  if (
+  //    $route === 'media_collection_share.collection.shared'
+  //    && $entity->getEntityTypeId() === 'media'
+  //  ) {
+  //    $view_mode = 'shared_collection_item';
+  //  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_predelete().
+ */
+function media_collection_share_media_collection_item_predelete(MediaCollectionItemInterface $item) {
+  /** @var \Drupal\media_collection_share\Entity\SharedMediaCollectionInterface|null $parentCollection */
+  $parentCollection = $item->get('shared_parent')->entity;
+
+  if (!$parentCollection) {
+    // @todo: Log, items should always have a parent entity.
+    return;
+  }
+
+  $parentCollection->removeItem($item);
+  // Maybe:
+  // empty($parentCollection->items()) ? $parentCollection->delete() : $parentCollection->save();.
+  $parentCollection->save();
 }
