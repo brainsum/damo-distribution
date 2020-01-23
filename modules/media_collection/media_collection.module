@@ -8,12 +8,13 @@
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Url;
+use Drupal\damo\Temporary\ImageStyleLoader;
 use Drupal\media\MediaInterface;
 use Drupal\media_collection\Entity\MediaCollectionItemInterface;
-use Drupal\damo\Temporary\ImageStyleLoader;
 use Drupal\user\UserInterface;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -74,7 +75,7 @@ function media_collection_preprocess_media(array &$variables) {
   $handler = Drupal::service('media_collection.collection_handler');
   // @todo: Maybe load the user from the {user} slug when on the admin page..?
   $inCollection = FALSE;
-  /* @var \Drupal\media_collection\Entity\MediaCollectionItemInterface $currentItem|null */
+  /* @var \Drupal\media_collection\Entity\MediaCollectionItemInterface|null $currentItem */
   $currentItem = NULL;
 
   if ($collection = $handler->loadCollectionForUser($currentUser->id())) {
@@ -163,7 +164,8 @@ function media_collection_preprocess_page(array &$variables) {
   $handler = Drupal::service('media_collection.collection_handler');
 
   // @todo: Maybe load the user from the {user} slug when on the admin page..?
-  if ($collection = $handler->loadCollectionForUser(Drupal::currentUser()->id())) {
+  if ($collection = $handler->loadCollectionForUser(Drupal::currentUser()
+    ->id())) {
     $collectionData['collection_uuid'] = $collection->uuid();
 
     /** @var \Drupal\media_collection\Entity\MediaCollectionItemInterface $item */
@@ -232,10 +234,12 @@ function media_collection_preprocess_media_collection(array &$variables) {
 
   $variables['additional_collection_data']['data']['icons'] = [
     'regular' => [
-      'uri' => Url::fromUri(file_create_url("$assetsDir/collection-icon.png"))->getUri(),
+      'uri' => Url::fromUri(file_create_url("$assetsDir/collection-icon.png"))
+        ->getUri(),
     ],
     'blue' => [
-      'uri' => Url::fromUri(file_create_url("$assetsDir/collection-icon-blue.png"))->getUri(),
+      'uri' => Url::fromUri(file_create_url("$assetsDir/collection-icon-blue.png"))
+        ->getUri(),
     ],
   ];
 
@@ -462,7 +466,8 @@ function media_collection_media_view_alter(array &$build, MediaInterface $media,
         '#type' => 'html_tag',
         '#tag' => 'img',
         '#attributes' => [
-          'src' => Url::fromUri(file_create_url("{$modulePath}/assets/plus-icon.svg"))->getUri(),
+          'src' => Url::fromUri(file_create_url("{$modulePath}/assets/plus-icon.svg"))
+            ->getUri(),
           'class' => [
             'plus',
           ],
@@ -525,5 +530,29 @@ function media_collection_preprocess_page_title(array &$variables) {
   ], TRUE)
   ) {
     $variables['title'] = '';
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function media_collection_form_media_image_delete_form_alter(array &$form, FormStateInterface $form_state, $form_id) {
+  /** @var \Drupal\Core\Entity\ContentEntityDeleteForm $formObject */
+  $formObject = $form_state->getFormObject();
+  /** @var \Drupal\media\MediaInterface $media */
+  $media = $formObject->getEntity();
+
+  $itemStorage = Drupal::entityTypeManager()
+    ->getStorage('media_collection_item');
+
+  $count = (int) ($itemStorage->getQuery()
+    ->accessCheck(FALSE)
+    ->condition('media', $media->id())
+    ->count()
+    ->execute());
+
+  if ($count > 0) {
+    Drupal::messenger()
+      ->addWarning(t('This asset is in a collection. Removing it is going to change collections for you or other users.'));
   }
 }
