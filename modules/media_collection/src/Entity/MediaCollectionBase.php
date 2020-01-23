@@ -8,6 +8,7 @@ use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\user\EntityOwnerTrait;
+use function count;
 
 /**
  * Class MediaCollectionBase.
@@ -50,6 +51,7 @@ abstract class MediaCollectionBase extends ContentEntityBase implements MediaCol
     $items = [];
 
     foreach ($this->itemsField() as $field) {
+      /** @var \Drupal\Core\Field\Plugin\Field\FieldType\EntityReferenceItem $field */
       /** @var \Drupal\media_collection\Entity\MediaCollectionItemInterface|null $item */
       if ($item = $field->entity) {
         $items[] = $item;
@@ -63,7 +65,8 @@ abstract class MediaCollectionBase extends ContentEntityBase implements MediaCol
    * {@inheritdoc}
    */
   public function itemCount(): int {
-    return $this->itemsField()->count();
+    // @todo: Debug why "$this->itemsField()->count()" doesn't return the actual count.
+    return count($this->items());
   }
 
   /**
