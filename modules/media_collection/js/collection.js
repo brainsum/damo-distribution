@@ -7,6 +7,9 @@
   'use strict';
   Drupal.behaviors.media_collection = {
     attach: function (context, settings) {
+
+      var removeIdentifier, removeIdentifierClass, checkbox = $('#watermark');
+
       $(document).ready(function () {
         if (document.colectionLoaded) {
           return;
@@ -66,13 +69,21 @@
 
             changeToAdded($(that));
             $(".image-controls .active").addClass("in-collection");
+            var identifier = $(".image-controls .active").attr('identifier');
+            if (!checkbox.is(':checked')) {
+              $(".image-controls .active").addClass('no-badge');
+            }
             $(that).attr("data-collection-item-uuid", res.data.id);
-            changeCollectionHeader(parseInt($(".collection-item-number").text()) + 1)
-          })
+            changeCollectionHeader(parseInt($(".collection-item-number").text()) + 1);
+          });
         });
 
         $(document).on("click", ".button--remove-style-from-collection", function () {
           var identifier = $(this).parent().attr("identifier");
+          if ($(this).parent().hasClass('no-badge')) {
+            identifier = identifier + '-no-badge';
+            $(this).parent().removeClass('no-badge');
+          }
           var that = this;
           changeCollectionHeader(parseInt($(".collection-item-number").text()) - 1);
 
@@ -83,7 +94,7 @@
           var topControls = $(".top-controls .active:last span");
 
           if (topControls.attr("data-style-uuid") === undefined) {
-            styleUuid = settings.media_collection.default_image_style_uuid
+            styleUuid = settings.media_collection.default_image_style_uuid;
           }
           else {
             styleUuid = topControls.attr("data-style-uuid")
@@ -99,8 +110,8 @@
           removeFromCollection(collectionItemUUID, token).done(function (res) {
             changeToAdd($(".top-controls [identifier='" + identifier + "']:eq(1) span"));
             $(".top-controls .active:eq(1) span").removeClass("in-collection").removeClass("disabled");
-            $(that).parents(".link").removeClass("in-collection")
-          })
+            $(that).parents(".link").removeClass("in-collection");
+          });
         });
 
         $(document).on("click", ".button--remove-in-collection", function () {
@@ -114,7 +125,7 @@
         function changeToAdded(tag) {
 
           tag = tag.removeClass("button--add-to-collection")
-          .addClass("in-collection")
+          // .addClass("in-collection")
           .attr("title", "Already added to your collection");
 
           if (!tag.find("img").hasClass("plus")) {
@@ -137,7 +148,10 @@
               button.addClass("in-collection").addClass("disabled");
               var identifier = button.parent().attr("identifier");
 
-              $(".image-controls div[identifier='" + identifier + "']").addClass("in-collection");
+              // $(".image-controls div[identifier='" + identifier + "']").addClass("in-collection");
+              if (identifier.indexOf('no-badge') > 0) {
+                $(".image-controls div[identifier='" + identifier + "']").addClass('no-badge');
+              }
             }
           })
         }
@@ -230,7 +244,34 @@
           }
         });
 
+        function showRemoveLink() {
+          $('.image-controls').find('.link').removeClass('in-collection');
+          $('.top-controls').find('.link').each(function(index, item) {
+            $(item).find('span').each(function(key, value) {
+              if ($(value).hasClass('in-collection')) {
+                removeIdentifier = $(value).closest('div').attr('identifier');
+                if (!checkbox.is(':checked')) {
+                  if (removeIdentifier.indexOf('no-badge') > 0) {
+                    $('.image-controls .link').removeClass('in-collection');
+                    removeIdentifierClass = removeIdentifier.replace('-no-badge', '');
+                    $('.image-controls .link[identifier="' + removeIdentifierClass + '"]').addClass('in-collection');
+                    $('.image-controls .link[identifier="' + removeIdentifierClass + '"]').addClass('no-badge');
+                  }
+                }
+                else {
+                  $('.image-controls .link[identifier="' + removeIdentifier + '"]').addClass('in-collection');
+                  $('.image-controls .link[identifier="' + removeIdentifier + '"]').removeClass('no-badge');
+                }
+              }
+            });
+          });
+        }
+        showRemoveLink();
+        checkbox.on('change', function(){
+          showRemoveLink();
+        });
       });
+
     }
   };
 
