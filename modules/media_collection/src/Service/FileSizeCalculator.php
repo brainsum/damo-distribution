@@ -121,11 +121,7 @@ final class FileSizeCalculator {
    *   The size in bytes or NULL.
    */
   public function fileSize(FileInterface $file): ?int {
-    if ($file && ($fileUri = $file->getFileUri())) {
-      return $this->fileSizeByPath($fileUri);
-    }
-
-    return NULL;
+    return $file ? $this->fileSizeByPath($file->getFileUri()) : NULL;
   }
 
   /**
@@ -250,13 +246,7 @@ final class FileSizeCalculator {
           continue;
         }
 
-        $filePath = $this->fileSystem->realpath($file->getFileUri());
-
-        if ($filePath === FALSE) {
-          continue;
-        }
-
-        $size += $this->fileSizeByPath($filePath);
+        $size += $this->fileSizeByPath($file->getFileUri());
       }
     }
 
@@ -275,7 +265,21 @@ final class FileSizeCalculator {
    * @todo: Move to damo_assets_download?
    */
   private function fileSizeByPath(string $path): int {
-    $fileSize = (new SplFileInfo($path))->getSize();
+    $realPath = $this->fileSystem->realpath($path);
+
+    if (!$realPath || ($realPath && !file_exists($realPath))) {
+      return 0;
+    }
+
+    $file = new SplFileInfo($realPath);
+
+    if (!$file->isReadable()) {
+      return 0;
+    }
+
+    // Technically, this should be int only, but might return FALSE, too...
+    $fileSize = $file->getSize();
+
     return (is_int($fileSize) && $fileSize > 0) ? $fileSize : 0;
   }
 
