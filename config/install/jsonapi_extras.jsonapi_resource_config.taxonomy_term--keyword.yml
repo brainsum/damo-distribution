@@ -4,7 +4,7 @@ dependencies:
   config:
     - taxonomy.vocabulary.keyword
 id: taxonomy_term--keyword
-disabled: true
+disabled: false
 path: taxonomy_term/keyword
 resourceType: taxonomy_term--keyword
 resourceFields:
@@ -20,6 +20,12 @@ resourceFields:
     enhancer:
       id: ''
     disabled: false
+  revision_id:
+    fieldName: revision_id
+    publicName: revision_id
+    enhancer:
+      id: ''
+    disabled: false
   langcode:
     fieldName: langcode
     publicName: langcode
@@ -29,6 +35,30 @@ resourceFields:
   vid:
     fieldName: vid
     publicName: vid
+    enhancer:
+      id: ''
+    disabled: false
+  revision_created:
+    fieldName: revision_created
+    publicName: revision_created
+    enhancer:
+      id: ''
+    disabled: false
+  revision_user:
+    fieldName: revision_user
+    publicName: revision_user
+    enhancer:
+      id: ''
+    disabled: false
+  revision_log_message:
+    fieldName: revision_log_message
+    publicName: revision_log_message
+    enhancer:
+      id: ''
+    disabled: false
+  status:
+    fieldName: status
+    publicName: status
     enhancer:
       id: ''
     disabled: false
@@ -65,6 +95,18 @@ resourceFields:
   default_langcode:
     fieldName: default_langcode
     publicName: default_langcode
+    enhancer:
+      id: ''
+    disabled: false
+  revision_default:
+    fieldName: revision_default
+    publicName: revision_default
+    enhancer:
+      id: ''
+    disabled: false
+  revision_translation_affected:
+    fieldName: revision_translation_affected
+    publicName: revision_translation_affected
     enhancer:
       id: ''
     disabled: false

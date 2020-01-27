@@ -4,31 +4,13 @@ dependencies:
   module:
     - image
 id: image_style--image_style
-disabled: true
+disabled: false
 path: image_style/image_style
 resourceType: image_style--image_style
 resourceFields:
-  id:
-    fieldName: id
-    publicName: id
-    enhancer:
-      id: ''
-    disabled: false
-  label:
-    fieldName: label
-    publicName: label
-    enhancer:
-      id: ''
-    disabled: false
-  revision:
-    fieldName: revision
-    publicName: revision
-    enhancer:
-      id: ''
-    disabled: false
-  bundle:
-    fieldName: bundle
-    publicName: bundle
+  uuid:
+    fieldName: uuid
+    publicName: uuid
     enhancer:
       id: ''
     disabled: false
@@ -38,15 +20,45 @@ resourceFields:
     enhancer:
       id: ''
     disabled: false
-  default_langcode:
-    fieldName: default_langcode
-    publicName: default_langcode
+  status:
+    fieldName: status
+    publicName: status
     enhancer:
       id: ''
     disabled: false
-  uuid:
-    fieldName: uuid
-    publicName: uuid
+  dependencies:
+    fieldName: dependencies
+    publicName: dependencies
+    enhancer:
+      id: ''
+    disabled: false
+  third_party_settings:
+    fieldName: third_party_settings
+    publicName: third_party_settings
+    enhancer:
+      id: ''
+    disabled: false
+  _core:
+    fieldName: _core
+    publicName: _core
+    enhancer:
+      id: ''
+    disabled: false
+  name:
+    fieldName: name
+    publicName: name
+    enhancer:
+      id: ''
+    disabled: false
+  label:
+    fieldName: label
+    publicName: label
+    enhancer:
+      id: ''
+    disabled: false
+  effects:
+    fieldName: effects
+    publicName: effects
     enhancer:
       id: ''
     disabled: false

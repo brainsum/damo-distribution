@@ -4,7 +4,7 @@ dependencies:
   module:
     - file
 id: file--file
-disabled: true
+disabled: false
 path: file/file
 resourceType: file--file
 resourceFields:

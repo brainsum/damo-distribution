@@ -4,7 +4,7 @@ dependencies:
   config:
     - taxonomy.vocabulary.category
 id: taxonomy_term--category
-disabled: true
+disabled: false
 path: taxonomy_term/category
 resourceType: taxonomy_term--category
 resourceFields:
