@@ -6,6 +6,5 @@ label: 'Anonymous user'
 weight: 0
 is_admin: false
 permissions:
-  - 'view media'
   - 'view shared media collection entities'
   - 'view shared media collection item entities'

@@ -2,18 +2,18 @@ langcode: en
 status: true
 dependencies:
   module:
-    - file
-id: file--file
+    - media_collection_share
+id: shared_media_collection--shared_media_collection
 disabled: true
-path: file/file
-resourceType: file--file
+path: shared_media_collection/shared_media_collection
+resourceType: shared_media_collection--shared_media_collection
 resourceFields:
-  fid:
-    disabled: true
-    fieldName: fid
-    publicName: fid
+  id:
+    fieldName: id
+    publicName: id
     enhancer:
       id: ''
+    disabled: false
   uuid:
     fieldName: uuid
     publicName: uuid
@@ -21,44 +21,14 @@ resourceFields:
       id: ''
     disabled: false
   langcode:
-    disabled: true
     fieldName: langcode
     publicName: langcode
     enhancer:
       id: ''
+    disabled: false
   uid:
-    disabled: true
     fieldName: uid
     publicName: uid
-    enhancer:
-      id: ''
-  filename:
-    fieldName: filename
-    publicName: filename
-    enhancer:
-      id: ''
-    disabled: false
-  uri:
-    fieldName: uri
-    publicName: uri
-    enhancer:
-      id: ''
-    disabled: false
-  filemime:
-    fieldName: filemime
-    publicName: filemime
-    enhancer:
-      id: ''
-    disabled: false
-  filesize:
-    fieldName: filesize
-    publicName: filesize
-    enhancer:
-      id: ''
-    disabled: false
-  status:
-    fieldName: status
-    publicName: status
     enhancer:
       id: ''
     disabled: false
@@ -68,9 +38,33 @@ resourceFields:
     enhancer:
       id: ''
     disabled: false
-  changed:
-    fieldName: changed
-    publicName: changed
+  items:
+    fieldName: items
+    publicName: items
+    enhancer:
+      id: ''
+    disabled: false
+  url:
+    fieldName: url
+    publicName: url
+    enhancer:
+      id: ''
+    disabled: false
+  emails:
+    fieldName: emails
+    publicName: emails
+    enhancer:
+      id: ''
+    disabled: false
+  assets_archive:
+    fieldName: assets_archive
+    publicName: assets_archive
+    enhancer:
+      id: ''
+    disabled: false
+  default_langcode:
+    fieldName: default_langcode
+    publicName: default_langcode
     enhancer:
       id: ''
     disabled: false

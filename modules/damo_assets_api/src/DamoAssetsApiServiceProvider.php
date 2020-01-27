@@ -4,11 +4,12 @@ namespace Drupal\damo_assets_api;
 
 use Drupal\Core\DependencyInjection\ContainerBuilder;
 use Drupal\Core\DependencyInjection\ServiceProviderBase;
+use Drupal\damo_assets_api\Authentication\Provider\BasicAuthWithExclude;
 
 /**
  * Service alter.
  */
-class AuthenticationServiceProvider extends ServiceProviderBase {
+class DamoAssetsApiServiceProvider extends ServiceProviderBase {
 
   /**
    * {@inheritdoc}
