@@ -12,6 +12,7 @@ use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Url;
+use Drupal\media\MediaInterface;
 use Drupal\media_collection\Entity\MediaCollectionItemInterface;
 use Drupal\media_collection_share\Entity\SharedMediaCollectionInterface;
 use Drupal\media_collection_share\Service\CollectionMailer;
@@ -394,4 +395,47 @@ function media_collection_share_media_collection_item_predelete(MediaCollectionI
   // Maybe:
   // empty($parentCollection->items()) ? $parentCollection->delete() : $parentCollection->save();.
   $parentCollection->save();
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_access().
+ */
+function media_collection_share_media_access(MediaInterface $media, $operation, AccountInterface $account) {
+  // Only allow view op for media on the share page when the media belongs
+  // to that shared collection.
+  $routeMatch = Drupal::routeMatch();
+
+  if ($operation !== 'view' || $routeMatch->getRouteName() !== 'media_collection_share.collection.shared') {
+    return AccessResult::neutral();
+  }
+
+  $currentUuid = $routeMatch->getParameter('uuid');
+
+  if (!$currentUuid) {
+    return AccessResult::neutral();
+  }
+
+  $entityTypeManager = Drupal::entityTypeManager();
+  $sharedStorage = $entityTypeManager->getStorage('shared_media_collection');
+  $sharedCollections = $sharedStorage->loadByProperties(['uuid' => $currentUuid]);
+  /** @var \Drupal\media_collection_share\Entity\SharedMediaCollectionInterface $sharedCollection */
+  $sharedCollection = reset($sharedCollections);
+
+  if ($sharedCollection === NULL) {
+    return AccessResult::neutral();
+  }
+
+  $mediaId = $media->id();
+  $items = array_filter(
+    $sharedCollection->items(),
+    static function (MediaCollectionItemInterface $item) use ($mediaId) {
+      return $item->media()->id() === $mediaId;
+    }
+  );
+
+  if (empty($items)) {
+    return AccessResult::neutral();
+  }
+
+  return AccessResult::allowedIfHasPermission($account, 'view shared media collection item entities');
 }
