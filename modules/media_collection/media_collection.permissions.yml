@@ -11,8 +11,9 @@ delete own media collection entities:
 edit own media collection entities:
   title: 'Edit own Media collection entities'
 
+# @todo: Move to "share" module.
 view shared media collection entities:
-  title: 'View any shared media items in their respective shared collections'
+  title: 'View any shared media collection'
 
 view any media collection entities:
   title: 'View Any Media collection entities'
