@@ -10,6 +10,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Markup;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Url;
+use Drupal\media\MediaForm;
 use Drupal\media\MediaInterface;
 use Drupal\views\ViewExecutable;
 use Symfony\Component\HttpFoundation\Request;
@@ -465,4 +466,20 @@ function damo_assets_menu_local_actions_alter(array &$actions) {
  */
 function damo_assets_menu_links_discovered_alter(array &$links) {
   unset($links['media_upload.bulk_media_upload_list']);
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function damo_assets_form_alter(array &$form, FormStateInterface $form_state, $form_id) {
+  /** @var \Drupal\media\MediaForm $formObject */
+  $formObject = $form_state->getFormObject();
+
+  if (
+    isset($form['revision_information'])
+    && get_class($formObject) === MediaForm::class
+    && $formObject->getOperation() === 'add'
+  ) {
+    $form['revision_information']['#open'] = FALSE;
+  }
 }
