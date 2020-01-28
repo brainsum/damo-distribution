@@ -307,6 +307,7 @@ function _damo_assets_order_bundles(array &$bundles) {
  */
 function _damo_assets_assets_type_ordering(): array {
   return [
+    'audio' => -10,
     'image' => 0,
     'video' => 10,
     'video_file' => 10,
@@ -341,7 +342,7 @@ function damo_assets_preprocess_media(array &$variables) {
       && !$customThumbField->isEmpty()
       && !$thumbField->isEmpty()
       && ($thumbFile = $media->get('thumbnail')->entity)
-      && strpos($thumbFile->getFileUri(), 'media-icons/generic/video.png') !== FALSE
+      && strpos($thumbFile->getFileUri(), 'media-icons/generic') !== FALSE
     ) {
       $variables['content']['thumbnail'] = $variables['content']['field_custom_thumbnail'];
       unset($variables['content']['field_custom_thumbnail']);

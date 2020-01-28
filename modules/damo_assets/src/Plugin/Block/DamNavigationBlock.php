@@ -120,9 +120,16 @@ class DamNavigationBlock extends BlockBase implements ContainerFactoryPluginInte
    *
    * @return array
    *   The data.
+   *
+   * @todo: Merge with _damo_assets_assets_type_ordering().
    */
   protected function getTypeMapping(): array {
     $mapping = [
+      'audio' => [
+        'type' => 'audio',
+        'title' => $this->t('Audio'),
+        'route_param' => ['audio'],
+      ],
       'image' => [
         'type' => 'image',
         'title' => $this->t('Images'),

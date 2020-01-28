@@ -106,6 +106,7 @@ display:
         options:
           view_modes:
             'entity:media':
+              audio: media_library
               guideline: media_library
               icon: media_library
               image: media_library
