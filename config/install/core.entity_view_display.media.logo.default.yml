@@ -3,11 +3,12 @@ status: true
 dependencies:
   config:
     - field.field.media.logo.field_custom_thumbnail
-    - field.field.media.logo.field_file
+    - field.field.media.logo.field_files
     - field.field.media.logo.field_keywords
     - field.field.media.logo.field_logo_description
     - media.type.logo
   module:
+    - file
     - text
 id: media.logo.default
 targetEntityType: media
@@ -40,7 +41,7 @@ content:
 hidden:
   created: true
   field_custom_thumbnail: true
-  field_file: true
+  field_files: true
   langcode: true
   search_api_excerpt: true
   thumbnail: true

@@ -2,18 +2,18 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.media.field_file
+    - field.storage.media.field_files
     - media.type.logo
   module:
     - file
-id: media.logo.field_file
-field_name: field_file
+id: media.logo.field_files
+field_name: field_files
 entity_type: media
 bundle: logo
-label: File
+label: Files
 description: ''
 required: true
-translatable: false
+translatable: true
 default_value: {  }
 default_value_callback: ''
 settings:

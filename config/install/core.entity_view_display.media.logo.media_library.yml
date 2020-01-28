@@ -4,7 +4,7 @@ dependencies:
   config:
     - core.entity_view_mode.media.media_library
     - field.field.media.logo.field_custom_thumbnail
-    - field.field.media.logo.field_file
+    - field.field.media.logo.field_files
     - field.field.media.logo.field_keywords
     - field.field.media.logo.field_logo_description
     - image.style.gallery_item
@@ -44,7 +44,7 @@ content:
 hidden:
   created: true
   field_custom_thumbnail: true
-  field_file: true
+  field_files: true
   field_logo_description: true
   langcode: true
   search_api_excerpt: true

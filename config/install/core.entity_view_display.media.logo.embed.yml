@@ -4,7 +4,7 @@ dependencies:
   config:
     - core.entity_view_mode.media.embed
     - field.field.media.logo.field_custom_thumbnail
-    - field.field.media.logo.field_file
+    - field.field.media.logo.field_files
     - field.field.media.logo.field_keywords
     - field.field.media.logo.field_logo_description
     - media.type.logo
@@ -15,7 +15,7 @@ targetEntityType: media
 bundle: logo
 mode: embed
 content:
-  field_file:
+  field_files:
     type: file_default
     weight: 3
     label: visually_hidden

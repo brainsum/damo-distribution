@@ -3,7 +3,7 @@ status: true
 dependencies:
   config:
     - field.field.media.logo.field_custom_thumbnail
-    - field.field.media.logo.field_file
+    - field.field.media.logo.field_files
     - field.field.media.logo.field_keywords
     - field.field.media.logo.field_logo_description
     - image.style.thumbnail
@@ -29,7 +29,7 @@ content:
     third_party_settings: {  }
     type: image_focal_point
     region: content
-  field_file:
+  field_files:
     weight: 1
     settings:
       progress_indicator: throbber
