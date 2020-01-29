@@ -308,10 +308,10 @@ function _damo_assets_order_bundles(array &$bundles) {
  */
 function _damo_assets_assets_type_ordering(): array {
   return [
-    'audio' => -10,
     'image' => 0,
     'video' => 10,
     'video_file' => 10,
+    'audio' => 20,
     'template' => 30,
     'logo' => 40,
     'guideline' => 50,
