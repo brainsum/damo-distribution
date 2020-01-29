@@ -60,14 +60,16 @@ class AssetFileHandler {
         continue;
       }
 
-      /** @var \Drupal\file\FileInterface|null $file */
-      $file = $media->get($fieldName)->entity;
+      foreach ($media->get($fieldName) as $item) {
+        /** @var \Drupal\file\FileInterface|null $file */
+        $file = $item->entity;
 
-      if ($file === NULL) {
-        continue;
+        if ($file === NULL) {
+          continue;
+        }
+
+        $files[] = $file;
       }
-
-      $files[] = $file;
     }
 
     return $files;
