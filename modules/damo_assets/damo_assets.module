@@ -356,19 +356,21 @@ function damo_assets_preprocess_media(array &$variables) {
  */
 function damo_assets_media_view_alter(array &$build, MediaInterface $media, EntityViewDisplayInterface $display) {
   // @todo: Find a better way.
+  $bundle = $media->bundle();
   // Image is handled entirely differently.
-  if ($build['#view_mode'] !== 'full' || $media->bundle() === 'image') {
+  if ($build['#view_mode'] !== 'full' || $bundle === 'image') {
     return;
   }
 
-  $videoBundles = [
+  $specialBundles = [
+    'audio',
     'video',
     'video_file',
   ];
 
   $build['asset_preview'] = [];
 
-  if (!in_array($media->bundle(), $videoBundles, TRUE)) {
+  if (!in_array($bundle, $specialBundles, TRUE)) {
     // @todo: Get this from the default view, don't hardcode.
     $displayOptions = [
       'type' => 'image',
@@ -389,7 +391,7 @@ function damo_assets_media_view_alter(array &$build, MediaInterface $media, Enti
       $build['asset_preview'] = $preview;
     }
   }
-  elseif ($media->bundle() === 'video') {
+  elseif ($bundle === 'video') {
     // @todo: Get this from the default view, don't hardcode.
     $displayOptions = [
       'type' => 'video_embed_field_video',
@@ -409,7 +411,7 @@ function damo_assets_media_view_alter(array &$build, MediaInterface $media, Enti
       $build['asset_preview'] = $preview;
     }
   }
-  elseif ($media->bundle() === 'video_file') {
+  elseif ($bundle === 'video_file') {
     // @todo: Get this from the default view, don't hardcode.
     $displayOptions = [
       'type' => 'video_player_html5',
@@ -424,6 +426,26 @@ function damo_assets_media_view_alter(array &$build, MediaInterface $media, Enti
     ];
 
     if ($preview = _damo_assets_generate_field_view($media, 'field_video_file', $displayOptions)) {
+      $build['asset_preview'] = $preview;
+    }
+  }
+  elseif ($bundle === 'audio') {
+    // @todo: Get this from the default view, don't hardcode.
+    $displayOptions = [
+      'type' => 'file_audio',
+      'weight' => '1',
+      'label' => 'hidden',
+      'settings' => [
+        'controls' => TRUE,
+        'multiple_file_display_type' => 'tags',
+        'autoplay' => FALSE,
+        'loop' => FALSE,
+      ],
+      'third_party_settings' => [],
+      'region' => 'content',
+    ];
+
+    if ($preview = _damo_assets_generate_field_view($media, 'field_file', $displayOptions)) {
       $build['asset_preview'] = $preview;
     }
   }
