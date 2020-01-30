@@ -1,0 +1,25 @@
+<?php
+
+/**
+ * @file
+ * Install and update routines.
+ */
+
+use Drupal\damo_assets_thumbnails\Service\VideoThumbnail;
+
+/**
+ * Implements hook_install().
+ */
+function damo_assets_thumbnails_install() {
+  /** @var \Drupal\Core\File\FileSystemInterface $fileSystem */
+  $fileSystem = Drupal::service('file_system');
+  $thumbnailsDirectory = VideoThumbnail::BASE_FOLDER;
+
+  if (
+    !is_dir($thumbnailsDirectory)
+    && !$fileSystem->mkdir($thumbnailsDirectory, 0777, TRUE)
+    && !is_dir($thumbnailsDirectory)
+  ) {
+    throw new RuntimeException("The '{$thumbnailsDirectory}' directory could not be created.");
+  }
+}
