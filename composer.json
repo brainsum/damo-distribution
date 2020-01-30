@@ -58,6 +58,7 @@
         "drupal/maxlength": "^1.0",
         "drupal/media_entity_imagemagick": "^3.0",
         "drupal/media_entity_video": "^2.0",
+        "drupal/php_ffmpeg": "^1.0",
         "drupal/r4032login": "^1.1",
         "drupal/redirect_after_login": "^2.5",
         "drupal/search_api": "^1.15",
@@ -86,6 +87,11 @@
             },
             "drupal/media_entity_video": {
                 "Core media compatibility issues": "https://www.drupal.org/files/issues/2020-01-05/media_entity_video-2930974-8.patch"
+            },
+            "patches": {
+                "drupal/php_ffmpeg": {
+                    "Fix for preg_match": "https://www.drupal.org/files/issues/2019-05-31/cache_needs_to_return_string-2851222-7.patch"
+                }
             }
         },
         "drupal-scaffold": {

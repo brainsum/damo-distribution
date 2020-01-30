@@ -1,0 +1,8 @@
+services:
+  damo_assets_thumbnails.video_thumbnail:
+    class: Drupal\damo_assets_thumbnails\Service\VideoThumbnail
+    arguments:
+      - '@php_ffmpeg'
+      - '@file_system'
+      - '@entity_type.manager'
+      - '@current_user'

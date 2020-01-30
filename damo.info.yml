@@ -27,6 +27,12 @@ install:
   - maillog:maillog
   - search_api:search_api
   - search_api:search_api_db
+  # DAMo
+  - damo:damo_assets_statistics
+  - damo:damo_assets_thumbnails
+  - damo:damo_image_media_styles_preview
+  - damo:media_collection
+  - damo:media_collection_share
 
 # Hard dependencies.
 dependencies:
@@ -36,10 +42,6 @@ dependencies:
   - damo:damo_assets_download
   - damo:damo_assets_library
   - damo:damo_assets_lister
-  - damo:damo_assets_statistics
-  - damo:damo_image_media_styles_preview
-  - damo:media_collection
-  - damo:media_collection_share
   # Core.
   - drupal:basic_auth
   - drupal:block
