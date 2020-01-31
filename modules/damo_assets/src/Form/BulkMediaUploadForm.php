@@ -127,7 +127,7 @@ class BulkMediaUploadForm extends ContribForm {
         '#title' => $this->t('Image alt text'),
         '#size' => 60,
         '#maxlength' => 128,
-        '#required' => TRUE,
+        '#required' => FALSE,
       ];
     }
 
