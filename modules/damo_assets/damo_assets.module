@@ -162,13 +162,25 @@ function damo_assets_preprocess_html(array &$variables) {
 /**
  * Implements hook_ENTITY_TYPE_presave().
  */
-function damo_assets_media_presave(MediaInterface $entity) {
+function damo_assets_media_presave(MediaInterface $media) {
   /** @var \Drupal\Core\Session\AccountProxyInterface $currentUser */
   $currentUser = Drupal::currentUser();
-  $owner = ($entity->getOwner()->id() === $currentUser->id()) ? 'own' : 'any';
+  $owner = ($media->getOwner()->id() === $currentUser->id()) ? 'own' : 'any';
 
   if (!$currentUser->hasPermission("publish $owner media")) {
-    $entity->setPublished(FALSE);
+    $media->setPublished(FALSE);
+  }
+
+  // If the user doesn't add an alt text for the image,
+  // autofill from asset name.
+  if ($media->bundle() === 'image') {
+    /** @var \Drupal\image\Plugin\Field\FieldType\ImageItem $item */
+    foreach ($media->get('field_image') as $index => $item) {
+      /** @var \Drupal\Core\TypedData\Plugin\DataType\StringData $altVal */
+      if (empty(trim($item->get('alt')->getString()))) {
+        $item->set('alt', $media->getName());
+      }
+    }
   }
 }
 
