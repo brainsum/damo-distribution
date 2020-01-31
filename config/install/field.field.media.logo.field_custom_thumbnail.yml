@@ -12,7 +12,7 @@ entity_type: media
 bundle: logo
 label: 'Custom thumbnail'
 description: 'If added, this image is going to be used as the thumbnail of this entity. Note, that after creating the logo you won''t be able the change the thumbnail.'
-required: false
+required: true
 translatable: false
 default_value: {  }
 default_value_callback: ''
