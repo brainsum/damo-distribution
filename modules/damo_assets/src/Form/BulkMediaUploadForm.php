@@ -122,12 +122,12 @@ class BulkMediaUploadForm extends ContribForm {
         '#required' => TRUE,
       ];
 
-      $form['image_alt_text'] = [
+      $form['asset_name'] = [
         '#type' => 'textfield',
-        '#title' => $this->t('Image alt text'),
+        '#title' => $this->t('Name'),
         '#size' => 60,
         '#maxlength' => 128,
-        '#required' => FALSE,
+        '#required' => TRUE,
       ];
     }
 
@@ -222,8 +222,7 @@ class BulkMediaUploadForm extends ContribForm {
         $mediaValues['field_category'] = $values['category'];
         $mediaValues['field_keywords'] = $values['keywords'];
         if ($typeId === 'image') {
-          $fileTargetField = $this->getTargetFieldName($typeId);
-          $mediaValues[$fileTargetField]['alt'] = $values['image_alt_text'];
+          $mediaValues['name'] = $values['asset_name'];
         }
 
         $media = $this->mediaStorage->create($mediaValues);
