@@ -13,12 +13,16 @@ use Drupal\Core\Config\FileStorage;
 function damo_assets_solr_install() {
   /** @var \Drupal\Core\Config\ConfigFactoryInterface $configFactory */
   $configFactory = Drupal::service('config.factory');
+  // Update the asset search view.
   /** @var \Drupal\Core\Config\Config $config */
   $config = $configFactory->getEditable('views.view.asset_search');
-
   $configSource = new FileStorage(drupal_get_path('module', 'damo_assets_solr') . '/config/optional');
   $newConfig = $configSource->read('views.view.asset_search');
   $newConfig['uuid'] = $config->get('uuid');
   $newConfig['_core'] = $config->get('_core');
   $config->setData($newConfig)->save();
+  // Disable the database index.
+  /** @var \Drupal\Core\Config\Config $config */
+  $config = $configFactory->getEditable('search_api.server.local_database_server');
+  $config->set('enabled', FALSE)->save();
 }
