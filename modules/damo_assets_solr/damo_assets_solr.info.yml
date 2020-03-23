@@ -1,0 +1,12 @@
+name: "Media Assets"
+type: module
+description: Media assets functionality
+core: 8.x
+package: 'Digital Assets Management'
+dependencies:
+  - drupal:system (>=8.7)
+  - drupal:views
+  - drupal:user
+  - better_exposed_filters:better_exposed_filters
+  - damo_assets:damo_assets
+  - search_api_solr:search_api_solr

@@ -1,0 +1,24 @@
+<?php
+
+/**
+ * @file
+ * Install file for damo_assets_solr.
+ */
+
+use Drupal\Core\Config\FileStorage;
+
+/**
+ * Implements hook_install().
+ */
+function damo_assets_solr_install() {
+  /** @var \Drupal\Core\Config\ConfigFactoryInterface $configFactory */
+  $configFactory = Drupal::service('config.factory');
+  /** @var \Drupal\Core\Config\Config $config */
+  $config = $configFactory->getEditable('views.view.asset_search');
+
+  $configSource = new FileStorage(drupal_get_path('module', 'damo_assets_solr') . '/config/optional');
+  $newConfig = $configSource->read('views.view.asset_search');
+  $newConfig['uuid'] = $config->get('uuid');
+  $newConfig['_core'] = $config->get('_core');
+  $config->setData($newConfig)->save();
+}
