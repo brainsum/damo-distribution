@@ -27,5 +27,5 @@ function damo_assets_solr_install() {
   // Disable the database index.
   /** @var \Drupal\Core\Config\Config $config */
   $config = $configFactory->getEditable('search_api.server.local_database_server');
-  $config->set('enabled', FALSE)->save();
+  $config->set('status', FALSE)->save();
 }
