@@ -5,6 +5,7 @@
  * Install file for damo_assets_solr.
  */
 
+use Drupal\Component\Utility\Crypt;
 use Drupal\Core\Config\FileStorage;
 
 /**
@@ -14,13 +15,15 @@ function damo_assets_solr_install() {
   /** @var \Drupal\Core\Config\ConfigFactoryInterface $configFactory */
   $configFactory = Drupal::service('config.factory');
   // Update the asset search view.
-  /** @var \Drupal\Core\Config\Config $config */
-  $config = $configFactory->getEditable('views.view.asset_search');
   $configSource = new FileStorage(drupal_get_path('module', 'damo_assets_solr') . '/config/optional');
+  /** @var array $newConfig */
   $newConfig = $configSource->read('views.view.asset_search');
-  $newConfig['uuid'] = $config->get('uuid');
-  $newConfig['_core'] = $config->get('_core');
-  $config->setData($newConfig)->save();
+  $newConfig['uuid'] = Drupal::service('uuid')->generate();
+  $newConfig['_core']['default_config_hash'] = Crypt::hashBase64(serialize($newConfig));
+  /** @var \Drupal\Core\Config\StorageInterface $configStorage */
+  $configStorage = Drupal::service('config.storage');
+  $configStorage->delete('views.view.asset_search');
+  $configStorage->write('views.view.asset_search', $newConfig);
   // Disable the database index.
   /** @var \Drupal\Core\Config\Config $config */
   $config = $configFactory->getEditable('search_api.server.local_database_server');
