@@ -67,7 +67,8 @@
         "drupal/term_merge": "^1.0",
         "drupal/userprotect": "^1.1",
         "drupal/video_embed_field": "^2.2",
-        "enyo-drupal/dropzone": "^4.3"
+        "enyo-drupal/dropzone": "^4.3",
+        "symfony/event-dispatcher": "4.3.4 as 3.4.35"
     },
     "extra": {
         "patches": {
