@@ -9,7 +9,6 @@ use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Url;
 use Drupal\damo\Temporary\ImageStyleLoader;
 use Drupal\file\Entity\File;
-use Drupal\image\Plugin\Field\FieldType\ImageItem;
 use Drupal\media\MediaInterface;
 use Drupal\damo_image_media_styles_preview\Form\MediaAssetFilterForm;
 use InvalidArgumentException;
@@ -21,7 +20,6 @@ use function file_create_url;
 use function file_exists;
 use function file_get_contents;
 use function getimagesize;
-use function in_array;
 use function is_array;
 use function render;
 use function str_replace;
@@ -58,13 +56,6 @@ class AssetPreviewListMarkup {
    * @var \Drupal\Core\Image\ImageFactory
    */
   protected $imageFactory;
-
-  /**
-   * Focal point manager.
-   *
-   * @var \Drupal\focal_point\FocalPointManagerInterface
-   */
-  protected $focalPointManager;
 
   /**
    * The current collection, if it exists.
@@ -110,7 +101,6 @@ class AssetPreviewListMarkup {
     $this->formBuilder = Drupal::formBuilder();
     $this->entityTypeManager = Drupal::entityTypeManager();
     $this->imageFactory = Drupal::service('image.factory');
-    $this->focalPointManager = Drupal::service('focal_point.manager');
 
     if (Drupal::moduleHandler()->moduleExists('media_collection')) {
       /** @var \Drupal\media_collection\Service\CollectionHandler $handler */
@@ -154,7 +144,6 @@ class AssetPreviewListMarkup {
    *
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
-   * @throws \Drupal\Core\TypedData\Exception\MissingDataException
    */
   public function render(MediaInterface $media): array {
     /** @var \Drupal\media\MediaInterface $media */
@@ -174,7 +163,6 @@ class AssetPreviewListMarkup {
       $derivativeImages = $this->getTableRows(
         $this->getImageUri($file),
         ImageStyleLoader::loadImageStylesList($this->entityTypeManager),
-        $this->getFocalPointValue($file, $image),
         $media
       );
     }
@@ -238,8 +226,6 @@ class AssetPreviewListMarkup {
    *   The image source url.
    * @param array $styles
    *   Image styles defined in Drupal core.
-   * @param string $focalPoint
-   *   The coordinates for the focal point.
    * @param \Drupal\media\MediaInterface $media
    *   The media entity.
    *
@@ -249,7 +235,7 @@ class AssetPreviewListMarkup {
    * @throws \UnexpectedValueException
    * @throws \InvalidArgumentException
    */
-  protected function getTableRows($imageUri, array $styles, $focalPoint, MediaInterface $media): array {
+  protected function getTableRows($imageUri, array $styles, MediaInterface $media): array {
     // Count platform types.
     $platforms = [];
     foreach ($styles as $key => $style) {
@@ -287,9 +273,7 @@ class AssetPreviewListMarkup {
       }
 
       // Create URL for the thumbnails and buttons.
-      $styleUrl = $style->buildUrl($imageUri);
-      $url = Url::fromUri($styleUrl, [
-        'query' => ['focal_point_preview_value' => $focalPoint],
+      $url = Url::fromUri($style->buildUrl($imageUri), [
         'attributes' => [
           'class' => ['button', 'button--green'],
           'target' => '_blank',
@@ -485,37 +469,6 @@ class AssetPreviewListMarkup {
     }
 
     return $imageLoaded->getSource();
-  }
-
-  /**
-   * Returns the relative crop value used by the focal point preview.
-   *
-   * @param \Drupal\file\Entity\File $file
-   *   The loaded image.
-   * @param \Drupal\image\Plugin\Field\FieldType\ImageItem $image
-   *   The image from the entity.
-   *
-   * @return string
-   *   The focal point value.
-   *
-   * @throws \InvalidArgumentException
-   * @throws \Drupal\Core\TypedData\Exception\MissingDataException
-   */
-  protected function getFocalPointValue(File $file, ImageItem $image): string {
-    // Load the focal point anchors for the file.
-    $pos = $this->focalPointManager
-      ->getCropEntity($file, 'focal_point')
-      ->anchor();
-
-    // Get the relative coordinates.
-    $relativePosition = $this->focalPointManager->absoluteToRelative(
-      $pos['x'],
-      $pos['y'],
-      $image->get('width')->getValue(),
-      $image->get('height')->getValue()
-    );
-
-    return "{$relativePosition['x']}x{$relativePosition['y']}";
   }
 
 }
