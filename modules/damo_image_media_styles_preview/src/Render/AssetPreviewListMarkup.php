@@ -8,9 +8,9 @@ use Drupal\Core\Messenger\MessengerTrait;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Url;
 use Drupal\damo\Temporary\ImageStyleLoader;
+use Drupal\damo_image_media_styles_preview\Form\MediaAssetFilterForm;
 use Drupal\file\Entity\File;
 use Drupal\media\MediaInterface;
-use Drupal\damo_image_media_styles_preview\Form\MediaAssetFilterForm;
 use InvalidArgumentException;
 use function array_shift;
 use function array_values;
@@ -155,7 +155,8 @@ class AssetPreviewListMarkup {
       ->load($image->target_id);
 
     if (NULL === $file) {
-      $this->messenger()->addMessage("The image '{$image->getName()}' is not found.", 'error');
+      $this->messenger()
+        ->addMessage("The image '{$image->getName()}' is not found.", 'error');
       return [];
     }
 
@@ -273,19 +274,12 @@ class AssetPreviewListMarkup {
       }
 
       // Create URL for the thumbnails and buttons.
-      $url = Url::fromUri($style->buildUrl($imageUri), [
-        'attributes' => [
-          'class' => ['button', 'button--green'],
-          'target' => '_blank',
-          'rel' => 'noopener',
-          'download' => '',
-        ],
-      ]);
+      $styleUrl = $style->buildUrl($imageUri);
 
       // Create thumbnail image element.
       $thumbnail = [
         '#theme' => 'image',
-        '#uri' => $url->getUri(),
+        '#uri' => $styleUrl,
         '#height' => 100,
         '#alt' => $this->t('Media asset preview for %label', ['%label' => $styleLabel]),
       ];
@@ -321,14 +315,22 @@ class AssetPreviewListMarkup {
           ],
         ],
       ];
-      $group = explode('-', $identifier)[0];
 
+      $group = explode('-', $identifier)[0];
+      // @todo: This does not work (at least with S3 URLs in chrome).
       $controller[$group][$rowNumber] = [
         'label' => $styleLabel,
         'badge' => $hasBadge,
         'identifier' => $identifier,
         'style' => $styleLabel,
-        'download_link' => Link::fromTextAndUrl($this->t('Download'), $url),
+        'download_link' => Link::fromTextAndUrl($this->t('Download'), Url::fromUri($styleUrl, [
+          'attributes' => [
+            'class' => ['button', 'button--green'],
+            'target' => '_blank',
+            'rel' => 'noopener',
+            'download' => '',
+          ],
+        ])),
       ];
 
       // This is equivalent to a "media_collection is installed" condition.

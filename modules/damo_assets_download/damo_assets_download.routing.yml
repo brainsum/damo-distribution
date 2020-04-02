@@ -1,3 +1,4 @@
+# @todo: Allow downloading styled media.
 damo_assets_download.asset_download:
   path: '/asset-download/{media}'
   defaults:
