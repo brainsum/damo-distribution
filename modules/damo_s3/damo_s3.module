@@ -1,0 +1,34 @@
+<?php
+
+/**
+ * @file
+ * Module file for damo_s3.
+ */
+
+use Drupal\Component\Utility\UrlHelper;
+
+/**
+ * Implements hook_file_url_alter().
+ */
+function damo_s3_file_url_alter(string &$uri) {
+  // Query parameters added after the S3 presign process break these URLs.
+  // We need to remove any extra ones (e.g 'h' from the crop module).
+  // @todo: Programmatically one can inject params into the signing process,
+  // we need to take those into account.
+  if (strpos($uri, 'X-Amz-Content-Sha256') !== FALSE) {
+    $paramWhitelist = [
+      'X-Amz-Content-Sha256',
+      'X-Amz-Algorithm',
+      'X-Amz-Credential',
+      'X-Amz-Date',
+      'X-Amz-SignedHeaders',
+      'X-Amz-Expires',
+      'X-Amz-Signature',
+    ];
+
+    $parsedStyleUrl = UrlHelper::parse($uri);
+    $paramBlacklist = array_diff(array_keys($parsedStyleUrl['query']), $paramWhitelist);
+    $parsedStyleUrl['query'] = UrlHelper::filterQueryParameters($parsedStyleUrl['query'], $paramBlacklist);
+    $uri = $parsedStyleUrl['path'] . '?' . UrlHelper::buildQuery($parsedStyleUrl['query']);
+  }
+}

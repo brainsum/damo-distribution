@@ -1,0 +1,13 @@
+<?php
+
+/**
+ * Install file for damo_s3.
+ */
+
+/**
+ * Implements hook_install().
+ */
+function damo_s3_install() {
+  // Set a heavy weight so our hooks run after every other hook.
+  module_set_weight('damo_s3', 100);
+}
