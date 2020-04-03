@@ -84,7 +84,7 @@ final class FileManager {
    *   The path.
    *
    * @return string
-   *   The stream path, or the original path if no stream was detected.
+   *   The stream path, or the original path if no stream could be found for it.
    */
   private function absolutePathToStream(string $pathName): string {
     foreach (array_keys($this->streamWrapperManager->getWrappers()) as $type) {
@@ -105,6 +105,7 @@ final class FileManager {
       }
     }
 
+    // @todo: What if it's still not a stream path?
     return $pathName;
   }
 

@@ -2,10 +2,13 @@
 
 namespace Drupal\damo_assets_download\Service;
 
+use Drupal\Component\Uuid\UuidInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\damo\Service\DamoFileSystemInterface;
 use Drupal\damo_assets_download\Model\FileArchivingData;
 use RuntimeException;
 use ZipArchive;
+use function file_get_contents;
 
 /**
  * Class AssetArchiver.
@@ -15,30 +18,68 @@ use ZipArchive;
 class AssetArchiver {
 
   /**
+   * The FS.
+   *
+   * @var \Drupal\damo\Service\DamoFileSystemInterface
+   */
+  protected $fileSystem;
+
+  /**
+   * UUID service.
+   *
+   * @var \Drupal\Component\Uuid\UuidInterface
+   */
+  protected $uuid;
+
+  /**
+   * AssetArchiver constructor.
+   *
+   * @param \Drupal\damo\Service\DamoFileSystemInterface $fileSystem
+   *   The fs.
+   * @param \Drupal\Component\Uuid\UuidInterface $uuid
+   *   The uuid service.
+   */
+  public function __construct(
+    DamoFileSystemInterface $fileSystem,
+    UuidInterface $uuid
+  ) {
+    $this->fileSystem = $fileSystem;
+    $this->uuid = $uuid;
+  }
+
+  /**
    * Create an archive from the file data.
    *
-   * @param string $location
-   *   Location of the archive.
    * @param \Drupal\damo_assets_download\Model\FileArchivingData[] $fileData
    *   Array of processed entity data.
+   * @param string $fileName
+   *   (Optional) Filename of the archive (with .zip extension).
+   * @param string|null $directory
+   *   (Optional) Absolute path to the target directory.
    *
    * @return string|null
    *   Location of the archive, or NULL on failure.
    */
-  public function createFileArchive(string $location, array $fileData): ?string {
+  public function createFileArchive(array $fileData, string $fileName = 'archive.zip', ?string $directory = NULL): ?string {
+    if ($directory === NULL) {
+      $directory = 'temporary://demo-archive/' . $this->uuid->generate();
+    }
+
+    if (!$this->fileSystem->safeMkdir($directory)) {
+      // @todo: Throw exception.
+      NULL;
+    }
+
+    $location = $this->fileSystem->realpath($directory . '/' . $fileName);
+
     $archive = $this->addFilesToArchive(
       $this->startArchive($location),
       $fileData
     );
 
-    if ($archive->numFiles <= 0) {
-      $archive->close();
-      return NULL;
-    }
-
+    $fileCount = $archive->numFiles;
     $archive->close();
-
-    return $location;
+    return $fileCount > 0 ? $location : NULL;
   }
 
   /**
@@ -100,7 +141,11 @@ class AssetArchiver {
    */
   private function addFileToArchive(ZipArchive $archive, FileArchivingData $fileData): ZipArchive {
     if ($archive->locateName($fileData->archiveTargetPath) === FALSE) {
-      $archive->addFile($fileData->systemPath, ltrim($fileData->archiveTargetPath, '/'));
+      // Left trim required for windows compatibility.
+      $targetPath = ltrim($fileData->archiveTargetPath, '/');
+      // @todo: Error handling.
+      $archive->addFromString($targetPath, file_get_contents($fileData->systemPath));
+      // $archive->addFile($fileData->systemPath, $targetPath);
     }
 
     return $archive;

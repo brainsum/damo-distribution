@@ -6,11 +6,13 @@ services:
 
   damo_assets_download.asset_file_handler:
     class: Drupal\damo_assets_download\Service\AssetFileHandler
-    arguments:
-      - '@file_system'
+    arguments: {  }
 
   damo_assets_download.asset_archiver:
     class:  Drupal\damo_assets_download\Service\AssetArchiver
+    arguments:
+      - '@damo.file_system'
+      - '@uuid'
 
   damo_assets_download.file_manager:
     class: Drupal\damo_assets_download\Service\FileManager
@@ -24,6 +26,6 @@ services:
       - '@damo_assets_download.asset_file_handler'
       - '@damo_assets_download.asset_archiver'
       - '@damo_assets_download.file_manager'
-      - '@file_system'
+      - '@damo.file_system'
       - '@datetime.time'
       - '@date.formatter'

@@ -4,12 +4,11 @@ namespace Drupal\damo_assets_download\Service;
 
 use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Core\Datetime\DateFormatterInterface;
-use Drupal\Core\File\FileSystemInterface;
+use Drupal\damo\Service\DamoFileSystemInterface;
 use Drupal\file\FileInterface;
 use Drupal\media\MediaInterface;
 use SplFileInfo;
 use function count;
-use function is_dir;
 use function reset;
 
 /**
@@ -20,6 +19,7 @@ use function reset;
 class AssetDownloadHandler {
 
   private $fileHandler;
+
   private $archiver;
 
   private $fileManager;
@@ -27,7 +27,7 @@ class AssetDownloadHandler {
   /**
    * The file system.
    *
-   * @var \Drupal\Core\File\FileSystemInterface
+   * @var \Drupal\damo\Service\DamoFileSystemInterface
    */
   private $fileSystem;
 
@@ -54,7 +54,7 @@ class AssetDownloadHandler {
    *   File archiver.
    * @param \Drupal\damo_assets_download\Service\FileManager $fileManager
    *   File manager.
-   * @param \Drupal\Core\File\FileSystemInterface $fileSystem
+   * @param \Drupal\damo\Service\DamoFileSystemInterface $fileSystem
    *   The file system service.
    * @param \Drupal\Component\Datetime\TimeInterface $time
    *   Time service.
@@ -65,7 +65,7 @@ class AssetDownloadHandler {
     AssetFileHandler $fileHandler,
     AssetArchiver $archiver,
     FileManager $fileManager,
-    FileSystemInterface $fileSystem,
+    DamoFileSystemInterface $fileSystem,
     TimeInterface $time,
     DateFormatterInterface $dateFormatter
   ) {
@@ -98,11 +98,13 @@ class AssetDownloadHandler {
       return reset($fileData)->file;
     }
 
-    $archiveLocation = $this->archiver->createFileArchive($this->archiveTargetPath($media), $fileData);
+    $archiveLocation = $this->archiver->createFileArchive($fileData);
 
     if ($archiveLocation === NULL) {
       return NULL;
     }
+
+    // @todo: Copy to the desired place: $this->archiveTargetPath($media);
 
     return $this->fileManager->createArchiveEntity($media->getOwner(), new SplFileInfo($archiveLocation));
   }
@@ -120,7 +122,7 @@ class AssetDownloadHandler {
     $basePath = $this->fileSystem->realpath('private://');
     $fileDir = "{$basePath}/tmp/media/{$media->bundle()}/{$media->uuid()}";
 
-    if (!$this->mkdir($fileDir)) {
+    if (!$this->fileSystem->safeMkdir($fileDir)) {
       return NULL;
     }
 
@@ -150,28 +152,6 @@ class AssetDownloadHandler {
    */
   private function currentDate(): string {
     return $this->dateFormatter->format($this->time->getCurrentTime(), 'custom', 'Y-m-d');
-  }
-
-  /**
-   * Safely and recursively create a directory.
-   *
-   * @param string $uri
-   *   Directory path or URI.
-   *
-   * @return bool
-   *   TRUE on success, FALSE on error.
-   *
-   * @todo: Move to service.
-   */
-  private function mkdir($uri): bool {
-    $uriInfo = new SplFileInfo($uri);
-    $path = $uri;
-
-    if ($uriInfo->getExtension()) {
-      $path = $uriInfo->getPath();
-    }
-
-    return !(!is_dir($path) && !$this->fileSystem->mkdir($path, NULL, TRUE) && !is_dir($path));
   }
 
 }

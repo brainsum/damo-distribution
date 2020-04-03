@@ -17,7 +17,7 @@ function damo_assets_thumbnails_media_presave(MediaInterface $media) {
     && $media->get('field_custom_thumbnail')->isEmpty()
   ) {
     /** @var \Drupal\damo_assets_thumbnails\Service\VideoThumbnail $service */
-    $service = \Drupal::service('damo_assets_thumbnails.video_thumbnail');
+    $service = Drupal::service('damo_assets_thumbnails.video_thumbnail');
     $thumbnail = $service->generateAssetThumbnail($media);
     $media->set('thumbnail', $thumbnail);
   }

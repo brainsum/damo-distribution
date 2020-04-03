@@ -2,7 +2,6 @@
 
 namespace Drupal\damo_assets_download\Service;
 
-use Drupal\Core\File\FileSystemInterface;
 use Drupal\media\MediaInterface;
 use Drupal\damo_assets_download\Model\FileArchivingData;
 
@@ -12,20 +11,6 @@ use Drupal\damo_assets_download\Model\FileArchivingData;
  * @package Drupal\damo_assets_download\Service
  */
 class AssetFileHandler {
-
-  private $fileSystem;
-
-  /**
-   * AssetFileHandler constructor.
-   *
-   * @param \Drupal\Core\File\FileSystemInterface $fileSystem
-   *   The file system.
-   */
-  public function __construct(
-    FileSystemInterface $fileSystem
-  ) {
-    $this->fileSystem = $fileSystem;
-  }
 
   /**
    * Fields containing downloadable media files.
@@ -88,15 +73,9 @@ class AssetFileHandler {
     $filesData = [];
 
     foreach ($this->mediaFiles($media) as $file) {
-      $filePath = $this->fileSystem->realpath($file->getFileUri());
-
-      if ($filePath === FALSE) {
-        continue;
-      }
-
       $filesData[] = new FileArchivingData([
         'file' => $file,
-        'systemPath' => $filePath,
+        'systemPath' => $file->getFileUri(),
         'archiveTargetPath' => "/{$media->bundle()}/{$file->getFilename()}",
       ]);
     }
