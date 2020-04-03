@@ -5,29 +5,31 @@ namespace Drupal\media_collection\Service\FileHandler;
 use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Core\Datetime\DateFormatterInterface;
 use Drupal\Core\Field\FieldItemListInterface;
-use Drupal\Core\File\FileSystemInterface;
+use Drupal\damo\Service\DamoFileSystemInterface;
+use Drupal\damo_assets_download\Service\AssetArchiver;
+use Drupal\damo_assets_download\Service\FileManager;
 use Drupal\file\FileInterface;
 use Drupal\file\Plugin\Field\FieldType\FileItem;
 use Drupal\media_collection\Entity\MediaCollectionInterface;
 use Drupal\media_collection\Service\EntityProcessor\CollectionProcessor;
-use Drupal\damo_assets_download\Service\FileManager;
-use Drupal\damo_assets_download\Service\AssetArchiver;
+use Drupal\user\UserInterface;
 use SplFileInfo;
+use function is_dir;
 
 /**
  * Class CollectionFileHandler.
  *
- * @package Drupal\media_collection\Service\DownloadHandler
- *
  * @todo: Maybe rename to file handler?
  * @todo: Add real download handler (binary file response factory basically).
+ * @package Drupal\media_collection\Service\DownloadHandler
+ *
  */
 final class CollectionFileHandler {
 
   /**
    * The file system.
    *
-   * @var \Drupal\Core\File\FileSystemInterface
+   * @var \Drupal\damo\Service\DamoFileSystemInterface
    */
   private $fileSystem;
 
@@ -69,7 +71,7 @@ final class CollectionFileHandler {
   /**
    * CollectionFileHandler constructor.
    *
-   * @param \Drupal\Core\File\FileSystemInterface $fileSystem
+   * @param \Drupal\damo\Service\DamoFileSystemInterface $fileSystem
    *   The file system service.
    * @param \Drupal\media_collection\Service\EntityProcessor\CollectionProcessor $collectionProcessor
    *   Processor for collections.
@@ -83,7 +85,7 @@ final class CollectionFileHandler {
    *   File manager service.
    */
   public function __construct(
-    FileSystemInterface $fileSystem,
+    DamoFileSystemInterface $fileSystem,
     CollectionProcessor $collectionProcessor,
     AssetArchiver $archiver,
     TimeInterface $time,
@@ -121,13 +123,9 @@ final class CollectionFileHandler {
       return reset($fileData)->file;
     }
 
-    $archiveLocation = $this->archiver->createFileArchive($this->archiveTargetPath($collection), $fileData);
-
-    if ($archiveLocation === NULL) {
-      return NULL;
-    }
-
-    return $this->fileManager->createArchiveEntity($collection->getOwner(), new SplFileInfo($archiveLocation));
+    $collectionArchivePath = $this->archiveTargetPath($collection);
+    // @todo: Check that $collectionArchivePath exists.
+    return $this->doGenerateArchiveEntity($fileData, $collectionArchivePath, $collection->getOwner());
   }
 
   /**
@@ -140,19 +138,46 @@ final class CollectionFileHandler {
    *   The archive file or NULL on failure.
    */
   public function generateArchiveEntity(MediaCollectionInterface $collection): ?FileInterface {
-    $archiveLocation = $this->archiver->createFileArchive(
+    return $this->doGenerateArchiveEntity(
+      $this->collectionProcessor->process($collection),
       $this->archiveTargetPath($collection),
-      $this->collectionProcessor->process($collection)
+      $collection->getOwner()
     );
+  }
 
-    if ($archiveLocation === NULL) {
+  /**
+   * Generate archive entity.
+   *
+   * @param \Drupal\damo_assets_download\Model\FileArchivingData[] $fileData
+   *   Archival data.
+   * @param string $archiveLocation
+   *   The desired location of the archive.
+   * @param \Drupal\user\UserInterface $owner
+   *   Desired owner of the archive entity.
+   *
+   * @return \Drupal\file\FileInterface|null
+   */
+  public function doGenerateArchiveEntity(array $fileData, string $archiveLocation, UserInterface $owner): ?FileInterface {
+    if (!is_dir($this->fileSystem->dirname($archiveLocation))) {
+      // @todo: Throw exception.
       return NULL;
     }
 
+    $temporaryArchivePath = $this->archiver->createFileArchive($fileData);
+
+    if ($temporaryArchivePath === NULL) {
+      return NULL;
+    }
+
+    // @todo: Double-check that this works with s3.
+    // @todo: Error handling.
+    $this->fileSystem->move($temporaryArchivePath, $archiveLocation);
+
     /* @todo:
-     * Use determineUploadLocation() for saving it to the collection.
+     * Maybe if a "SharedCollectionItem" entity is a added with a storage field
+     * move archive to that?
      */
-    return $this->fileManager->createArchiveEntity($collection->getOwner(), new SplFileInfo($archiveLocation));
+    return $this->fileManager->createArchiveEntity($owner, new SplFileInfo($archiveLocation));
   }
 
   /**
@@ -167,10 +192,9 @@ final class CollectionFileHandler {
    * @see collectionArchivePath
    */
   private function archiveTargetPath(MediaCollectionInterface $collection): ?string {
-    $basePath = $this->fileSystem->realpath('private://');
-    $fileDir = "{$basePath}/tmp/collection/{$collection->uuid()}";
+    $fileDir = $this->determineUploadLocation($collection->get('assets_archive'));
 
-    if (!$this->mkdir($fileDir)) {
+    if (!$this->fileSystem->safeMkdir($fileDir)) {
       return NULL;
     }
 
@@ -199,6 +223,8 @@ final class CollectionFileHandler {
    *
    * @return string
    *   Upload location for the given file field.
+   *
+   * @todo: Move to service?
    */
   private function determineUploadLocation(FieldItemListInterface $field): string {
     return (new FileItem($field->getItemDefinition()))->getUploadLocation();
@@ -214,28 +240,6 @@ final class CollectionFileHandler {
    */
   private function currentDate(): string {
     return $this->dateFormatter->format($this->time->getCurrentTime(), 'custom', 'Y-m-d');
-  }
-
-  /**
-   * Safely and recursively create a directory.
-   *
-   * @param string $uri
-   *   Directory path or URI.
-   *
-   * @return bool
-   *   TRUE on success, FALSE on error.
-   *
-   * @todo: Move to service.
-   */
-  private function mkdir($uri): bool {
-    $uriInfo = new SplFileInfo($uri);
-    $path = $uri;
-
-    if ($uriInfo->getExtension()) {
-      $path = $uriInfo->getPath();
-    }
-
-    return !(!is_dir($path) && !$this->fileSystem->mkdir($path, NULL, TRUE) && !is_dir($path));
   }
 
 }

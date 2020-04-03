@@ -3,7 +3,6 @@
 namespace Drupal\media_collection\Service\EntityProcessor;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\Core\File\FileSystemInterface;
 use Drupal\image\ImageStyleInterface;
 use Drupal\media\MediaInterface;
 use Drupal\damo_assets_download\Model\FileArchivingData;
@@ -14,13 +13,6 @@ use Drupal\damo_assets_download\Model\FileArchivingData;
  * @package Drupal\media_collection\Service\EntityProcessor
  */
 class MediaEntityProcessor {
-
-  /**
-   * The file system.
-   *
-   * @var \Drupal\Core\File\FileSystemInterface
-   */
-  private $fileSystem;
 
   /**
    * The file storage.
@@ -39,8 +31,6 @@ class MediaEntityProcessor {
   /**
    * MediaEntityProcessor constructor.
    *
-   * @param \Drupal\Core\File\FileSystemInterface $fileSystem
-   *   The file system service.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
    *   Entity type manager.
    *
@@ -48,10 +38,8 @@ class MediaEntityProcessor {
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
   public function __construct(
-    FileSystemInterface $fileSystem,
     EntityTypeManagerInterface $entityTypeManager
   ) {
-    $this->fileSystem = $fileSystem;
     $this->mediaTypeStorage = $entityTypeManager->getStorage('media_type');
     $this->fileStorage = $entityTypeManager->getStorage('file');
   }
@@ -93,13 +81,6 @@ class MediaEntityProcessor {
       $filePath = $file->getFileUri();
       $stylePath = $imageStyle->buildUri($filePath);
 
-      $styleRealPath = $this->fileSystem->realpath($stylePath);
-
-      if ($styleRealPath === FALSE) {
-        // @todo: Log.
-        continue;
-      }
-
       if ($imageStyle->createDerivative($filePath, $stylePath) === FALSE) {
         // @todo: Log.
         continue;
@@ -118,7 +99,7 @@ class MediaEntityProcessor {
        */
       $entityData[] = new FileArchivingData([
         'file' => $styleFile,
-        'systemPath' => $styleRealPath,
+        'systemPath' => $stylePath,
         'archiveTargetPath' => "{$archiveDirectory}/{$file->getFilename()}",
       ]);
     }
@@ -168,15 +149,9 @@ class MediaEntityProcessor {
           continue;
         }
 
-        $filePath = $this->fileSystem->realpath($file->getFileUri());
-
-        if ($filePath === FALSE) {
-          continue;
-        }
-
         $entityData[] = new FileArchivingData([
           'file' => $file,
-          'systemPath' => $filePath,
+          'systemPath' => $file->getFileUri(),
           'archiveTargetPath' => "/{$media->bundle()}/{$file->getFilename()}",
         ]);
       }

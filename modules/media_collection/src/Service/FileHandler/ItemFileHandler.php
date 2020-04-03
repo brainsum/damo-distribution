@@ -4,12 +4,15 @@ namespace Drupal\media_collection\Service\FileHandler;
 
 use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Core\Datetime\DateFormatterInterface;
-use Drupal\Core\File\FileSystemInterface;
+use Drupal\Core\Field\FieldItemListInterface;
+use Drupal\damo\Service\DamoFileSystemInterface;
+use Drupal\damo_assets_download\Service\AssetArchiver;
+use Drupal\damo_assets_download\Service\FileManager;
 use Drupal\file\FileInterface;
+use Drupal\file\Plugin\Field\FieldType\FileItem;
 use Drupal\media_collection\Entity\MediaCollectionItemInterface;
 use Drupal\media_collection\Service\EntityProcessor\CollectionItemProcessor;
-use Drupal\damo_assets_download\Service\FileManager;
-use Drupal\damo_assets_download\Service\AssetArchiver;
+use Drupal\user\UserInterface;
 use SplFileInfo;
 use function count;
 use function reset;
@@ -24,7 +27,7 @@ final class ItemFileHandler {
   /**
    * The file system.
    *
-   * @var \Drupal\Core\File\FileSystemInterface
+   * @var \Drupal\damo\Service\DamoFileSystemInterface
    */
   private $fileSystem;
 
@@ -66,7 +69,7 @@ final class ItemFileHandler {
   /**
    * ItemFileHandler constructor.
    *
-   * @param \Drupal\Core\File\FileSystemInterface $fileSystem
+   * @param \Drupal\damo\Service\DamoFileSystemInterface $fileSystem
    *   The file system service.
    * @param \Drupal\media_collection\Service\EntityProcessor\CollectionItemProcessor $itemProcessor
    *   Processor for collection items.
@@ -80,7 +83,7 @@ final class ItemFileHandler {
    *   File manager service.
    */
   public function __construct(
-    FileSystemInterface $fileSystem,
+    DamoFileSystemInterface $fileSystem,
     CollectionItemProcessor $itemProcessor,
     AssetArchiver $archiver,
     TimeInterface $time,
@@ -117,13 +120,7 @@ final class ItemFileHandler {
       return reset($fileData)->file;
     }
 
-    $archiveLocation = $this->archiver->createFileArchive($this->archiveTargetPath($item), $fileData);
-
-    if ($archiveLocation === NULL) {
-      return NULL;
-    }
-
-    return $this->fileManager->createArchiveEntity($item->getOwner(), new SplFileInfo($archiveLocation));
+    return $this->doGenerateArchiveEntity($fileData, $this->archiveTargetPath($item), $item->getOwner());
   }
 
   /**
@@ -136,20 +133,42 @@ final class ItemFileHandler {
    *   The archive file or NULL on failure.
    */
   public function generateArchiveEntity(MediaCollectionItemInterface $item): ?FileInterface {
-    $archiveLocation = $this->archiver->createFileArchive(
+    return $this->doGenerateArchiveEntity(
+      $this->itemProcessor->process($item),
       $this->archiveTargetPath($item),
-      $this->itemProcessor->process($item)
+      $item->getOwner()
     );
+  }
 
-    if ($archiveLocation === NULL) {
+  /**
+   * Generate archive entity.
+   *
+   * @param \Drupal\damo_assets_download\Model\FileArchivingData[] $fileData
+   *   Archival data.
+   * @param string $archiveLocation
+   *   The desired location of the archive.
+   * @param \Drupal\user\UserInterface $owner
+   *   Desired owner of the archive entity.
+   *
+   * @return \Drupal\file\FileInterface|null
+   */
+  public function doGenerateArchiveEntity(array $fileData, string $archiveLocation, UserInterface $owner): ?FileInterface {
+    if (!is_dir($this->fileSystem->dirname($archiveLocation))) {
+      // @todo: Throw exception.
       return NULL;
     }
 
-    /* @todo:
-     * Maybe if a "SharedCollectionItem" entity is a added with a storage field
-     * move archive to that?
-     */
-    return $this->fileManager->createArchiveEntity($item->getOwner(), new SplFileInfo($archiveLocation));
+    $temporaryArchivePath = $this->archiver->createFileArchive($fileData);
+
+    if ($temporaryArchivePath === NULL) {
+      return NULL;
+    }
+
+    // @todo: Double-check that this works with s3.
+    // @todo: Error handling.
+    $this->fileSystem->move($temporaryArchivePath, $archiveLocation);
+
+    return $this->fileManager->createArchiveEntity($owner, new SplFileInfo($archiveLocation));
   }
 
   /**
@@ -162,16 +181,14 @@ final class ItemFileHandler {
    *   The absolute path or NULL on failure.
    */
   private function archiveTargetPath(MediaCollectionItemInterface $item): ?string {
-    $basePath = $this->fileSystem->realpath('private://');
-    $fileDir = "{$basePath}/tmp/item/{$item->uuid()}";
+    // @todo: Add an asset_archive field to the item instead.
+    $fileDir = $this->determineUploadLocation($item->parent()->get('assets_archive'));
 
-    if (!$this->mkdir($fileDir)) {
+    if (!$this->fileSystem->safeMkdir($fileDir)) {
       return NULL;
     }
 
-    $fileName = $this->archiveTargetName($item);
-
-    return "{$fileDir}/{$fileName}";
+    return "{$fileDir}/{$this->archiveTargetName($item)}";
   }
 
   /**
@@ -208,25 +225,20 @@ final class ItemFileHandler {
   }
 
   /**
-   * Safely and recursively create a directory.
+   * Return the upload location for a file field.
    *
-   * @param string $uri
-   *   Directory path or URI.
+   * Returns e.g "private://my-location/folder".
    *
-   * @return bool
-   *   TRUE on success, FALSE on error.
+   * @param \Drupal\Core\Field\FieldItemListInterface $field
+   *   File field.
    *
-   * @todo: Move to service.
+   * @return string
+   *   Upload location for the given file field.
+   *
+   * @todo: Move to service?
    */
-  private function mkdir($uri): bool {
-    $uriInfo = new SplFileInfo($uri);
-    $path = $uri;
-
-    if ($uriInfo->getExtension()) {
-      $path = $uriInfo->getPath();
-    }
-
-    return !(!is_dir($path) && !$this->fileSystem->mkdir($path, NULL, TRUE) && !is_dir($path));
+  private function determineUploadLocation(FieldItemListInterface $field): string {
+    return (new FileItem($field->getItemDefinition()))->getUploadLocation();
   }
 
 }
