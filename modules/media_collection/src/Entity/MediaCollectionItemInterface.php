@@ -52,4 +52,23 @@ interface MediaCollectionItemInterface extends ContentEntityInterface, EntityOwn
    */
   public function setStyle(ImageStyleInterface $style): MediaCollectionItemInterface;
 
+  /**
+   * Returns the parent collection.
+   *
+   * @return \Drupal\media_collection\Entity\MediaCollectionInterface
+   *   The parent collection.
+   */
+  public function parent(): MediaCollectionInterface;
+
+  /**
+   * Sets the parent collection.
+   *
+   * @param \Drupal\media_collection\Entity\MediaCollectionInterface $parent
+   *   The parent collection.
+   *
+   * @return \Drupal\media_collection\Entity\MediaCollectionItemInterface
+   *   The item instance.
+   */
+  public function setParent(MediaCollectionInterface $parent): MediaCollectionItemInterface;
+
 }

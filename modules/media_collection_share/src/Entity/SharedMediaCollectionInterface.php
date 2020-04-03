@@ -2,7 +2,6 @@
 
 namespace Drupal\media_collection_share\Entity;
 
-use Drupal\file\FileInterface;
 use Drupal\media_collection\Entity\MediaCollectionInterface;
 
 /**
@@ -38,25 +37,6 @@ interface SharedMediaCollectionInterface extends MediaCollectionInterface {
    *   The share URL.
    */
   public function shareAbsoluteUrl(): string;
-
-  /**
-   * Sets the Archived assets field.
-   *
-   * @param \Drupal\file\FileInterface $file
-   *   The archive file.
-   *
-   * @return \Drupal\media_collection_share\Entity\SharedMediaCollectionInterface
-   *   The entity.
-   */
-  public function setArchive(FileInterface $file): SharedMediaCollectionInterface;
-
-  /**
-   * Returns the archived assets file.
-   *
-   * @return \Drupal\file\FileInterface
-   *   The file.
-   */
-  public function archiveFile(): FileInterface;
 
   /**
    * Returns the count of stored emails.

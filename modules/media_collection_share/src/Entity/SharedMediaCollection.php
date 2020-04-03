@@ -8,7 +8,6 @@ use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Url;
-use Drupal\file\FileInterface;
 use Drupal\media_collection\Entity\MediaCollectionBase;
 use function trim;
 
@@ -110,21 +109,6 @@ class SharedMediaCollection extends MediaCollectionBase implements SharedMediaCo
   /**
    * {@inheritdoc}
    */
-  public function setArchive(FileInterface $file): SharedMediaCollectionInterface {
-    $this->set('assets_archive', $file);
-    return $this;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function archiveFile(): FileInterface {
-    return $this->get('assets_archive')->entity;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function emailCount(): int {
     return $this->get('emails')->count();
   }
@@ -196,22 +180,6 @@ class SharedMediaCollection extends MediaCollectionBase implements SharedMediaCo
       ->setLabel(new TranslatableMarkup('Shared with'))
       ->setDescription(new TranslatableMarkup('Emails with which the collection has been shared directly.'))
       ->setCardinality(50)
-      ->setDisplayConfigurable('form', TRUE)
-      ->setDisplayConfigurable('view', TRUE)
-      ->setRevisionable(TRUE);
-
-    $fields['assets_archive'] = BaseFieldDefinition::create('file')
-      ->setCardinality(1)
-      ->setLabel(new TranslatableMarkup('Archived assets'))
-      ->setDescription(new TranslatableMarkup('Field holding the download file for all assets'))
-      ->setSetting('file_extensions', 'zip')
-      ->setSetting('file_directory', 'collection/shared/[date:custom:Y]-[date:custom:m]-[date:custom:d]/[shared_media_collection:uuid]')
-      ->setSetting('uri_scheme', 'private')
-      ->setDisplayOptions('view', [
-        'label' => 'hidden',
-        'type' => 'file_url_plain',
-        'weight' => 0,
-      ])
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE)
       ->setRevisionable(TRUE);

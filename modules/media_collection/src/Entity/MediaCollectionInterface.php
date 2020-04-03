@@ -3,6 +3,7 @@
 namespace Drupal\media_collection\Entity;
 
 use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\file\FileInterface;
 use Drupal\user\EntityOwnerInterface;
 
 /**
@@ -82,5 +83,24 @@ interface MediaCollectionInterface extends ContentEntityInterface, EntityOwnerIn
    *   The called entity.
    */
   public function removeItem(MediaCollectionItemInterface $item): MediaCollectionInterface;
+
+  /**
+   * Sets the Archived assets field.
+   *
+   * @param \Drupal\file\FileInterface $file
+   *   The archive file.
+   *
+   * @return \Drupal\media_collection\Entity\MediaCollectionInterface
+   *   The entity.
+   */
+  public function setArchive(FileInterface $file): MediaCollectionInterface;
+
+  /**
+   * Returns the archived assets file.
+   *
+   * @return \Drupal\file\FileInterface
+   *   The file.
+   */
+  public function archiveFile(): FileInterface;
 
 }

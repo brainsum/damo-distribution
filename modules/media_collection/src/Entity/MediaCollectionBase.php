@@ -7,6 +7,7 @@ use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\file\FileInterface;
 use Drupal\user\EntityOwnerTrait;
 use function count;
 
@@ -147,6 +148,21 @@ abstract class MediaCollectionBase extends ContentEntityBase implements MediaCol
   /**
    * {@inheritdoc}
    */
+  public function setArchive(FileInterface $file): MediaCollectionInterface {
+    $this->set('assets_archive', $file);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function archiveFile(): FileInterface {
+    return $this->get('assets_archive')->entity;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public static function baseFieldDefinitions(EntityTypeInterface $entityType) {
     $fields = parent::baseFieldDefinitions($entityType);
     $fields += static::ownerBaseFieldDefinitions($entityType);
@@ -202,6 +218,22 @@ abstract class MediaCollectionBase extends ContentEntityBase implements MediaCol
       ])
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE);
+
+    $fields['assets_archive'] = BaseFieldDefinition::create('file')
+      ->setCardinality(1)
+      ->setLabel(new TranslatableMarkup('Archived assets'))
+      ->setDescription(new TranslatableMarkup('Field holding the download file for all assets'))
+      ->setSetting('file_extensions', 'zip')
+      ->setSetting('file_directory', 'collection/shared/[date:custom:Y]-[date:custom:m]-[date:custom:d]/[shared_media_collection:uuid]')
+      ->setSetting('uri_scheme', 'private')
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+        'type' => 'file_url_plain',
+        'weight' => 0,
+      ])
+      ->setDisplayConfigurable('form', TRUE)
+      ->setDisplayConfigurable('view', TRUE)
+      ->setRevisionable(TRUE);
 
     return $fields;
   }

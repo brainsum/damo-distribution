@@ -218,4 +218,19 @@ class MediaCollectionItem extends ContentEntityBase implements MediaCollectionIt
     return $this;
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function parent(): MediaCollectionInterface {
+    return $this->get('parent')->entity;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setParent(MediaCollectionInterface $parent): MediaCollectionItemInterface {
+    $this->set('parent', $parent);
+    return $this;
+  }
+
 }
