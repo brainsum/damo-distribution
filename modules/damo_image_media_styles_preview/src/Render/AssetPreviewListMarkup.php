@@ -323,14 +323,17 @@ class AssetPreviewListMarkup {
         'badge' => $hasBadge,
         'identifier' => $identifier,
         'style' => $styleLabel,
-        'download_link' => Link::fromTextAndUrl($this->t('Download'), Url::fromUri($styleUrl, [
-          'attributes' => [
+        'download_link' => Link::createFromRoute(
+          $this->t('Download'),
+          'damo_assets_download.styled_asset_download',
+          ['media' => $media->id(), 'style' => $style->id()],
+          [
             'class' => ['button', 'button--green'],
             'target' => '_blank',
             'rel' => 'noopener',
             'download' => '',
-          ],
-        ])),
+          ]
+        ),
       ];
 
       // This is equivalent to a "media_collection is installed" condition.
