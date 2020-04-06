@@ -153,7 +153,7 @@ final class ItemFileHandler {
    *
    * @return \Drupal\file\FileInterface|null
    */
-  public function doGenerateArchiveEntity(array $fileData, string $archiveLocation, UserInterface $owner): ?FileInterface {
+  protected function doGenerateArchiveEntity(array $fileData, string $archiveLocation, UserInterface $owner): ?FileInterface {
     if (!is_dir($this->fileSystem->dirname($archiveLocation))) {
       // @todo: Throw exception.
       return NULL;
