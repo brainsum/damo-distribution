@@ -3,12 +3,15 @@
 namespace Drupal\damo_assets_download\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\image\ImageStyleInterface;
 use Drupal\media\MediaInterface;
 use Drupal\damo_assets_download\Service\AssetDownloadHandler;
 use Drupal\damo_assets_download\Service\FileResponseBuilder;
+use SplFileInfo;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use function str_replace;
 
 /**
  * Class DownloadController.
@@ -64,6 +67,35 @@ class DownloadController extends ControllerBase {
     }
 
     return $this->fileResponseBuilder->build($downloadableFile);
+  }
+
+  /**
+   * Download handler for styled media entities.
+   *
+   * @param \Drupal\media\MediaInterface $media
+   *   Media entity.
+   * @param \Drupal\image\ImageStyleInterface $style
+   *   The image style to apply.
+   *
+   * @return \Symfony\Component\HttpFoundation\Response|\Symfony\Component\HttpFoundation\BinaryFileResponse
+   *   Response.
+   */
+  public function styledDownload(MediaInterface $media, ImageStyleInterface $style): Response {
+    $downloadableFile = $this->downloadHandler->generateDownloadableStyledFile($media, $style);
+
+    if ($downloadableFile === NULL) {
+      throw new HttpException(500, 'Generating a downloadable file failed.');
+    }
+
+    $fileInfo = new SplFileInfo($downloadableFile->getFileUri());
+    $styledFilename = str_replace(".{$fileInfo->getExtension()}", '', $downloadableFile->getFilename());
+    $styledFilename .= '_' . $style->id() . ".{$fileInfo->getExtension()}";
+
+    return $this->fileResponseBuilder->build(
+      $downloadableFile,
+      $media->getName() . '(' . $style->getName() . ')',
+      $styledFilename
+    );
   }
 
 }

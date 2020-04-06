@@ -6,7 +6,9 @@ use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Core\Datetime\DateFormatterInterface;
 use Drupal\damo\Service\DamoFileSystemInterface;
 use Drupal\file\FileInterface;
+use Drupal\image\ImageStyleInterface;
 use Drupal\media\MediaInterface;
+use RuntimeException;
 use SplFileInfo;
 use function count;
 use function reset;
@@ -107,6 +109,32 @@ class AssetDownloadHandler {
     // @todo: Copy to the desired place: $this->archiveTargetPath($media);
 
     return $this->fileManager->createArchiveEntity($media->getOwner(), new SplFileInfo($archiveLocation));
+  }
+
+  /**
+   * Generates a downloadable file for the media entity.
+   *
+   * @param \Drupal\media\MediaInterface $media
+   *   The media.
+   * @param \Drupal\image\ImageStyleInterface $style
+   *   The style.
+   *
+   * @return \Drupal\file\FileInterface|null
+   *   The file or NULL.
+   */
+  public function generateDownloadableStyledFile(MediaInterface $media, ImageStyleInterface $style): ?FileInterface {
+    if ($media->bundle() !== 'image') {
+      throw new RuntimeException('Only image assets can be styled.');
+    }
+
+    $downloadableFile = $this->generateDownloadableFile($media);
+
+    if ($downloadableFile === NULL) {
+      return NULL;
+    }
+
+    $styledUri = $style->buildUri($downloadableFile->getFileUri());
+    return $this->fileManager->createArchiveEntity($media->getOwner(), new SplFileInfo($styledUri));
   }
 
   /**

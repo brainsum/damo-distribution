@@ -41,13 +41,19 @@ class FileResponseBuilder {
    *   The file.
    * @param string $description
    *   Optional description.
+   * @param string|null $fileName
+   *   Filename used for downloads.
+   * @param string|null $fallbackName
+   *   Filename fallback used for downloads if $fileName fails for any reason.
    *
    * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
    *   The file response.
    */
   public function build(
     FileInterface $file,
-    string $description = 'Media Library assets download'
+    string $description = 'Media Library assets download',
+    ?string $fileName = NULL,
+    ?string $fallbackName = NULL
   ): BinaryFileResponse {
     $fileInfo = new SplFileInfo($file->getFileUri());
     $response = new BinaryFileResponse(
@@ -58,10 +64,18 @@ class FileResponseBuilder {
       ]
     );
 
+    if ($fileName === NULL) {
+      $fileName = $file->getFilename();
+    }
+
+    if ($fallbackName === NULL) {
+      $fallbackName = $fileInfo->getFilename();
+    }
+
     $response->setContentDisposition(
       'attachment',
-      $this->transliteration->transliterate($file->getFilename()),
-      $this->transliteration->transliterate($fileInfo->getFilename())
+      $this->transliteration->transliterate($fileName),
+      $this->transliteration->transliterate($fallbackName)
     );
 
     return $response;
