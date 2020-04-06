@@ -21,7 +21,7 @@ $config['s3fs.settings']['use_https'] = TRUE;
 $config['s3fs.settings']['cache_control_header'] = 'public, max-age=300';
 $config['s3fs.settings']['redirect_styles_ttl'] = 300;
 $config['s3fs.settings']['domain'] = '<optional; the domain name of your e.g cloudfront instance>';
-$config['s3fs.settings']['presigned_urls'] = '3600|styles/*';
+$config['s3fs.settings']['presigned_urls'] = "3600|styles/*\r\n3600|media/*\r\n";
 $settings['s3fs.upload_as_private'] = TRUE;
 $settings['s3fs.access_key'] = $config['awssdk.configuration']['aws_key'] = '<Key generated on AWS>';
 $settings['s3fs.secret_key'] = $config['awssdk.configuration']['aws_secret'] = '<Secret generated on AWS>';
