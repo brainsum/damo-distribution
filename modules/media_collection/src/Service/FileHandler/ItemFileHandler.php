@@ -5,6 +5,7 @@ namespace Drupal\media_collection\Service\FileHandler;
 use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Core\Datetime\DateFormatterInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
+use Drupal\damo\Helper\FieldManager;
 use Drupal\damo\Service\DamoFileSystemInterface;
 use Drupal\damo_assets_download\Service\AssetArchiver;
 use Drupal\damo_assets_download\Service\FileManager;
@@ -183,7 +184,7 @@ final class ItemFileHandler {
    */
   private function archiveTargetPath(MediaCollectionItemInterface $item): ?string {
     // @todo: Add an asset_archive field to the item instead.
-    $fileDir = $this->determineUploadLocation($item->parent(), 'assets_archive');
+    $fileDir = FieldManager::determineUploadLocation($item->parent(), 'assets_archive');
 
     if (!$this->fileSystem->safeMkdir($fileDir)) {
       return NULL;
@@ -223,32 +224,6 @@ final class ItemFileHandler {
    */
   private function currentDate(): string {
     return $this->dateFormatter->format($this->time->getCurrentTime(), 'custom', 'Y-m-d');
-  }
-
-  /**
-   * Return the upload location for a file field.
-   *
-   * Returns e.g "private://my-location/folder".
-   *
-   * @param \Drupal\Core\Entity\FieldableEntityInterface $parent
-   *   Parent entity.
-   * @param string $fieldName
-   *   Name of the field.
-   *
-   * @return string
-   *   Upload location for the given file field.
-   *
-   * @todo: Move to service?
-   */
-  private function determineUploadLocation(FieldableEntityInterface $parent, string $fieldName): string {
-    if (!$parent->hasField($fieldName)) {
-      throw new RuntimeException("The {$fieldName} field was not found on the entity.");
-    }
-
-    $field = $parent->get($fieldName);
-    /** @var \Drupal\file\Plugin\Field\FieldType\FileItem $item */
-    $item = $field->isEmpty() ? new FileItem($field->getItemDefinition()) : $field->first();
-    return $item->getUploadLocation([$parent->getEntityTypeId() => $parent]);
   }
 
 }
