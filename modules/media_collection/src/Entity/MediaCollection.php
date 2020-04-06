@@ -2,6 +2,8 @@
 
 namespace Drupal\media_collection\Entity;
 
+use Drupal\Core\Entity\EntityTypeInterface;
+
 /**
  * Defines the Media collection entity.
  *
@@ -49,5 +51,19 @@ namespace Drupal\media_collection\Entity;
  * )
  */
 class MediaCollection extends MediaCollectionBase {
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function baseFieldDefinitions(EntityTypeInterface $entityType) {
+    $fields = parent::baseFieldDefinitions($entityType);
+
+    $fields['assets_archive']->setSetting(
+      'file_directory',
+      'collection/standard/[date:custom:Y]-[date:custom:m]-[date:custom:d]/[media_collection:uuid]'
+    );
+
+    return $fields;
+  }
 
 }

@@ -224,7 +224,6 @@ abstract class MediaCollectionBase extends ContentEntityBase implements MediaCol
       ->setLabel(new TranslatableMarkup('Archived assets'))
       ->setDescription(new TranslatableMarkup('Field holding the download file for all assets'))
       ->setSetting('file_extensions', 'zip')
-      ->setSetting('file_directory', 'collection/shared/[date:custom:Y]-[date:custom:m]-[date:custom:d]/[shared_media_collection:uuid]')
       ->setSetting('uri_scheme', 'private')
       ->setDisplayOptions('view', [
         'label' => 'hidden',

@@ -184,6 +184,11 @@ class SharedMediaCollection extends MediaCollectionBase implements SharedMediaCo
       ->setDisplayConfigurable('view', TRUE)
       ->setRevisionable(TRUE);
 
+    $fields['assets_archive']->setSetting(
+      'file_directory',
+      'collection/shared/[date:custom:Y]-[date:custom:m]-[date:custom:d]/[shared_media_collection:uuid]'
+    );
+
     return $fields;
   }
 
