@@ -11,7 +11,54 @@ function damo_s3_install() {
   // Set a heavy weight so our hooks run after every other hook.
   module_set_weight('damo_s3', 100);
 
-  // @todo: Migrate field storages to s3.
-  // @todo: This includes assets_archive.
-  // @todo: Install and update assets_archive field as it was moved to the base class.
+  $configFactory = Drupal::configFactory();
+  // Set up presigned URLs.
+  $config = $configFactory->getEditable('s3fs.settings');
+  $config->set('presigned_urls', "3600|styles/*\r\n3600|media/*\r\n3600|collection/*");
+  $config->save();
+
+  // Switch to the s3 storage.
+  // Global storage.
+  $config = $configFactory->getEditable('system.file');
+  $config->set('default_scheme', 's3');
+  $config->save();
+
+  // Media field storage.
+  $storageNames = [
+    'field_custom_thumbnail',
+    'field_file',
+    'field_files',
+    'field_image',
+    'field_images',
+    'field_template_file',
+    'field_video_file',
+  ];
+
+  $updateManager = Drupal::entityDefinitionUpdateManager();
+
+  foreach ($storageNames as $storageName) {
+    /** @var \Drupal\field\FieldStorageConfigInterface $definition */
+    $definition = $updateManager->getFieldStorageDefinition($storageName, 'media');
+    $definition->setSetting('uri_scheme', 's3');
+    $updateManager->updateFieldStorageDefinition($definition);
+    // @todo: Not sure why the config update is needed, but ok.
+    $config = $configFactory->getEditable("field.storage.media.{$storageName}");
+    $settings = $config->get('settings');
+    $settings['uri_scheme'] = 's3';
+    $config->set('settings', $settings);
+    $config->save();
+  }
+
+  // Collection storage.
+  $entityTypeNames = [
+    'media_collection',
+    'shared_media_collection',
+  ];
+
+  foreach ($entityTypeNames as $entityTypeName) {
+    /** @var \Drupal\field\FieldStorageConfigInterface $definition */
+    $definition = $updateManager->getFieldStorageDefinition('assets_archive', $entityTypeName);
+    $definition->setSetting('uri_scheme', 's3');
+    $updateManager->updateFieldStorageDefinition($definition);
+  }
 }
