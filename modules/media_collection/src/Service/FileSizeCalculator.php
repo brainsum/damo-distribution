@@ -4,7 +4,6 @@ namespace Drupal\media_collection\Service;
 
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Cache\CacheBackendInterface;
-use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\file\FileInterface;
 use Drupal\image\ImageStyleInterface;
@@ -21,13 +20,6 @@ use function format_size;
 final class FileSizeCalculator {
 
   /**
-   * The file system.
-   *
-   * @var \Drupal\Core\File\FileSystemInterface
-   */
-  private $fileSystem;
-
-  /**
    * Cache.
    *
    * @var \Drupal\Core\Cache\CacheBackendInterface
@@ -37,16 +29,12 @@ final class FileSizeCalculator {
   /**
    * FileSizeCalculator constructor.
    *
-   * @param \Drupal\Core\File\FileSystemInterface $fileSystem
-   *   The file system.
    * @param \Drupal\Core\Cache\CacheBackendInterface $cache
    *   Cache backend.
    */
   public function __construct(
-    FileSystemInterface $fileSystem,
     CacheBackendInterface $cache
   ) {
-    $this->fileSystem = $fileSystem;
     $this->cache = $cache;
   }
 
@@ -84,14 +72,10 @@ final class FileSizeCalculator {
     $fileSize = NULL;
 
     if ($cached === FALSE) {
-      $assetsFile = NULL;
-
-      if ($collection->hasField('assets_archive')) {
-        /** @var \Drupal\file\Plugin\Field\FieldType\FileFieldItemList $collectionAssets */
-        $collectionAssets = $collection->get('assets_archive');
-        /** @var \Drupal\file\FileInterface|null $assetsFile */
-        $assetsFile = $collectionAssets->entity;
-      }
+      /** @var \Drupal\file\Plugin\Field\FieldType\FileFieldItemList $collectionAssets */
+      $collectionAssets = $collection->get('assets_archive');
+      /** @var \Drupal\file\FileInterface|null $assetsFile */
+      $assetsFile = $collectionAssets->entity;
 
       $fileSize = $assetsFile === NULL
         ? $this->collectionItemsSize($collection)
@@ -184,9 +168,7 @@ final class FileSizeCalculator {
       $filePath = $file->getFileUri();
       $stylePath = $imageStyle->buildUri($filePath);
 
-      $styleRealPath = $this->fileSystem->realpath($stylePath);
-
-      if ($styleRealPath === FALSE) {
+      if (!\file_exists($stylePath)) {
         // @todo: Log.
         continue;
       }
@@ -265,15 +247,9 @@ final class FileSizeCalculator {
    * @todo: Move to damo_assets_download?
    */
   private function fileSizeByPath(string $path): int {
-    $realPath = $this->fileSystem->realpath($path);
+    $file = new SplFileInfo($path);
 
-    if (!$realPath || ($realPath && !file_exists($realPath))) {
-      return 0;
-    }
-
-    $file = new SplFileInfo($realPath);
-
-    if (!$file->isReadable()) {
+    if (!($file->isFile() && $file->isReadable())) {
       return 0;
     }
 

@@ -44,7 +44,6 @@ services:
   media_collection.download_handler:
     class: Drupal\media_collection\Service\DownloadHandler
     arguments:
-      - '@file_system'
       - '@media_collection.collection_handler'
       - '@current_user'
       - '@media_collection.file_handler.media_collection'
@@ -60,5 +59,4 @@ services:
   media_collection.file_size_calculator:
     class: Drupal\media_collection\Service\FileSizeCalculator
     arguments:
-      - '@file_system'
       - '@cache.default'

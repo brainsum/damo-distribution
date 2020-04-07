@@ -104,9 +104,8 @@ final class DownloadHandler {
     }
 
     $archive = $collection->archiveFile();
-    $fileUri = $this->fileSystem->realpath($archive->getFileUri());
 
-    if (!$fileUri || !file_exists($fileUri)) {
+    if (!file_exists($archive->getFileUri())) {
       // @todo: Generate instead.
       throw new NotFoundHttpException('No downloadable asset archive was found.');
     }

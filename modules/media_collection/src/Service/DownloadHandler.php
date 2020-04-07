@@ -2,7 +2,6 @@
 
 namespace Drupal\media_collection\Service;
 
-use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\media_collection\Entity\MediaCollectionInterface;
 use Drupal\media_collection\Service\FileHandler\CollectionFileHandler;
@@ -22,13 +21,6 @@ final class DownloadHandler {
    * @var \Drupal\media_collection\Service\CollectionHandler
    */
   private $collectionHandler;
-
-  /**
-   * The file system.
-   *
-   * @var \Drupal\Core\File\FileSystemInterface
-   */
-  private $fileSystem;
 
   /**
    * The current user.
@@ -54,8 +46,6 @@ final class DownloadHandler {
   /**
    * DownloadHandler constructor.
    *
-   * @param \Drupal\Core\File\FileSystemInterface $fileSystem
-   *   The file system.
    * @param \Drupal\media_collection\Service\CollectionHandler $collectionHandler
    *   The collection handler.
    * @param \Drupal\Core\Session\AccountProxyInterface $currentUser
@@ -66,14 +56,12 @@ final class DownloadHandler {
    *   The file response builder.
    */
   public function __construct(
-    FileSystemInterface $fileSystem,
     CollectionHandler $collectionHandler,
     AccountProxyInterface $currentUser,
     CollectionFileHandler $collectionFileHandler,
     FileResponseBuilder $fileResponseBuilder
   ) {
     $this->collectionHandler = $collectionHandler;
-    $this->fileSystem = $fileSystem;
     $this->currentUser = $currentUser;
 
     $this->collectionFileHandler = $collectionFileHandler;
@@ -119,9 +107,7 @@ final class DownloadHandler {
       return new Response(NULL, Response::HTTP_NOT_FOUND);
     }
 
-    $fileUri = $this->fileSystem->realpath($archive->getFileUri());
-
-    if (!$fileUri || !file_exists($fileUri)) {
+    if (!file_exists($archive->getFileUri())) {
       return new Response(NULL, Response::HTTP_NOT_FOUND);
     }
 
