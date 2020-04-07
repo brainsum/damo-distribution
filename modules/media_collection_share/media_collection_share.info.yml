@@ -4,5 +4,6 @@ description: 'Share feature for the media_collection module.'
 core: 8.x
 package: 'Digital Assets Management'
 dependencies:
+  - damo:damo_assets_download
   - media_collection:media_collection
   - maillog:maillog
