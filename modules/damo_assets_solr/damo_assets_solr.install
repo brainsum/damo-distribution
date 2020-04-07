@@ -12,20 +12,45 @@ use Drupal\Core\Config\FileStorage;
  * Implements hook_install().
  */
 function damo_assets_solr_install() {
+  // Replace views.
+  $viewNames = [
+    'views.view.asset_search',
+    'views.view.unpublished_assets',
+  ];
+
+  $configSource = new FileStorage(drupal_get_path('module', 'damo_assets_solr') . '/config/optional');
+  $configStorage = Drupal::service('config.storage');
+  $uuid = Drupal::service('uuid');
+
+  foreach ($viewNames as $viewName) {
+    /** @var array $newConfig */
+    $newConfig = $configSource->read($viewName);
+    $newConfig['uuid'] = $uuid->generate();
+    $newConfig['_core']['default_config_hash'] = Crypt::hashBase64(serialize($newConfig));
+    /** @var \Drupal\Core\Config\StorageInterface $configStorage */
+    $configStorage->delete($viewName);
+    $configStorage->write($viewName, $newConfig);
+  }
+
+  // Disable the database index.
   /** @var \Drupal\Core\Config\ConfigFactoryInterface $configFactory */
   $configFactory = Drupal::service('config.factory');
-  // Update the asset search view.
+  /** @var \Drupal\Core\Config\Config $config */
+  $config = $configFactory->getEditable('search_api.server.local_database_server');
+  $config->set('status', FALSE)->save();
+}
+
+/**
+ * Update the unpublished assets view.
+ */
+function damo_assets_solr_update_8701() {
   $configSource = new FileStorage(drupal_get_path('module', 'damo_assets_solr') . '/config/optional');
   /** @var array $newConfig */
-  $newConfig = $configSource->read('views.view.asset_search');
+  $newConfig = $configSource->read('views.view.unpublished_assets');
   $newConfig['uuid'] = Drupal::service('uuid')->generate();
   $newConfig['_core']['default_config_hash'] = Crypt::hashBase64(serialize($newConfig));
   /** @var \Drupal\Core\Config\StorageInterface $configStorage */
   $configStorage = Drupal::service('config.storage');
-  $configStorage->delete('views.view.asset_search');
-  $configStorage->write('views.view.asset_search', $newConfig);
-  // Disable the database index.
-  /** @var \Drupal\Core\Config\Config $config */
-  $config = $configFactory->getEditable('search_api.server.local_database_server');
-  $config->set('status', FALSE)->save();
+  $configStorage->delete('views.view.unpublished_assets');
+  $configStorage->write('views.view.unpublished_assets', $newConfig);
 }
