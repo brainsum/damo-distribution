@@ -128,6 +128,7 @@ class VideoThumbnail {
    */
   public function generateFileThumbnail(FileInterface $video): FileInterface {
     // @todo: Error handling.
+    // @todo: Update for s3 support.
     $videoAbsoluteUri = $this->fileSystem->realpath($video->getFileUri());
     $thumbnailFileName = $this->generateThumbnailFileName($videoAbsoluteUri);
     $this->extractThumbnailFromVideo($videoAbsoluteUri, $thumbnailFileName);
