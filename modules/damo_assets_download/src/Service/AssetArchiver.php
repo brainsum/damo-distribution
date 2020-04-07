@@ -143,9 +143,12 @@ class AssetArchiver {
     if ($archive->locateName($fileData->archiveTargetPath) === FALSE) {
       // Left trim required for windows compatibility.
       $targetPath = ltrim($fileData->archiveTargetPath, '/');
-      // @todo: Error handling.
-      $archive->addFromString($targetPath, file_get_contents($fileData->systemPath));
-      // $archive->addFile($fileData->systemPath, $targetPath);
+      $result = $archive->addFromString($targetPath, file_get_contents($fileData->systemPath));
+
+      if ($result === FALSE) {
+        // @todo: Log.
+        return $archive;
+      }
     }
 
     return $archive;
