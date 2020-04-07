@@ -6,6 +6,7 @@
  */
 
 use Drupal\Component\Utility\UrlHelper;
+use Drupal\Core\Entity\EntityTypeInterface;
 
 /**
  * Implements hook_file_url_alter().
@@ -30,5 +31,14 @@ function damo_s3_file_url_alter(string &$uri) {
     $paramBlacklist = array_diff(array_keys($parsedStyleUrl['query']), $paramWhitelist);
     $parsedStyleUrl['query'] = UrlHelper::filterQueryParameters($parsedStyleUrl['query'], $paramBlacklist);
     $uri = $parsedStyleUrl['path'] . '?' . UrlHelper::buildQuery($parsedStyleUrl['query']);
+  }
+}
+
+/**
+ * Implements hook_entity_base_field_info_alter().
+ */
+function damo_s3_entity_base_field_info_alter(array &$fields, EntityTypeInterface $entity_type) {
+  if (isset($fields['assets_archive'])) {
+    $fields['assets_archive']->setSetting('uri_scheme', 's3');
   }
 }

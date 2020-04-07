@@ -23,5 +23,13 @@
     "prefer-stable": true,
     "config": {
         "sort-packages": true
+    },
+    "extra": {
+        "enable-patching": true,
+        "patches": {
+            "drupal/s3fs": {
+                "Presigned URLs fix": "https://www.drupal.org/files/issues/2020-04-07/s3fs-presigned-url-version-2976466-8.x-3.0-alpha15.patch"
+            }
+        }
     }
 }
