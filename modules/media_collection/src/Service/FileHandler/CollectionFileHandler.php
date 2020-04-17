@@ -4,17 +4,14 @@ namespace Drupal\media_collection\Service\FileHandler;
 
 use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Core\Datetime\DateFormatterInterface;
-use Drupal\Core\Entity\FieldableEntityInterface;
-use Drupal\damo\Helper\FieldManager;
-use Drupal\damo\Service\DamoFileSystemInterface;
+use Drupal\damo_common\Helper\FieldManager;
+use Drupal\damo_common\Service\DamoFileSystemInterface;
 use Drupal\damo_assets_download\Service\AssetArchiver;
 use Drupal\damo_assets_download\Service\FileManager;
 use Drupal\file\FileInterface;
-use Drupal\file\Plugin\Field\FieldType\FileItem;
 use Drupal\media_collection\Entity\MediaCollectionInterface;
 use Drupal\media_collection\Service\EntityProcessor\CollectionProcessor;
 use Drupal\user\UserInterface;
-use RuntimeException;
 use SplFileInfo;
 use function is_dir;
 
@@ -31,7 +28,7 @@ final class CollectionFileHandler {
   /**
    * The file system.
    *
-   * @var \Drupal\damo\Service\DamoFileSystemInterface
+   * @var \Drupal\damo_common\Service\DamoFileSystemInterface
    */
   private $fileSystem;
 
@@ -73,7 +70,7 @@ final class CollectionFileHandler {
   /**
    * CollectionFileHandler constructor.
    *
-   * @param \Drupal\damo\Service\DamoFileSystemInterface $fileSystem
+   * @param \Drupal\damo_common\Service\DamoFileSystemInterface $fileSystem
    *   The file system service.
    * @param \Drupal\media_collection\Service\EntityProcessor\CollectionProcessor $collectionProcessor
    *   Processor for collections.

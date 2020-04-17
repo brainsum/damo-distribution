@@ -11,7 +11,7 @@ services:
   damo_assets_download.asset_archiver:
     class:  Drupal\damo_assets_download\Service\AssetArchiver
     arguments:
-      - '@damo.file_system'
+      - '@damo_common.file_system'
       - '@uuid'
 
   damo_assets_download.file_manager:
@@ -26,6 +26,6 @@ services:
       - '@damo_assets_download.asset_file_handler'
       - '@damo_assets_download.asset_archiver'
       - '@damo_assets_download.file_manager'
-      - '@damo.file_system'
+      - '@damo_common.file_system'
       - '@datetime.time'
       - '@date.formatter'

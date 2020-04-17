@@ -13,7 +13,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Url;
-use Drupal\damo\Temporary\ImageStyleLoader;
+use Drupal\damo_common\Temporary\ImageStyleLoader;
 use Drupal\media\MediaInterface;
 use Drupal\media_collection\Entity\MediaCollectionItemInterface;
 use Drupal\user\UserInterface;

@@ -6,3 +6,10 @@
  *
  * @todo: https://www.drupal.org/docs/8/distributions/creating-distributions/how-to-write-a-drupal-8-installation-profile#s-install-file
  */
+
+/**
+ * Install the damo_common module.
+ */
+function damo_update_8001() {
+  Drupal::service('module_installer')->install(['damo_common']);
+}

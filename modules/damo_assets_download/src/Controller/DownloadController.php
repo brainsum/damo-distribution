@@ -17,6 +17,8 @@ use function str_replace;
  * Class DownloadController.
  *
  * @package Drupal\damo_assets_download\Controller
+ *
+ * @todo: Tune performance for non-local file systems (e.g s3), if possible.
  */
 class DownloadController extends ControllerBase {
 
@@ -66,6 +68,7 @@ class DownloadController extends ControllerBase {
       throw new HttpException(500, 'Generating a downloadable file failed.');
     }
 
+    // @todo: Customize download name like in ::styledDownload.
     return $this->fileResponseBuilder->build($downloadableFile);
   }
 

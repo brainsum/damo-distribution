@@ -17,7 +17,7 @@ services:
   media_collection.file_handler.media_collection_item:
     class: Drupal\media_collection\Service\FileHandler\ItemFileHandler
     arguments:
-      - '@damo.file_system'
+      - '@damo_common.file_system'
       - '@media_collection.entity_processor.media_collection_item'
       - '@damo_assets_download.asset_archiver'
       - '@datetime.time'
@@ -27,7 +27,7 @@ services:
   media_collection.file_handler.media_collection:
     class: Drupal\media_collection\Service\FileHandler\CollectionFileHandler
     arguments:
-      - '@damo.file_system'
+      - '@damo_common.file_system'
       - '@media_collection.entity_processor.media_collection'
       - '@damo_assets_download.asset_archiver'
       - '@datetime.time'

@@ -5,7 +5,7 @@ namespace Drupal\damo_assets_api\Normalizer;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\media\MediaInterface;
-use Drupal\damo\Temporary\ImageStyleLoader;
+use Drupal\damo_common\Temporary\ImageStyleLoader;
 use Drupal\serialization\Normalizer\ContentEntityNormalizer;
 use function count;
 use function in_array;

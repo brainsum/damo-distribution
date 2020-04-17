@@ -7,7 +7,7 @@ use Drupal\Core\Link;
 use Drupal\Core\Messenger\MessengerTrait;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Url;
-use Drupal\damo\Temporary\ImageStyleLoader;
+use Drupal\damo_common\Temporary\ImageStyleLoader;
 use Drupal\damo_image_media_styles_preview\Form\MediaAssetFilterForm;
 use Drupal\file\Entity\File;
 use Drupal\media\MediaInterface;

@@ -3,7 +3,7 @@
 namespace Drupal\damo_assets_api\Plugin\views\style;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\damo\Temporary\ImageStyleLoader;
+use Drupal\damo_common\Temporary\ImageStyleLoader;
 use Drupal\rest\Plugin\views\style\Serializer;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Serializer\SerializerInterface;

@@ -1,6 +1,6 @@
 services:
-  damo.file_system:
-    class: Drupal\damo\Service\DamoFileSystem
+  damo_common.file_system:
+    class: Drupal\damo_common\Service\DamoFileSystem
     arguments:
       - '@stream_wrapper_manager'
       - '@settings'

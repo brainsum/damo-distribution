@@ -5,6 +5,7 @@ core: 8.x
 package: 'Digital Assets Management'
 
 dependencies:
+  - damo:damo_common
   - drupal:system (>=8.7)
   - drupal:media
   - drupal:file

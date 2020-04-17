@@ -1,13 +1,13 @@
 <?php
 
-namespace Drupal\damo\Service;
+namespace Drupal\damo_common\Service;
 
 use Drupal\Core\File\FileSystemInterface;
 
 /**
  * Class DamoFileSystem.
  *
- * @package Drupal\damo\Service
+ * @package Drupal\damo_common\Service
  */
 interface DamoFileSystemInterface extends FileSystemInterface {
 

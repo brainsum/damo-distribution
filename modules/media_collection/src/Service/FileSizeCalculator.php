@@ -10,6 +10,7 @@ use Drupal\image\ImageStyleInterface;
 use Drupal\media\MediaInterface;
 use Drupal\media_collection\Entity\MediaCollectionInterface;
 use SplFileInfo;
+use function file_exists;
 use function format_size;
 
 /**
@@ -168,7 +169,7 @@ final class FileSizeCalculator {
       $filePath = $file->getFileUri();
       $stylePath = $imageStyle->buildUri($filePath);
 
-      if (!\file_exists($stylePath)) {
+      if (!file_exists($stylePath)) {
         // @todo: Log.
         continue;
       }

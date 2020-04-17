@@ -42,6 +42,7 @@ dependencies:
   - damo:damo_assets_download
   - damo:damo_assets_library
   - damo:damo_assets_lister
+  - damo:damo_common
   # Core.
   - drupal:basic_auth
   - drupal:block

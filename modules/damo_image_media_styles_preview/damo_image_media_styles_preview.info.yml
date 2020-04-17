@@ -6,6 +6,7 @@ package: 'Digital Assets Management'
 
 dependencies:
   - damo:damo_assets_download
+  - damo:damo_common
   - drupal:system (>=8.7)
   - drupal:media
   - drupal:file

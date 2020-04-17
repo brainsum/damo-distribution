@@ -4,7 +4,7 @@ namespace Drupal\damo_assets_download\Service;
 
 use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Core\Datetime\DateFormatterInterface;
-use Drupal\damo\Service\DamoFileSystemInterface;
+use Drupal\damo_common\Service\DamoFileSystemInterface;
 use Drupal\file\FileInterface;
 use Drupal\image\ImageStyleInterface;
 use Drupal\media\MediaInterface;
@@ -29,7 +29,7 @@ class AssetDownloadHandler {
   /**
    * The file system.
    *
-   * @var \Drupal\damo\Service\DamoFileSystemInterface
+   * @var \Drupal\damo_common\Service\DamoFileSystemInterface
    */
   private $fileSystem;
 
@@ -56,7 +56,7 @@ class AssetDownloadHandler {
    *   File archiver.
    * @param \Drupal\damo_assets_download\Service\FileManager $fileManager
    *   File manager.
-   * @param \Drupal\damo\Service\DamoFileSystemInterface $fileSystem
+   * @param \Drupal\damo_common\Service\DamoFileSystemInterface $fileSystem
    *   The file system service.
    * @param \Drupal\Component\Datetime\TimeInterface $time
    *   Time service.

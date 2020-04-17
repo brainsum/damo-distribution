@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\damo\Helper;
+namespace Drupal\damo_common\Helper;
 
 use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\file\Plugin\Field\FieldType\FileItem;
@@ -9,7 +9,7 @@ use RuntimeException;
 /**
  * Class FieldManager.
  *
- * @package Drupal\damo\Helper
+ * @package Drupal\damo_common\Helper
  */
 class FieldManager {
 

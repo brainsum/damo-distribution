@@ -4,7 +4,7 @@ namespace Drupal\damo_assets_download\Service;
 
 use Drupal\Component\Uuid\UuidInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
-use Drupal\damo\Service\DamoFileSystemInterface;
+use Drupal\damo_common\Service\DamoFileSystemInterface;
 use Drupal\damo_assets_download\Model\FileArchivingData;
 use RuntimeException;
 use ZipArchive;
@@ -20,7 +20,7 @@ class AssetArchiver {
   /**
    * The FS.
    *
-   * @var \Drupal\damo\Service\DamoFileSystemInterface
+   * @var \Drupal\damo_common\Service\DamoFileSystemInterface
    */
   protected $fileSystem;
 
@@ -34,7 +34,7 @@ class AssetArchiver {
   /**
    * AssetArchiver constructor.
    *
-   * @param \Drupal\damo\Service\DamoFileSystemInterface $fileSystem
+   * @param \Drupal\damo_common\Service\DamoFileSystemInterface $fileSystem
    *   The fs.
    * @param \Drupal\Component\Uuid\UuidInterface $uuid
    *   The uuid service.
