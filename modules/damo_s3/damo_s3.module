@@ -30,7 +30,7 @@ function damo_s3_file_url_alter(string &$uri) {
     $parsedStyleUrl = UrlHelper::parse($uri);
     $paramBlacklist = array_diff(array_keys($parsedStyleUrl['query']), $paramWhitelist);
     $parsedStyleUrl['query'] = UrlHelper::filterQueryParameters($parsedStyleUrl['query'], $paramBlacklist);
-    $uri = $parsedStyleUrl['path'] . '?' . UrlHelper::buildQuery($parsedStyleUrl['query']);
+    $uri = $parsedStyleUrl['path'] . '?' . http_build_query($parsedStyleUrl['query']);
   }
 }
 
