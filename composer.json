@@ -47,7 +47,7 @@
         "drupal/entity_browser": "^2.3",
         "drupal/entity_embed": "^1.0",
         "drupal/exception_mailer": "3.x-dev",
-        "drupal/exif": "^1.2",
+        "drupal/exif": "^2.2",
         "drupal/field_group": "^3.0",
         "drupal/filehash": "^1.4",
         "drupal/focal_point": "^1.2",
