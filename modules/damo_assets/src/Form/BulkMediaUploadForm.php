@@ -20,6 +20,7 @@ use function file_get_contents;
 use function file_save_data;
 use function in_array;
 use function preg_match;
+use function strtolower;
 use function trim;
 
 /**
@@ -190,9 +191,10 @@ class BulkMediaUploadForm extends ContribForm {
           continue;
         }
 
+        // @todo: Not sure if strtolower() is the best approach.
         if (!in_array(
-          $fileInfo[static::EXT_NAME],
-          explode(' ', $targetFieldSettings['file_extensions']),
+          strtolower($fileInfo[static::EXT_NAME]),
+          explode(' ', strtolower($targetFieldSettings['file_extensions'])),
           FALSE
         )) {
           $errorFlag = TRUE;
