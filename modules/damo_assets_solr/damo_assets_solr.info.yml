@@ -1,6 +1,6 @@
-name: "Media Assets"
+name: "Damo assets - Solr"
 type: module
-description: Media assets functionality
+description: "Solr integration for DAMo."
 core: 8.x
 package: 'Digital Assets Management'
 dependencies:
