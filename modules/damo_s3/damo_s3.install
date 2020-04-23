@@ -14,7 +14,10 @@ function damo_s3_install() {
   $configFactory = Drupal::configFactory();
   // Set up presigned URLs.
   $config = $configFactory->getEditable('s3fs.settings');
-  $config->set('presigned_urls', "3600|styles/*\r\n3600|media/*\r\n3600|collection/*");
+  $config->set('presigned_urls', "64800|styles/*\r\n64800|media/*\r\n64800|collection/*");
+  $config->set('redirect_styles_ttl', 300);
+  $config->set('cache_control_header', 'public, max-age=300');
+  $config->set('use_https', TRUE);
   $config->save();
 
   // Switch to the s3 storage.
