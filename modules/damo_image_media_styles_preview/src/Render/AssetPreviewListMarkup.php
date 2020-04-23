@@ -282,6 +282,9 @@ class AssetPreviewListMarkup {
         '#uri' => $styleUrl,
         '#height' => 100,
         '#alt' => $this->t('Media asset preview for %label', ['%label' => $styleLabel]),
+        '#attributes' =>  [
+          'loading' => 'lazy',
+        ],
       ];
 
       // Column 2: Image.
