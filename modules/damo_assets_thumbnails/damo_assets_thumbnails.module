@@ -18,7 +18,13 @@ function damo_assets_thumbnails_media_presave(MediaInterface $media) {
   ) {
     /** @var \Drupal\damo_assets_thumbnails\Service\VideoThumbnail $service */
     $service = Drupal::service('damo_assets_thumbnails.video_thumbnail');
-    $thumbnail = $service->generateAssetThumbnail($media);
-    $media->set('thumbnail', $thumbnail);
+    try {
+      $thumbnail = $service->generateAssetThumbnail($media);
+      $media->set('thumbnail', $thumbnail);
+    }
+    catch (Exception $exception) {
+      Drupal::logger('damo_assets_thumbnails')->error($exception->getMessage());
+    }
+
   }
 }
