@@ -2,9 +2,13 @@
 
 namespace Drupal\damo_assets_thumbnails\Service;
 
+use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Session\AccountProxyInterface;
+use Drupal\Core\StreamWrapper\LocalStream;
+use Drupal\Core\StreamWrapper\StreamWrapperManagerInterface;
+use Drupal\damo_common\Service\DamoFileSystemInterface;
 use Drupal\file\FileInterface;
 use Drupal\media\MediaInterface;
 use FFMpeg\Coordinate\TimeCode;
@@ -21,7 +25,8 @@ use function str_replace;
  */
 class VideoThumbnail {
 
-  public const BASE_FOLDER = 'private://video-thumbnail';
+  public const BASE_FOLDER_NAME = 'video-thumbnail';
+
   public const EXTENSION = 'jpeg';
 
   /**
@@ -34,7 +39,7 @@ class VideoThumbnail {
   /**
    * File system.
    *
-   * @var \Drupal\Core\File\FileSystemInterface
+   * @var \Drupal\damo_common\Service\DamoFileSystemInterface
    */
   protected $fileSystem;
 
@@ -53,30 +58,92 @@ class VideoThumbnail {
   protected $currentUser;
 
   /**
+   * The system URI scheme (e.g private, s3).
+   *
+   * @var string
+   */
+  protected $uriScheme;
+
+  /**
+   * Stream wrapper manager.
+   *
+   * @var \Drupal\Core\StreamWrapper\StreamWrapperManagerInterface
+   */
+  protected $streamWrapperManager;
+
+  /**
    * VideoThumbnail constructor.
    *
    * @param \FFMpeg\FFMpeg $ffMpeg
    *   FFMpeg service.
-   * @param \Drupal\Core\File\FileSystemInterface $fileSystem
+   * @param \Drupal\damo_common\Service\DamoFileSystemInterface $fileSystem
    *   FileSystem.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
    *   Entity type manager.
    * @param \Drupal\Core\Session\AccountProxyInterface $currentUser
    *   The current user.
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
+   *   Config factory.
+   * @param \Drupal\Core\StreamWrapper\StreamWrapperManagerInterface
+   *   Stream wrapper manager.
    *
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
   public function __construct(
     FFMpeg $ffMpeg,
-    FileSystemInterface $fileSystem,
+    DamoFileSystemInterface $fileSystem,
     EntityTypeManagerInterface $entityTypeManager,
-    AccountProxyInterface $currentUser
+    AccountProxyInterface $currentUser,
+    ConfigFactoryInterface $configFactory,
+    StreamWrapperManagerInterface $streamWrapperManager
   ) {
     $this->ffMpeg = $ffMpeg;
     $this->fileSystem = $fileSystem;
     $this->fileStorage = $entityTypeManager->getStorage('file');
     $this->currentUser = $currentUser;
+    $this->uriScheme = $configFactory->get('system.file')
+      ->get('default_scheme');
+    $this->streamWrapperManager = $streamWrapperManager;
+  }
+
+  /**
+   * Returns the base folder for thumbnails.
+   *
+   * @return string
+   *   The base folder for thumbnails (including the uri scheme).
+   */
+  private function baseTargetFolder(): string {
+    return "{$this->uriScheme}://" . static::BASE_FOLDER_NAME;
+  }
+
+  /**
+   * Returns the folder for thumbnails.
+   *
+   * @param $baseFolder
+   *   The base folder.
+   *
+   * @return string
+   *   The thumbnail folder.
+   */
+  private function thumbnailTargetFolder($baseFolder): string {
+    return $baseFolder . '/' . (new DrupalDateTime())->format('Y-m');
+  }
+
+  /**
+   * Ensure that the target base folder exists.
+   *
+   * @param string $folderName
+   *   The name of the folder.
+   *
+   * @throws \RuntimeException
+   */
+  private function ensureFolder(string $folderName): void {
+    $result = $this->fileSystem->safeMkdir($folderName);
+
+    if ($result === FALSE) {
+      throw new RuntimeException("The {$folderName} folder could not be created.");
+    }
   }
 
   /**
@@ -87,16 +154,29 @@ class VideoThumbnail {
    * @param string $thumbnailFileName
    *   Desired filename of the extracted thumbnail.
    *
+   * @return string
+   *   The path to the extracted thumbnail.
+   *
    * @note: This function extracts the thumbnail to the filesystem.
    */
-  protected function extractThumbnailFromVideo($videoUri, $thumbnailFileName): void {
-    $thumbnailRealPath = $this->fileSystem->realpath(static::BASE_FOLDER) . '/' . $thumbnailFileName;
-
+  protected function extractThumbnailFromVideo($videoUri, $thumbnailFileName): string {
+    // Due to ffmpeg this needs to be a local path.
+    $temporaryPath = $this->fileSystem->realpath('temporary://video-file-thumbnail--' . $thumbnailFileName);
     /** @var \FFMpeg\Media\Video $video */
     $video = $this->ffMpeg->open($videoUri);
     $frame = $video->frame(TimeCode::fromSeconds(0));
-    $frame->save($thumbnailRealPath, TRUE);
+    $frame->save($temporaryPath, TRUE);
     // @todo: Handle exceptions, errors, double-check that the thumbnail was created.
+    $targetFolder = $this->thumbnailTargetFolder($this->baseTargetFolder());
+    $this->ensureFolder($targetFolder);
+    $targetPath = "{$targetFolder}/{$thumbnailFileName}";
+    $result = $this->fileSystem->move($temporaryPath, $targetPath);
+
+    if ($result === FALSE) {
+      throw new RuntimeException("The thumbnail could not be moved to {$targetPath}.");
+    }
+
+    return $targetPath;
   }
 
   /**
@@ -111,8 +191,31 @@ class VideoThumbnail {
   protected function generateThumbnailFileName(string $videoUri): string {
     $videoInfo = new SplFileInfo($videoUri);
     $thumbnailName = str_replace(".{$videoInfo->getExtension()}", '', $videoInfo->getFilename());
-    // @todo: Extract and add datestamp? E.g 2020-01, ...
     return $thumbnailName . '.' . static::EXTENSION;
+  }
+
+  /**
+   * Return the video source URI to be used with ffmpeg.
+   *
+   * @param \Drupal\file\FileInterface $video
+   *   The video file.
+   *
+   * @return string
+   *   The source uri (either a URL or a file path).
+   */
+  protected function sourceUri(FileInterface $video): string {
+    $scheme = $this->streamWrapperManager->getViaUri($video->getFileUri());
+
+    if ($scheme === FALSE) {
+      // @todo: Maybe throw an exception.
+      return $video->getFileUri();
+    }
+
+    if ($scheme instanceof LocalStream) {
+      return $video->getFileUri();
+    }
+
+    return file_create_url($video->getFileUri());
   }
 
   /**
@@ -128,13 +231,11 @@ class VideoThumbnail {
    */
   public function generateFileThumbnail(FileInterface $video): FileInterface {
     // @todo: Error handling.
-    // @todo: Update for s3 support.
-    $videoAbsoluteUri = $this->fileSystem->realpath($video->getFileUri());
-    $thumbnailFileName = $this->generateThumbnailFileName($videoAbsoluteUri);
-    $this->extractThumbnailFromVideo($videoAbsoluteUri, $thumbnailFileName);
+    $thumbnailFileName = $this->generateThumbnailFileName($video->getFileUri());
+    $destinationPath = $this->extractThumbnailFromVideo($this->sourceUri($video), $thumbnailFileName);
     // For the actual file entity we have to use the wrapped path.
     // Realpath is going to break things.
-    $thumbnailInfo = new SplFileInfo(static::BASE_FOLDER . '/' . $thumbnailFileName);
+    $thumbnailInfo = new SplFileInfo($destinationPath);
     /** @var \Drupal\file\FileInterface $thumbnailFile */
     $thumbnailFile = $this->fileStorage->create([
       'uri' => $thumbnailInfo->getPathname(),

@@ -3,6 +3,8 @@ services:
     class: Drupal\damo_assets_thumbnails\Service\VideoThumbnail
     arguments:
       - '@php_ffmpeg'
-      - '@file_system'
+      - '@damo_common.file_system'
       - '@entity_type.manager'
       - '@current_user'
+      - '@config.factory'
+      - '@stream_wrapper_manager'
