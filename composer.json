@@ -85,7 +85,7 @@
                 "Replace 'administrator' role with 'maintainer, removed response setting, left out access denied errors'.": "https://raw.githubusercontent.com/brainsum/composer-patches/master/drupal-module/exception-mailer/3.x/exception-mailer-role-update-remove-response-setting-leave-out-access-denied-errors.patch"
             },
             "drupal/filehash": {
-                "Check duplicates only for media last revision. Link media on duplicate.": "https://raw.githubusercontent.com/brainsum/composer-patches/master/drupal-module/filehash/1.x/filehash-validate-last-media-revision-link-media.patch"
+                "Check duplicates only for media last revision. Link media on duplicate.": "https://raw.githubusercontent.com/brainsum/composer-patches/master/drupal-module/filehash/1.x/filehash-validate-last-media-revision-link-media.2.patch"
             },
             "drupal/media_entity_video": {
                 "Core media compatibility issues": "https://www.drupal.org/files/issues/2020-01-05/media_entity_video-2930974-8.patch"
