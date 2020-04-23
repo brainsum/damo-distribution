@@ -23,6 +23,7 @@ function damo_assets_thumbnails_media_presave(MediaInterface $media) {
       $media->set('thumbnail', $thumbnail);
     }
     catch (Exception $exception) {
+      Drupal::messenger()->addError(t('The thumbnail for the video could not be generated automatically.'));
       Drupal::logger('damo_assets_thumbnails')->error($exception->getMessage());
     }
 
