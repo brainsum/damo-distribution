@@ -2,12 +2,10 @@
 
 namespace Drupal\damo_assets\Plugin\Block;
 
-use Drupal;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
@@ -32,6 +30,8 @@ use function in_array;
  * @package Drupal\damo_assets\Plugin\Block
  */
 class DamNavigationBlock extends BlockBase implements ContainerFactoryPluginInterface {
+
+  public const FRONTPAGE_ROUTE = 'view.asset_search.asset_search';
 
   /**
    * The current request.
@@ -62,11 +62,11 @@ class DamNavigationBlock extends BlockBase implements ContainerFactoryPluginInte
   protected $entityTypeManager;
 
   /**
-   * Module handler service.
+   * Markup generator service or NULL.
    *
-   * @var \Drupal\Core\Extension\ModuleHandlerInterface
+   * @var \Drupal\media_collection\Service\HeaderMarkupGenerator|null
    */
-  protected $moduleHandler;
+  protected $headerMarkupGenerator;
 
   /**
    * {@inheritdoc}
@@ -77,6 +77,10 @@ class DamNavigationBlock extends BlockBase implements ContainerFactoryPluginInte
     $plugin_id,
     $plugin_definition
   ) {
+    $markupGenerator = $container->has('media_collection.generator.header_markup')
+      ? $container->get('media_collection.generator.header_markup')
+      : NULL;
+
     return new static(
       $configuration,
       $plugin_id,
@@ -85,7 +89,7 @@ class DamNavigationBlock extends BlockBase implements ContainerFactoryPluginInte
       $container->get('current_route_match'),
       $container->get('current_user'),
       $container->get('entity_type.manager'),
-      $container->get('module_handler')
+      $markupGenerator
     );
   }
 
@@ -102,7 +106,7 @@ class DamNavigationBlock extends BlockBase implements ContainerFactoryPluginInte
     RouteMatchInterface $routeMatch,
     AccountProxyInterface $user,
     EntityTypeManagerInterface $entityTypeManager,
-    ModuleHandlerInterface $moduleHandler
+    $headerMarkupGenerator = NULL
   ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
 
@@ -110,10 +114,8 @@ class DamNavigationBlock extends BlockBase implements ContainerFactoryPluginInte
     $this->routeMatch = $routeMatch;
     $this->user = $user;
     $this->entityTypeManager = $entityTypeManager;
-    $this->moduleHandler = $moduleHandler;
+    $this->headerMarkupGenerator = $headerMarkupGenerator;
   }
-
-  public const FRONTPAGE_ROUTE = 'view.asset_search.asset_search';
 
   /**
    * Get type data.
@@ -294,7 +296,7 @@ class DamNavigationBlock extends BlockBase implements ContainerFactoryPluginInte
         '#suffix' => '</nav>',
       ],
     ];
-    $routeName = Drupal::routeMatch()->getRouteName();
+    $routeName = $this->routeMatch->getRouteName();
 
     if (!in_array($routeName, ['entity.media.add_page', 'entity.media.add_form'], TRUE)) {
       $build['extension_wrapper'] = [
@@ -323,12 +325,9 @@ class DamNavigationBlock extends BlockBase implements ContainerFactoryPluginInte
         ],
       ];
 
-      if ($this->moduleHandler->moduleExists('media_collection')) {
-        /** @var \Drupal\media_collection\Service\HeaderMarkupGenerator $generator */
-        $generator = Drupal::service('media_collection.generator.header_markup');
-
-        $build['extension_wrapper']['media_collection__empty'] = $generator->emptyMediaCollectionLink();
-        $build['extension_wrapper']['media_collection__with_items'] = $generator->withItemsMediaCollectionLink();
+      if ($this->headerMarkupGenerator !== NULL) {
+        $build['extension_wrapper']['media_collection__empty'] = $this->headerMarkupGenerator->emptyMediaCollectionLink();
+        $build['extension_wrapper']['media_collection__with_items'] = $this->headerMarkupGenerator->withItemsMediaCollectionLink();
       }
 
       $build['back_button'] = [
@@ -347,10 +346,7 @@ class DamNavigationBlock extends BlockBase implements ContainerFactoryPluginInte
    */
   protected function blockAccess(AccountInterface $account) {
     // Protect block access with permission check.
-    if ($account->hasPermission('access media asset navigation block')) {
-      return AccessResult::allowed();
-    }
-    return AccessResult::forbidden();
+    return AccessResult::allowedIfHasPermission($account, 'access media asset navigation block');
   }
 
   /**

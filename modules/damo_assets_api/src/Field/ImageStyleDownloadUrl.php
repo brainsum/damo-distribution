@@ -43,6 +43,7 @@ class ImageStyleDownloadUrl extends FieldItemList {
     parent::__construct($definition, $name, $parent);
 
     // @todo: Dep.inj.
+    // @see: https://www.drupal.org/project/drupal/issues/2053415
     $this->imageStyleStorage = Drupal::entityTypeManager()->getStorage('image_style');
   }
 

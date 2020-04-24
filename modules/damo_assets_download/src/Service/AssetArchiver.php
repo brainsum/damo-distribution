@@ -67,7 +67,7 @@ class AssetArchiver {
 
     if (!$this->fileSystem->safeMkdir($directory)) {
       // @todo: Throw exception.
-      NULL;
+      return NULL;
     }
 
     $location = $this->fileSystem->realpath($directory . '/' . $fileName);

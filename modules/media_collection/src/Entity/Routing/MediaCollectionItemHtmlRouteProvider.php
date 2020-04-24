@@ -52,6 +52,8 @@ class MediaCollectionItemHtmlRouteProvider extends AdminHtmlRouteProvider {
 
       return $route;
     }
+
+    return NULL;
   }
 
 }

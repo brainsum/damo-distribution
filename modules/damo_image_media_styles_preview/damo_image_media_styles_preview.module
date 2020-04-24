@@ -50,7 +50,7 @@ function _damo_image_media_styles_preview_is_media_image(EntityInterface $entity
 function damo_image_media_styles_preview_entity_view_alter(array &$view_mode, EntityInterface $entity, EntityViewDisplay $context) {
   if ($view_mode['#view_mode'] === 'full' && _damo_image_media_styles_preview_is_media_image($entity)) {
     /** @var \Drupal\media\MediaInterface $entity */
-    $view_mode['field_image_preview_list'] = (new AssetPreviewListMarkup())->render($entity);
+    $view_mode['field_image_preview_list'] = AssetPreviewListMarkup::create(Drupal::getContainer())->render($entity);
   }
 }
 
@@ -73,14 +73,15 @@ function _damo_image_media_styles_preview_get_entity_media_field_name(string $ty
  * @param \Drupal\file\FileInterface $file
  *   The image file.
  *
- * @return null|string
+ * @return string
  *   The image source.
- * @throws InvalidArgumentException
  *
+ * @throws InvalidArgumentException
  */
 function _damo_image_media_styles_preview_get_image_uri(FileInterface $file) {
   /** @var \Drupal\Core\Image\Image $image_loaded */
   $image_loaded = Drupal::service('image.factory')->get($file->getFileUri());
+
   if (!$image_loaded->isValid()) {
     throw new InvalidArgumentException('The file with id ' . $file->id() . ' is not an image.');
   }
@@ -103,7 +104,7 @@ function damo_image_media_styles_preview_media_update(EntityInterface $entity) {
     $image = $entity->{$field_name}->first();
     /** @var \Drupal\file\FileStorageInterface $fileStorage */
     $fileStorage = Drupal::entityTypeManager()->getStorage('file');
-    /** @var \Drupal\file\FileInterface $file */
+    /** @var \Drupal\file\FileInterface|null $file */
     $file = $fileStorage->load($image->target_id);
 
     if ($file === NULL) {

@@ -190,15 +190,10 @@ final class CollectionHandler {
     $collections = $this->collectionStorage->loadByProperties([
       $this->collectionStorage->getEntityType()->getKey('owner') => $userId,
     ]);
-
-    if (empty($collections)) {
-      return NULL;
-    }
-
-    /** @var \Drupal\media_collection\Entity\MediaCollectionInterface $collection */
+    /** @var \Drupal\media_collection\Entity\MediaCollectionInterface|false $collection */
     $collection = reset($collections);
     // @todo: What if there are more than 1 (=== inconsistent state)?
-    return $collection;
+    return $collection ?? NULL;
   }
 
   /**
@@ -213,10 +208,10 @@ final class CollectionHandler {
    * @throws \RuntimeException
    */
   public function clearCollectionForUser(UserInterface $user): MediaCollectionInterface {
-    /** @var \Drupal\media_collection\Entity\MediaCollectionInterface $collection */
     $collection = $this->loadCollectionForUser($user->id());
 
     if ($collection === NULL) {
+      /** @var \Drupal\media_collection\Entity\MediaCollectionInterface $collection */
       $collection = $this->collectionStorage->create();
       $collection->setOwner($user);
     }

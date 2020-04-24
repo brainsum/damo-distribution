@@ -84,7 +84,7 @@ class VideoThumbnail {
    *   The current user.
    * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
    *   Config factory.
-   * @param \Drupal\Core\StreamWrapper\StreamWrapperManagerInterface
+   * @param \Drupal\Core\StreamWrapper\StreamWrapperManagerInterface $streamWrapperManager
    *   Stream wrapper manager.
    *
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
@@ -102,7 +102,8 @@ class VideoThumbnail {
     $this->fileSystem = $fileSystem;
     $this->fileStorage = $entityTypeManager->getStorage('file');
     $this->currentUser = $currentUser;
-    $this->uriScheme = $configFactory->get('system.file')
+    $this->uriScheme = $configFactory
+      ->get('system.file')
       ->get('default_scheme');
     $this->streamWrapperManager = $streamWrapperManager;
   }
@@ -120,13 +121,13 @@ class VideoThumbnail {
   /**
    * Returns the folder for thumbnails.
    *
-   * @param $baseFolder
+   * @param string $baseFolder
    *   The base folder.
    *
    * @return string
    *   The thumbnail folder.
    */
-  private function thumbnailTargetFolder($baseFolder): string {
+  private function thumbnailTargetFolder(string $baseFolder): string {
     return $baseFolder . '/' . (new DrupalDateTime())->format('Y-m');
   }
 
@@ -170,13 +171,7 @@ class VideoThumbnail {
     $targetFolder = $this->thumbnailTargetFolder($this->baseTargetFolder());
     $this->ensureFolder($targetFolder);
     $targetPath = "{$targetFolder}/{$thumbnailFileName}";
-    $result = $this->fileSystem->move($temporaryPath, $targetPath);
-
-    if ($result === FALSE) {
-      throw new RuntimeException("The thumbnail could not be moved to {$targetPath}.");
-    }
-
-    return $targetPath;
+    return $this->fileSystem->move($temporaryPath, $targetPath);
   }
 
   /**

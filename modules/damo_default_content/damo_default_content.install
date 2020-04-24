@@ -9,7 +9,7 @@
  * Implements hook_install().
  */
 function damo_default_content_install() {
-  /** @var \Drupal\taxonomy\TermStorageInterface $taxonomyStorage */
+  /** @var \Drupal\taxonomy\TermStorageInterface $termStorage */
   $termStorage = Drupal::entityTypeManager()->getStorage('taxonomy_term');
 
   $categories = [
