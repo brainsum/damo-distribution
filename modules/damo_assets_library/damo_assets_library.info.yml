@@ -2,6 +2,8 @@ name: "Media Assets Library"
 type: module
 description: Media assets library functionality.
 core: 8.x
+core_version_requirement: ^8.7 || ^9
+
 package: 'Digital Assets Management'
 dependencies:
   - drupal:system (>=8.4)

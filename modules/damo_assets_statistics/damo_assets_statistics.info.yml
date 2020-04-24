@@ -2,6 +2,8 @@ name: "Media Statistics"
 type: module
 description: Media statistics.
 core: 8.x
+core_version_requirement: ^8.7 || ^9
+
 package: 'Digital Assets Management'
 dependencies:
   - drupal:system (>=8.7)

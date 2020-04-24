@@ -2,6 +2,8 @@ name: "Media Asset Thumbnails"
 type: module
 description: Media assets thumbnails functionality
 core: 8.x
+core_version_requirement: ^8.7 || ^9
+
 package: 'Digital Assets Management'
 
 dependencies:
