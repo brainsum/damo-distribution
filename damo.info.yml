@@ -33,6 +33,7 @@ install:
   - damo:damo_image_media_styles_preview
   - damo:media_collection
   - damo:media_collection_share
+  - damo:damo_default_content
 
 # Hard dependencies.
 dependencies:
