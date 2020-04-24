@@ -2,10 +2,10 @@
 
 namespace Drupal\damo_assets_api\Authentication\Provider;
 
-use Drupal;
 use Drupal\basic_auth\Authentication\Provider\BasicAuth;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Flood\FloodInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\user\UserAuthInterface;
@@ -41,12 +41,18 @@ class BasicAuthWithExclude extends BasicAuth {
   /**
    * {@inheritdoc}
    */
-  public function __construct(ConfigFactoryInterface $config_factory, UserAuthInterface $user_auth, FloodInterface $flood, EntityTypeManagerInterface $entity_type_manager) {
+  public function __construct(
+    ConfigFactoryInterface $config_factory,
+    UserAuthInterface $user_auth,
+    FloodInterface $flood,
+    EntityTypeManagerInterface $entity_type_manager,
+    RouteMatchInterface $routeMatch,
+    ModuleHandlerInterface $moduleHandler
+  ) {
     parent::__construct($config_factory, $user_auth, $flood, $entity_type_manager);
 
-    // @todo: Proper dep.inj.
-    $this->routeMatch = Drupal::routeMatch();
-    $this->moduleHandler = Drupal::moduleHandler();
+    $this->routeMatch = $routeMatch;
+    $this->moduleHandler = $moduleHandler;
     $this->userStorage = $entity_type_manager->getStorage('user');
   }
 

@@ -88,6 +88,8 @@ class SharedMediaCollectionForm extends ContentEntityForm {
         ]));
     }
     $form_state->setRedirect('entity.shared_media_collection.canonical', ['shared_media_collection' => $entity->id()]);
+
+    return $status;
   }
 
 }

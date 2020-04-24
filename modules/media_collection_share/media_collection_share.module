@@ -219,11 +219,10 @@ function media_collection_share_preprocess_media_collection_item(array &$variabl
       ],
     ];
 
-    /** @var \Drupal\Core\Entity\EntityStorageInterface $mediaTypeStorage */
     $mediaTypeStorage = Drupal::entityTypeManager()->getStorage('media_type');
 
-    /** @var \Drupal\media\MediaTypeInterface $mediaType */
     if ($mediaType = $mediaTypeStorage->load($item->media()->bundle())) {
+      /** @var \Drupal\media\MediaTypeInterface $mediaType */
       $variables['additional_shared_item_data']['usage_advice'] = [
         '#type' => 'container',
         'title' => [
@@ -418,10 +417,10 @@ function media_collection_share_media_access(MediaInterface $media, $operation, 
   $entityTypeManager = Drupal::entityTypeManager();
   $sharedStorage = $entityTypeManager->getStorage('shared_media_collection');
   $sharedCollections = $sharedStorage->loadByProperties(['uuid' => $currentUuid]);
-  /** @var \Drupal\media_collection_share\Entity\SharedMediaCollectionInterface $sharedCollection */
+  /** @var \Drupal\media_collection_share\Entity\SharedMediaCollectionInterface|null $sharedCollection */
   $sharedCollection = reset($sharedCollections);
 
-  if ($sharedCollection === NULL) {
+  if (!$sharedCollection) {
     return AccessResult::neutral();
   }
 

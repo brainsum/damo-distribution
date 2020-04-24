@@ -57,7 +57,7 @@ class CollectionController extends ControllerBase {
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
   public function currentUserCollection(): array {
-    /** @var \Drupal\user\UserInterface $user */
+    /** @var \Drupal\user\UserInterface|null $user */
     $user = $this->entityTypeManager()->getStorage('user')->load($this->currentUser()->id());
 
     if ($user === NULL) {
@@ -107,7 +107,7 @@ class CollectionController extends ControllerBase {
    * @throws \Symfony\Component\HttpKernel\Exception\HttpException
    */
   public function clearCollectionForCurrentUser(): RedirectResponse {
-    /** @var \Drupal\user\UserInterface $user */
+    /** @var \Drupal\user\UserInterface|null $user */
     $user = $this->entityTypeManager()->getStorage('user')->load($this->currentUser()->id());
 
     if ($user === NULL) {

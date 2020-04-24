@@ -88,6 +88,9 @@ class MediaCollectionForm extends ContentEntityForm {
         ]));
     }
     $form_state->setRedirect('entity.media_collection.canonical', ['media_collection' => $entity->id()]);
+
+    return $status;
+
   }
 
 }

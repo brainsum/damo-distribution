@@ -2,9 +2,12 @@
 
 namespace Drupal\damo_image_media_styles_preview\Render;
 
-use Drupal;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Form\FormBuilderInterface;
+use Drupal\Core\Image\ImageFactory;
 use Drupal\Core\Link;
 use Drupal\Core\Messenger\MessengerTrait;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Url;
 use Drupal\damo_common\Temporary\ImageStyleLoader;
@@ -12,6 +15,7 @@ use Drupal\damo_image_media_styles_preview\Form\MediaAssetFilterForm;
 use Drupal\file\Entity\File;
 use Drupal\media\MediaInterface;
 use InvalidArgumentException;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use function array_shift;
 use function array_values;
 use function drupal_get_path;
@@ -31,7 +35,7 @@ use function strtolower;
  *
  * @package Drupal\damo_image_media_styles_preview\Render
  */
-class AssetPreviewListMarkup {
+final class AssetPreviewListMarkup {
 
   use MessengerTrait;
   use StringTranslationTrait;
@@ -93,18 +97,56 @@ class AssetPreviewListMarkup {
   protected $currentUser;
 
   /**
-   * AssetPreviewListMarkup constructor.
+   * Create a class instance.
+   *
+   * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
+   *   The dependency injection container.
+   *
+   * @return \Drupal\damo_image_media_styles_preview\Render\AssetPreviewListMarkup
+   *   The class instance.
    */
-  public function __construct() {
-    // @todo: Proper Dep.Inj.
-    $this->currentUser = Drupal::currentUser();
-    $this->formBuilder = Drupal::formBuilder();
-    $this->entityTypeManager = Drupal::entityTypeManager();
-    $this->imageFactory = Drupal::service('image.factory');
+  public static function create(ContainerInterface $container): AssetPreviewListMarkup {
+    $collectionHandler = $container->has('media_collection.collection_handler')
+      ? $container->get('media_collection.collection_handler')
+      : NULL;
 
-    if (Drupal::moduleHandler()->moduleExists('media_collection')) {
-      /** @var \Drupal\media_collection\Service\CollectionHandler $handler */
-      $this->collectionHandler = Drupal::service('media_collection.collection_handler');
+    return new static(
+      $container->get('current_user'),
+      $container->get('form_builder'),
+      $container->get('entity_type.manager'),
+      $container->get('image.factory'),
+      $collectionHandler
+    );
+  }
+
+  /**
+   * AssetPreviewListMarkup constructor.
+   *
+   * @param \Drupal\Core\Session\AccountInterface $currentUser
+   *   The current user.
+   * @param \Drupal\Core\Form\FormBuilderInterface $formBuilder
+   *   The form builder.
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
+   *   The entity type manager.
+   * @param \Drupal\Core\Image\ImageFactory $imageFactory
+   *   The image factory.
+   * @param null $collectionHandler
+   *   Collection handler if it exists.
+   */
+  public function __construct(
+    AccountInterface $currentUser,
+    FormBuilderInterface $formBuilder,
+    EntityTypeManagerInterface $entityTypeManager,
+    ImageFactory $imageFactory,
+    $collectionHandler = NULL
+  ) {
+    $this->currentUser = $currentUser;
+    $this->formBuilder = $formBuilder;
+    $this->entityTypeManager = $entityTypeManager;
+    $this->imageFactory = $imageFactory;
+    $this->collectionHandler = $collectionHandler;
+
+    if ($this->collectionHandler !== NULL) {
       $this->currentCollection = $this->collectionHandler->loadCollectionForUser($this->currentUser->id());
 
       $modulePath = drupal_get_path('module', 'media_collection');
@@ -146,17 +188,16 @@ class AssetPreviewListMarkup {
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
   public function render(MediaInterface $media): array {
-    /** @var \Drupal\media\MediaInterface $media */
     $fieldName = $this->getFieldName($media->bundle());
     /** @var \Drupal\image\Plugin\Field\FieldType\ImageItem $image */
     $image = $media->{$fieldName}->first();
-    /** @var \Drupal\file\Entity\File $file */
+    /** @var \Drupal\file\Entity\File|null $file */
     $file = $this->entityTypeManager->getStorage('file')
       ->load($image->target_id);
 
-    if (NULL === $file) {
+    if ($file === NULL) {
       $this->messenger()
-        ->addMessage("The image '{$image->getName()}' is not found.", 'error');
+        ->addMessage("The image '{$image->getName()}' was not found.", 'error');
       return [];
     }
 

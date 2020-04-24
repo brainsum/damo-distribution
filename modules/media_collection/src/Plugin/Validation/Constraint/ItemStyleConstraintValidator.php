@@ -2,8 +2,10 @@
 
 namespace Drupal\media_collection\Plugin\Validation\Constraint;
 
-use Drupal;
+use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\damo_common\Temporary\ImageStyleLoader;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use function array_keys;
@@ -12,7 +14,35 @@ use function in_array;
 /**
  * Validates the ItemStyleConstraint constraint.
  */
-class ItemStyleConstraintValidator extends ConstraintValidator {
+final class ItemStyleConstraintValidator extends ConstraintValidator implements ContainerInjectionInterface {
+
+  /**
+   * Entity type manager.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
+  protected $entityTypeManager;
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('entity_type.manager')
+    );
+  }
+
+  /**
+   * ItemStyleConstraintValidator constructor.
+   *
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
+   *   Entity type manager.
+   */
+  public function __construct(
+    EntityTypeManagerInterface $entityTypeManager
+  ) {
+    $this->entityTypeManager = $entityTypeManager;
+  }
 
   /**
    * Return the allowed style IDs.
@@ -24,8 +54,7 @@ class ItemStyleConstraintValidator extends ConstraintValidator {
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
   private function allowedStyles(): array {
-    // @todo: Dep. inj.
-    return array_keys(ImageStyleLoader::loadImageStylesList(Drupal::entityTypeManager()));
+    return array_keys(ImageStyleLoader::loadImageStylesList($this->entityTypeManager));
   }
 
   /**
@@ -34,13 +63,12 @@ class ItemStyleConstraintValidator extends ConstraintValidator {
   public function validate($items, Constraint $constraint) {
     /** @var \Drupal\Core\Field\EntityReferenceFieldItemListInterface $items */
     /** @var \Drupal\media_collection\Entity\MediaCollectionInterface $parent */
+    /** @var \Drupal\media_collection\Entity\MediaCollectionItemInterface $collectionItem */
     $collectionItem = $items->getEntity();
-    /** @var \Drupal\media\MediaInterface $media */
-    $media = $collectionItem->get('media')->entity;
-    $mediaType = $media === NULL ? NULL : $media->bundle();
+    $media = $collectionItem->media();
 
-    if ($mediaType !== NULL && $mediaType !== 'image' && !$items->isEmpty()) {
-      $this->context->addViolation($constraint->isNotAnImage, ['%type' => $mediaType]);
+    if ($media->bundle() !== 'image' && !$items->isEmpty()) {
+      $this->context->addViolation($constraint->isNotAnImage, ['%type' => $media->bundle()]);
       return;
     }
 

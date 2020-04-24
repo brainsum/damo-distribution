@@ -102,11 +102,11 @@ final class FileSizeCalculator {
    * @param \Drupal\file\FileInterface $file
    *   Archive file.
    *
-   * @return int|null
-   *   The size in bytes or NULL.
+   * @return int
+   *   The size in bytes.
    */
-  public function fileSize(FileInterface $file): ?int {
-    return $file ? $this->fileSizeByPath($file->getFileUri()) : NULL;
+  public function fileSize(FileInterface $file): int {
+    return $this->fileSizeByPath($file->getFileUri());
   }
 
   /**
@@ -124,7 +124,6 @@ final class FileSizeCalculator {
     /** @var \Drupal\media_collection\Entity\MediaCollectionItemInterface $item */
     foreach ($collection->items() as $item) {
       // @todo: Add media_predelete and remove items?
-      /** @var \Drupal\media\MediaInterface $media */
       $media = $item->media();
 
       if ($media->bundle() === 'image') {
@@ -159,7 +158,7 @@ final class FileSizeCalculator {
 
     /** @var \Drupal\image\Plugin\Field\FieldType\ImageItem $item */
     foreach ($media->get('field_image') as $item) {
-      /** @var \Drupal\file\FileInterface $file */
+      /** @var \Drupal\file\FileInterface|null $file */
       $file = $item->entity;
 
       if ($file === NULL) {
@@ -222,7 +221,7 @@ final class FileSizeCalculator {
 
       /** @var \Drupal\file\Plugin\Field\FieldType\FileItem|\Drupal\image\Plugin\Field\FieldType\ImageItem $item */
       foreach ($fileField as $item) {
-        /** @var \Drupal\file\FileInterface $file */
+        /** @var \Drupal\file\FileInterface|null $file */
         $file = $item->entity;
 
         if ($file === NULL) {

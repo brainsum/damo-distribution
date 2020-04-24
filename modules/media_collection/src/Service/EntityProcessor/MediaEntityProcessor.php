@@ -49,8 +49,8 @@ class MediaEntityProcessor {
    *
    * @param \Drupal\media\MediaInterface $media
    *   The media entity.
-   * @param \Drupal\image\ImageStyleInterface|null $imageStyle
-   *   (Optional) image styling.
+   * @param \Drupal\image\ImageStyleInterface $imageStyle
+   *   Image style.
    *
    * @return \Drupal\damo_assets_download\Model\FileArchivingData[]
    *   Array of processed entity data.
@@ -61,9 +61,10 @@ class MediaEntityProcessor {
     $styleLabel = $imageStyle->label();
     $mediaLabel = $media->bundle();
     /** @var \Drupal\media\MediaTypeInterface $mediaType */
-    $mediaType = $this->mediaTypeStorage->load($media->bundle());
+    $mediaType = $this->mediaTypeStorage->load($mediaLabel);
 
     if ($mediaType !== NULL) {
+      // The label is human-readable, the bundle is just a machine name.
       $mediaLabel = $mediaType->label();
     }
 
@@ -71,7 +72,7 @@ class MediaEntityProcessor {
 
     /** @var \Drupal\image\Plugin\Field\FieldType\ImageItem $item */
     foreach ($media->get('field_image') as $item) {
-      /** @var \Drupal\file\FileInterface $file */
+      /** @var \Drupal\file\FileInterface|null $file */
       $file = $item->entity;
 
       if ($file === NULL) {
@@ -142,7 +143,7 @@ class MediaEntityProcessor {
 
       /** @var \Drupal\file\Plugin\Field\FieldType\FileItem|\Drupal\image\Plugin\Field\FieldType\ImageItem $item */
       foreach ($fileField as $item) {
-        /** @var \Drupal\file\FileInterface $file */
+        /** @var \Drupal\file\FileInterface|null $file */
         $file = $item->entity;
 
         if ($file === NULL) {

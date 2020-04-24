@@ -41,8 +41,8 @@ function damo_assets_form_views_exposed_form_alter(array &$form, FormStateInterf
  *   The type or NULL.
  */
 function _damo_assets_request_to_type(Request $request) {
-  /** @var \Drupal\media\MediaInterface $media */
   if ($media = $request->attributes->get('media', NULL)) {
+    /** @var \Drupal\media\MediaInterface $media */
     return $media->bundle();
   }
 
@@ -54,8 +54,8 @@ function _damo_assets_request_to_type(Request $request) {
   }
 
   $types = explode(' ', strtolower($mediaTypes));
-
-  return reset($types);
+  $type = reset($types);
+  return $type ?? NULL;
 }
 
 /**
@@ -137,7 +137,6 @@ function damo_assets_preprocess_page(array &$variables) {
  * Implements hook_preprocess_HOOK().
  */
 function damo_assets_preprocess_html(array &$variables) {
-  /** @var \Drupal\Core\Routing\RouteMatchInterface $routeMatch */
   $routeMatch = Drupal::routeMatch();
   $routeName = $routeMatch->getRouteName();
   switch ($routeName) {
@@ -163,7 +162,6 @@ function damo_assets_preprocess_html(array &$variables) {
  * Implements hook_ENTITY_TYPE_presave().
  */
 function damo_assets_media_presave(MediaInterface $media) {
-  /** @var \Drupal\Core\Session\AccountProxyInterface $currentUser */
   $currentUser = Drupal::currentUser();
   $owner = ($media->getOwner()->id() === $currentUser->id()) ? 'own' : 'any';
 
@@ -176,7 +174,6 @@ function damo_assets_media_presave(MediaInterface $media) {
   if ($media->bundle() === 'image') {
     /** @var \Drupal\image\Plugin\Field\FieldType\ImageItem $item */
     foreach ($media->get('field_image') as $index => $item) {
-      /** @var \Drupal\Core\TypedData\Plugin\DataType\StringData $altVal */
       if (empty(trim($item->get('alt')->getString()))) {
         $item->set('alt', $media->getName());
       }
