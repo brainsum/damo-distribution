@@ -12,6 +12,8 @@ use Drupal\media\MediaInterface;
  */
 function damo_assets_thumbnails_media_presave(MediaInterface $media) {
   // @todo: Remove custom-thumbnail, expose thumbnail on forms, etc?
+  // @todo: Add condition about thumbnail being the default.
+  // @todo: Also regenerate when the video changes.
   if (
     $media->bundle() === 'video_file'
     && $media->get('field_custom_thumbnail')->isEmpty()
@@ -26,6 +28,5 @@ function damo_assets_thumbnails_media_presave(MediaInterface $media) {
       Drupal::messenger()->addError(t('The thumbnail for the video could not be generated automatically.'));
       Drupal::logger('damo_assets_thumbnails')->error($exception->getMessage());
     }
-
   }
 }
