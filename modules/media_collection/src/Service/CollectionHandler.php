@@ -193,7 +193,7 @@ final class CollectionHandler {
     /** @var \Drupal\media_collection\Entity\MediaCollectionInterface|false $collection */
     $collection = reset($collections);
     // @todo: What if there are more than 1 (=== inconsistent state)?
-    return $collection ?? NULL;
+    return $collection === FALSE ? NULL : $collection;
   }
 
   /**
