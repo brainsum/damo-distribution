@@ -42,3 +42,14 @@ function damo_s3_entity_base_field_info_alter(array &$fields, EntityTypeInterfac
     $fields['assets_archive']->setSetting('uri_scheme', 's3');
   }
 }
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function damo_s3_preprocess_image(array &$variables) {
+  if (!isset($variables['#cache'])) {
+    $variables['#cache'] = [];
+  }
+
+  $variables['#cache']['max-age'] = Drupal::service('damo_s3.image_style_cache')->maxAge();
+}

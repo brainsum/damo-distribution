@@ -1,0 +1,6 @@
+services:
+  damo_s3.image_style_cache:
+    class: Drupal\damo_s3\Service\ImageStyleCache
+    arguments:
+      - '@module_handler'
+      - '@config.factory'

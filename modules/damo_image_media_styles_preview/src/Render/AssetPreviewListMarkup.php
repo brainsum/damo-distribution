@@ -97,6 +97,20 @@ final class AssetPreviewListMarkup {
   protected $currentUser;
 
   /**
+   * Image style cache service.
+   *
+   * @var \Drupal\damo_s3\Service\ImageStyleCache
+   */
+  protected $imageStyleCache;
+
+  /**
+   * The image style cache max-age.
+   *
+   * @var int|null
+   */
+  protected $imageStyleCacheMaxAge;
+
+  /**
    * Create a class instance.
    *
    * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
@@ -109,13 +123,17 @@ final class AssetPreviewListMarkup {
     $collectionHandler = $container->has('media_collection.collection_handler')
       ? $container->get('media_collection.collection_handler')
       : NULL;
+    $imageStyleCache = $container->has('damo_s3.image_style_cache')
+      ? $container->get('damo_s3.image_style_cache')
+      : NULL;
 
     return new static(
       $container->get('current_user'),
       $container->get('form_builder'),
       $container->get('entity_type.manager'),
       $container->get('image.factory'),
-      $collectionHandler
+      $collectionHandler,
+      $imageStyleCache
     );
   }
 
@@ -130,26 +148,65 @@ final class AssetPreviewListMarkup {
    *   The entity type manager.
    * @param \Drupal\Core\Image\ImageFactory $imageFactory
    *   The image factory.
-   * @param null $collectionHandler
+   * @param \Drupal\media_collection\Service\CollectionHandler|null $collectionHandler
    *   Collection handler if it exists.
+   * @param \Drupal\damo_s3\Service\ImageStyleCache|null $imageStyleCache
+   *   Image style cache service.
    */
   public function __construct(
     AccountInterface $currentUser,
     FormBuilderInterface $formBuilder,
     EntityTypeManagerInterface $entityTypeManager,
     ImageFactory $imageFactory,
-    $collectionHandler = NULL
+    $collectionHandler = NULL,
+    $imageStyleCache = NULL
   ) {
     $this->currentUser = $currentUser;
     $this->formBuilder = $formBuilder;
     $this->entityTypeManager = $entityTypeManager;
     $this->imageFactory = $imageFactory;
     $this->collectionHandler = $collectionHandler;
+    $this->imageStyleCache = $imageStyleCache;
+  }
 
-    if ($this->collectionHandler !== NULL) {
-      $this->currentCollection = $this->collectionHandler->loadCollectionForUser($this->currentUser->id());
+  /**
+   * Initialize the image style cache.
+   *
+   * @return bool
+   *   TRUE if it is initialized.
+   */
+  protected function initCacheMaxAge(): bool {
+    if ($this->imageStyleCache === NULL) {
+      return FALSE;
+    }
 
-      $modulePath = drupal_get_path('module', 'media_collection');
+    if ($this->imageStyleCacheMaxAge) {
+      return TRUE;
+    }
+
+    $this->imageStyleCacheMaxAge = $this->imageStyleCache->maxAge();
+    return TRUE;
+  }
+
+  /**
+   * Initialize the collection handler features.
+   *
+   * @return bool
+   *   TRUE if it is initialized.
+   */
+  protected function initCollectionHandler(): bool {
+    if ($this->collectionHandler === NULL) {
+      return FALSE;
+    }
+
+    if ($this->itemInCollectionIcon && $this->addToCollectionIcon) {
+      return TRUE;
+    }
+
+    $this->currentCollection = $this->collectionHandler->loadCollectionForUser($this->currentUser->id());
+    $modulePath = drupal_get_path('module', 'media_collection');
+
+    if ($this->itemInCollectionIcon === NULL) {
       $this->itemInCollectionIcon = [
         '#type' => 'html_tag',
         '#tag' => 'img',
@@ -161,6 +218,9 @@ final class AssetPreviewListMarkup {
           ],
         ],
       ];
+    }
+
+    if ($this->addToCollectionIcon === NULL) {
       $this->addToCollectionIcon = [
         '#type' => 'html_tag',
         '#tag' => 'img',
@@ -173,6 +233,8 @@ final class AssetPreviewListMarkup {
         ],
       ];
     }
+
+    return TRUE;
   }
 
   /**
@@ -230,8 +292,12 @@ final class AssetPreviewListMarkup {
       '#metadata' => [],
     ];
 
+    if ($this->initCacheMaxAge()) {
+      $build['#cache']['max-age'] = $this->imageStyleCacheMaxAge;
+    }
+
     // @todo: Debug why this is not added.
-    if ($this->itemInCollectionIcon) {
+    if ($this->initCollectionHandler()) {
       $build['#metadata']['media_collection']['added_to_collection_icon'] = $this->itemInCollectionIcon;
       $build['#metadata']['media_collection']['remove_from_collection_text'] = [
         '#type' => 'html_tag',
@@ -328,6 +394,10 @@ final class AssetPreviewListMarkup {
         ],
       ];
 
+      if ($this->initCacheMaxAge()) {
+        $thumbnail['#cache']['max-age'] = $this->imageStyleCacheMaxAge;
+      }
+
       // Column 2: Image.
       $rows['images'][$rowNumber]['image'] = [
         'data' => [
@@ -382,7 +452,7 @@ final class AssetPreviewListMarkup {
 
       // This is equivalent to a "media_collection is installed" condition.
       if (
-        $this->collectionHandler !== NULL
+        $this->initCollectionHandler()
         && $this->currentUser->hasPermission('add media collection item entities')
       ) {
         $collectionLink = [
