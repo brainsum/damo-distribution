@@ -75,6 +75,7 @@ dependencies:
   - filehash:filehash
   - focal_point:focal_point
   - image_effects:image_effects
+  - imagemagick:imagemagick
   - jsonapi_extras:jsonapi_extras
   - jquery_ui_datepicker:jquery_ui_datepicker
   - maxlength:maxlength

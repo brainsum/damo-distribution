@@ -1,4 +1,4 @@
-quality: 75
+quality: 80
 binaries: imagemagick
 path_to_binaries: /usr/bin/
 prepend: ''
@@ -10,6 +10,7 @@ advanced:
   density: 72
   colorspace: RGB
   profile: ''
+  coalesce: false
 image_formats:
   PNG:
     mime_type: image/png

@@ -13,3 +13,18 @@
 function damo_update_8001() {
   Drupal::service('module_installer')->install(['damo_common']);
 }
+
+/**
+ * Switch to the imagemagick toolkit.
+ */
+function damo_update_8002() {
+  Drupal::service('module_installer')->install(['imagemagick']);
+
+  $configFactory = Drupal::configFactory();
+  $config = $configFactory->getEditable('system.image');
+  $config->set('toolkit', 'imagemagick');
+  $config->save(TRUE);
+  $config = $configFactory->getEditable('imagemagick.settings');
+  $config->set('quality', 80);
+  $config->save(TRUE);
+}
