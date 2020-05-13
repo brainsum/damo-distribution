@@ -441,11 +441,13 @@ final class AssetPreviewListMarkup {
           $this->t('Download'),
           'damo_assets_download.styled_asset_download',
           ['media' => $media->id(), 'style' => $style->id()],
-          [
-            'class' => ['button', 'button--green'],
-            'target' => '_blank',
-            'rel' => 'noopener',
-            'download' => '',
+          [  
+            'attributes' => [
+              'class' => ['button', 'button--green'],
+              'target' => '_blank',
+              'rel' => 'noopener',
+              'download' => '',
+            ]
           ]
         ),
       ];
