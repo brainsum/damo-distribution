@@ -17,7 +17,8 @@
     },
     "require": {
         "drupal/core": "^8.7",
-        "drupal/search_api_solr": "^3.9"
+        "drupal/search_api_solr": "^3.9",
+        "symfony/event-dispatcher": "4.3.4 as 3.4.35"
 
     },
     "minimum-stability": "dev",
