@@ -1,0 +1,29 @@
+<?php
+
+/**
+ * @file
+ * Install and update hooks.
+ */
+
+/**
+ * Implements hook_install().
+ */
+function damo_assets_tagging_install() {
+  $config = Drupal::configFactory()->getEditable('media.type.image');
+
+  $dependencies = $config->get('dependencies');
+  $dependencies['module'][] = 'google_cloud_vision_media';
+  sort($dependencies['module']);
+  $config->set('dependencies', $dependencies);
+
+  $settings = $config->get('third_party_settings');
+  $settings['google_cloud_vision_media'] = [
+    'enabled' => TRUE,
+    'label_tag_field' => 'field_keywords',
+    'source' => 'source',
+    'image_style' => 'other_hi_res_no_badge',
+  ];
+  $config->set('third_party_settings', $settings);
+
+  $config->save(TRUE);
+}
