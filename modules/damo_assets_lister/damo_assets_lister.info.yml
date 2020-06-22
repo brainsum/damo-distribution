@@ -8,6 +8,5 @@ package: 'Digital Assets Management'
 
 dependencies:
   - drupal:block
-  - drupal:system (>=8.7)
   - drupal:views
   - search_api:search_api

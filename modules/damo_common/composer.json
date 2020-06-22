@@ -1,6 +1,6 @@
 {
-    "name": "brainsum/damo_assets_download",
-    "description": "Download options for media assets.",
+    "name": "brainsum/damo_common",
+    "description": "Common features for the DAMo drupal distribution.",
     "type": "drupal-module",
     "license": "GPL-2.0-or-later",
     "authors": [
@@ -9,6 +9,11 @@
             "email": "mhavelant@brainsum.com"
         }
     ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "config": {
+        "sort-packages": true
+    },
     "repositories": {
         "drupal-8": {
             "type": "composer",
@@ -16,12 +21,7 @@
         }
     },
     "require": {
-        "ext-zip": "*",
+        "php": "^7.2",
         "drupal/core": "^8.7.7 | ^9.0"
-    },
-    "minimum-stability": "dev",
-    "prefer-stable": true,
-    "config": {
-        "sort-packages": true
     }
 }

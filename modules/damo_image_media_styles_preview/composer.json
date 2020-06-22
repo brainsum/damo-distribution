@@ -16,9 +16,9 @@
         }
     },
     "require": {
-        "drupal/core": "^8.7",
-        "drupal/focal_point": "^1.2",
-        "drupal/image_effects": "^3.0"
+        "drupal/core": "^8.7.7 | ^9.0",
+        "drupal/image_effects": "^3.0",
+        "drupal/focal_point": "^1.2"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,

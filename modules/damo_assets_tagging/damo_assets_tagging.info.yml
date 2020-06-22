@@ -8,6 +8,5 @@ core_version_requirement: ^8.7.7 || ^9
 package: 'Digital Assets Management'
 
 dependencies:
-  - drupal:system (>=8.7)
   - google_cloud_vision:google_cloud_vision
   - google_cloud_vision:google_cloud_vision_media

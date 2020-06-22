@@ -8,7 +8,6 @@ package: 'Digital Assets Management'
 
 dependencies:
   - damo:damo_common
-  - drupal:system (>=8.7)
   - drupal:jsonapi
   - drupal:rest
   - drupal:basic_auth

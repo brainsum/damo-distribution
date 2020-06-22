@@ -17,7 +17,7 @@
     },
     "require": {
         "ext-json": "*",
-        "drupal/core": "^8.7",
+        "drupal/core": "^8.7.7 | ^9.0",
         "drupal/maillog": "1.x-dev"
     },
     "minimum-stability": "dev",

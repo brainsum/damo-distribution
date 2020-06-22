@@ -6,6 +6,5 @@ core_version_requirement: ^8.7.7 || ^9
 
 package: 'Digital Assets Management'
 dependencies:
-  - drupal:system (>=8.7)
   - drupal:media
   - drupal:block
