@@ -57,7 +57,6 @@ dependencies:
   - drupal:media
   - drupal:path
   - drupal:serialization
-  - drupal:system (>=8.7)
   - drupal:taxonomy
   - drupal:text
   - drupal:user
