@@ -97,8 +97,9 @@ class BulkMediaUploadForm extends ContribForm {
     // @todo: Load additional fields from type configs, don't hardcode.
     // @todo: Use same widget as on the type form.
     $form['keywords'] = [
-      '#type' => 'entity_autocomplete',
+      '#type' => 'select2',
       '#title' => $this->t('Keywords'),
+      '#description' => $this->t('Drag to re-order keywords.'),
       '#target_type' => 'taxonomy_term',
       '#tags' => TRUE,
       '#selection_handler' => 'default:taxonomy_term',
@@ -106,9 +107,13 @@ class BulkMediaUploadForm extends ContribForm {
         'target_bundles' => ['keyword'],
         'auto_create' => TRUE,
         'match_operator' => 'CONTAINS',
+        'match_limit' => 10,
       ],
+      '#autocomplete' => TRUE,
+      '#multiple' => TRUE,
       '#autocreate' => [
         'bundle' => 'keyword',
+        'uid' => $this->currentUser()->id(),
       ],
     ];
 
