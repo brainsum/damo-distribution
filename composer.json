@@ -19,6 +19,10 @@
             "type": "composer",
             "url": "https://packages.drupal.org/8"
         },
+        "asset-packagist": {
+            "type": "composer",
+            "url": "https://asset-packagist.org"
+        },
         "dropzone": {
             "type": "package",
             "package": {
@@ -65,11 +69,13 @@
         "drupal/redirect_after_login": "^2.5",
         "drupal/search_api": "^1.17",
         "drupal/search_api_solr": "^4.1",
+        "drupal/select2": "^1.8",
         "drupal/taxonomy_access_fix": "^2.7",
         "drupal/term_merge": "^1.0",
         "drupal/userprotect": "^1.1",
         "drupal/video_embed_field": "^2.2",
-        "enyo-drupal/dropzone": "^4.3"
+        "enyo-drupal/dropzone": "^4.3",
+        "npm-asset/select2": "^4.0"
     },
     "extra": {
         "patches": {
@@ -105,7 +111,11 @@
         },
         "installer-paths": {
             "web/core": ["type:drupal-core"],
-            "web/libraries/{$name}": ["type:drupal-library"],
+            "web/libraries/{$name}": [
+                "type:drupal-library",
+                "type:bower-asset",
+                "type:npm-asset"
+            ],
             "web/modules/contrib/{$name}": ["type:drupal-module"],
             "web/profiles/contrib/{$name}": ["type:drupal-profile"],
             "web/themes/contrib/{$name}": ["type:drupal-theme"],
@@ -113,24 +123,6 @@
             "web/modules/custom/{$name}": ["type:drupal-custom-module"],
             "web/themes/custom/{$name}": ["type:drupal-custom-theme"]
         },
-        "drupal-core-project-message": {
-            "include-keys": ["homepage", "support"],
-            "post-create-project-cmd-message": [
-                "<bg=blue;fg=white>                                                         </>",
-                "<bg=blue;fg=white>  Congratulations, you’ve installed the Drupal codebase  </>",
-                "<bg=blue;fg=white>  from the drupal/recommended-project template!          </>",
-                "<bg=blue;fg=white>                                                         </>",
-                "",
-                "<bg=yellow;fg=black>Next steps</>:",
-
-                "  * Install the site: https://www.drupal.org/docs/8/install",
-                "  * Read the user guide: https://www.drupal.org/docs/user_guide/en/index.html",
-                "  * Get support: https://www.drupal.org/support",
-                "  * Get involved with the Drupal community:",
-                "      https://www.drupal.org/getting-involved",
-                "  * Remove the plugin that prints this message:",
-                "      composer remove drupal/core-project-message"
-            ]
-        }
+        "installer-types": ["bower-asset", "npm-asset"]
     }
 }
