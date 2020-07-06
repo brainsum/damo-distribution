@@ -23,14 +23,20 @@ Using the [DAMo composer project](https://github.com/brainsum/damo-project) is r
 `0.27.x` versions pave the path for full Drupal 9 readiness and contain breaking changes.
 Sites created with `0.26.2` or prior need to do the following manual steps before upgrading to Drupal 9:
 
-- `better_formats` is a dead module with no D9 compatibility. If you need features from it:
-    - Back up your config and prepare to migrate to `allowed_formats`
-    - Update to `0.27.0` (this uninstalls the `better_formats` module)
-    - Add `allowed_formats` and configure it
-    - See: <https://www.drupal.org/project/allowed_formats>
-- `brainsum/jquery_ui_datepicker` was built on the core datepicker library but that has been removed in D9, meaning the module has been removed.
-    - If it's still needed, some compatibility waw achieved in the new 3.0 version, but the CSS is broken (although the widget is still usable).
-        - Users should not upgrade to this but use a different module instead. As of now no replacement module is available. 
-    - In line with this module getting removed the `field_expiration_date` field has been also removed from the default config. 
+- 0.27.0:
+    - `better_formats` is a dead module with no D9 compatibility. If you need features from it:
+        - Back up your config and prepare to migrate to `allowed_formats`
+        - Update to `0.27.0` (this uninstalls the `better_formats` module)
+        - Add `allowed_formats` and configure it
+        - See: <https://www.drupal.org/project/allowed_formats>
+    - `brainsum/jquery_ui_datepicker` was built on the core datepicker library but that has been removed in D9, meaning the module has been removed.
+        - If it's still needed, some compatibility waw achieved in the new 3.0 version, but the CSS is broken (although the widget is still usable).
+            - Users should not upgrade to this but use a different module instead. As of now no replacement module is available. 
+        - In line with this module getting removed the `field_expiration_date` field has been also removed from the default config. 
+    
+    
+- 0.27.1:
+    - `maillog` has no Drupal 9 compatibility. Recommended alternative is to send mails to a middleman services (e.g mailhog) until `maillog` receives proper support.
+    - `exception_mailer` has no Drupal 9 compatibility. There's no recommended alternative, you need to wait for proper Drupal 9 support.
 
 Note, although uninstalled from Drupal, the composer.json still contains them. They are deprecated, and are going to be removed in `0.28.0`.
