@@ -13,27 +13,15 @@
         "drupal-8": {
             "type": "composer",
             "url": "https://packages.drupal.org/8"
-        },
-        "dropzone": {
-            "type": "package",
-            "package": {
-                "name": "enyo-drupal/dropzone",
-                "version": "v4.3.0",
-                "type": "drupal-library",
-                "dist": {
-                    "url": "https://github.com/enyo/dropzone/archive/v4.3.0.zip",
-                    "type": "zip"
-                }
-            }
         }
     },
     "require": {
-        "brainsum/media_upload": "^3.0",
+        "brainsum/media_upload": "^3.0 | ^4.0",
         "drupal/core": "^8.7.7 | ^9.0",
         "drupal/dropzonejs": "^2.0",
         "drupal/entity_browser": "^2.2",
         "drupal/userprotect": "^1.1",
-        "enyo-drupal/dropzone": "^4.3"
+        "npm-asset/dropzone": "^5.7"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
