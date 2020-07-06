@@ -40,3 +40,23 @@ function damo_update_8003() {
     'jquery_ui_datepicker',
   ]);
 }
+
+
+/**
+ * Remove deprecated modules.
+ */
+function damo_update_8004() {
+  $configFactory = Drupal::configFactory();
+  $config = $configFactory->getEditable('system.mail');
+  $interface = $config->get('interface');
+  $interface['default'] = 'php_mail';
+  $config->set('interface', $interface);
+  $config->save(TRUE);
+
+  /** @var \Drupal\Core\Extension\ModuleInstallerInterface $installer */
+  $installer = Drupal::service('module_installer');
+  $installer->uninstall([
+    'maillog',
+    'exception_mailer',
+  ]);
+}

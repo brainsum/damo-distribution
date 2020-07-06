@@ -23,8 +23,6 @@ install:
   # Contrib.
   - admin_toolbar:admin_toolbar
   - adminimal_admin_toolbar:adminimal_admin_toolbar
-  - exception_mailer:exception_mailer
-  - maillog:maillog
   - search_api:search_api
   - search_api:search_api_db
   # DAMo

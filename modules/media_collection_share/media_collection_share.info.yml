@@ -8,4 +8,3 @@ package: 'Digital Assets Management'
 dependencies:
   - damo:damo_assets_download
   - media_collection:media_collection
-  - maillog:maillog
