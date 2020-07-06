@@ -104,12 +104,6 @@ resourceFields:
     enhancer:
       id: ''
     disabled: false
-  field_expiration_date:
-    disabled: true
-    fieldName: field_expiration_date
-    publicName: field_expiration_date
-    enhancer:
-      id: ''
   field_gps_gpslatitude:
     fieldName: field_gps_gpslatitude
     publicName: field_gps_gpslatitude

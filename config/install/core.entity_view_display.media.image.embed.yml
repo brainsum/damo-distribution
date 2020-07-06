@@ -4,7 +4,6 @@ dependencies:
   config:
     - core.entity_view_mode.media.embed
     - field.field.media.image.field_category
-    - field.field.media.image.field_expiration_date
     - field.field.media.image.field_gps_gpslatitude
     - field.field.media.image.field_gps_gpslongitude
     - field.field.media.image.field_image
@@ -33,7 +32,6 @@ content:
 hidden:
   created: true
   field_category: true
-  field_expiration_date: true
   field_gps_gpslatitude: true
   field_gps_gpslongitude: true
   field_iptc_by_line: true

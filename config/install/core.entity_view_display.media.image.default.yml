@@ -3,7 +3,6 @@ status: true
 dependencies:
   config:
     - field.field.media.image.field_category
-    - field.field.media.image.field_expiration_date
     - field.field.media.image.field_gps_gpslatitude
     - field.field.media.image.field_gps_gpslongitude
     - field.field.media.image.field_image
@@ -47,15 +46,6 @@ content:
     settings:
       link: false
     third_party_settings: {  }
-    region: content
-  field_expiration_date:
-    weight: 4
-    label: above
-    settings:
-      format_type: medium
-      timezone_override: ''
-    third_party_settings: {  }
-    type: datetime_default
     region: content
   field_gps_gpslatitude:
     weight: 10

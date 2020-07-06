@@ -28,3 +28,15 @@ function damo_update_8002() {
   $config->set('quality', 80);
   $config->save(TRUE);
 }
+
+/**
+ * Remove deprecated modules.
+ */
+function damo_update_8003() {
+  /** @var \Drupal\Core\Extension\ModuleInstallerInterface $installer */
+  $installer = Drupal::service('module_installer');
+  $installer->uninstall([
+    'better_formats',
+    'jquery_ui_datepicker',
+  ]);
+}

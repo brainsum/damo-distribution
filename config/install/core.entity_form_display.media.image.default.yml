@@ -3,7 +3,6 @@ status: true
 dependencies:
   config:
     - field.field.media.image.field_category
-    - field.field.media.image.field_expiration_date
     - field.field.media.image.field_gps_gpslatitude
     - field.field.media.image.field_gps_gpslongitude
     - field.field.media.image.field_image
@@ -16,7 +15,6 @@ dependencies:
   module:
     - exif
     - focal_point
-    - jquery_ui_datepicker
     - path
 id: media.image.default
 targetEntityType: media
@@ -28,13 +26,6 @@ content:
     settings: {  }
     third_party_settings: {  }
     type: options_select
-    region: content
-  field_expiration_date:
-    weight: 11
-    settings:
-      date_format: 'j M Y - G:i T'
-    third_party_settings: {  }
-    type: jquery_ui_datepicker
     region: content
   field_gps_gpslatitude:
     weight: 6

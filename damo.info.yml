@@ -63,7 +63,6 @@ dependencies:
   - drupal:views
   # Contrib
   - better_exposed_filters:better_exposed_filters
-  - better_formats:better_formats
   - dropzonejs:dropzonejs
   - dropzonejs:dropzonejs_eb_widget
   - entity_browser:entity_browser
@@ -76,7 +75,6 @@ dependencies:
   - image_effects:image_effects
   - imagemagick:imagemagick
   - jsonapi_extras:jsonapi_extras
-  - jquery_ui_datepicker:jquery_ui_datepicker
   - maxlength:maxlength
   - media_entity_imagemagick:media_entity_imagemagick
   - media_entity_video:media_entity_video
