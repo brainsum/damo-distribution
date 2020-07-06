@@ -36,7 +36,6 @@
         "drupal/dropzonejs": "^2.0",
         "drupal/entity_browser": "^2.3",
         "drupal/entity_embed": "^1.0",
-        "drupal/exception_mailer": "3.x-dev",
         "drupal/exif": "^2.2",
         "drupal/field_group": "^3.0",
         "drupal/filehash": "^1.4",
@@ -46,7 +45,6 @@
         "drupal/imagemagick": "^3.1",
         "drupal/inline_entity_form": "^1.0",
         "drupal/jsonapi_extras": "^3.15",
-        "drupal/maillog": "1.x-dev",
         "drupal/maxlength": "^1.0",
         "drupal/media_entity_imagemagick": "^3.0",
         "drupal/media_entity_video": "^2.0",
@@ -73,10 +71,6 @@
                 "Implement a generic revision UI [note, core test fail with this]": "https://www.drupal.org/files/issues/2019-03-16/2350939-64.patch",
                 "Remove jsonapi's file filter restriction": "https://raw.githubusercontent.com/brainsum/composer-patches/master/drupal-core/8.x/jsonapi-file-filter-restriction-remove.patch",
                 "WebP support for the GD toolkit": "https://raw.githubusercontent.com/brainsum/composer-patches/master/drupal-core/8.x/core.system.add_webp_to_gd_supported_types.patch"
-            },
-            "drupal/exception_mailer": {
-                "Extending module to sending emails on errors too.": "https://www.drupal.org/files/issues/2019-07-04/3050402-extending-module-to-sending-emails-on-errors-too-8.patch",
-                "Replace 'administrator' role with 'maintainer, removed response setting, left out access denied errors'.": "https://raw.githubusercontent.com/brainsum/composer-patches/master/drupal-module/exception-mailer/3.x/exception-mailer-role-update-remove-response-setting-leave-out-access-denied-errors.patch"
             },
             "drupal/filehash": {
                 "Check duplicates only for media last revision. Link media on duplicate.": "https://raw.githubusercontent.com/brainsum/composer-patches/master/drupal-module/filehash/1.x/filehash-validate-last-media-revision-link-media.2.patch"
