@@ -40,3 +40,6 @@ Sites created with `0.26.2` or prior need to do the following manual steps befor
     - `exception_mailer` has no Drupal 9 compatibility. There's no recommended alternative, you need to wait for proper Drupal 9 support.
 
 Note, although uninstalled from Drupal, the composer.json still contains them. They are deprecated, and are going to be removed in `0.28.0`.
+
+- 0.27.2:
+    - `media_entity_video` is no longer needed as core has a `video_file` media source
