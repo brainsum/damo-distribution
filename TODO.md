@@ -1,10 +1,6 @@
 # General TODOs, notes
 
 ## Modules
-### media_entity_video
-This might not be required and might be replaced with "file".
-Although it adds some widegts, too, double-check is needed.
-
 ### video_embed_field
 
 As described on the module page:
