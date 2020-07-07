@@ -29,12 +29,13 @@ Drupal 9 blocker issues:
 - [Exif](https://www.drupal.org/project/exif) is not ready (Note: dev is ready, but there's no release that's compatible)
 - [Term Merge](https://www.drupal.org/project/term_merge) is not ready (Note: dev is ready, but there's no release that's compatible)
 
-Upgrade path from 0.26 or earlier:
+### Upgrade path from 0.26 or earlier:
 - Step 1: Upgrade to `0.27.2`, do a full release.
 - Step 2: Upgrade to `0.27.8`, do a full release.
 - Final step: Upgrade to `0.28.0`, do a full release.
 
-Changelog
+### Changelog
+
 - 0.27.0:
     - `better_formats` is a dead module with no D9 compatibility. If you need features from it:
         - Back up your config and prepare to migrate to `allowed_formats`
