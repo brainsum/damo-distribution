@@ -6,8 +6,6 @@ dependencies:
     - field.field.media.video_file.field_keywords
     - field.field.media.video_file.field_video_file
     - media.type.video_file
-  module:
-    - media_entity_video
 id: media.video_file.default
 targetEntityType: media
 bundle: video_file

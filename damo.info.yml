@@ -75,7 +75,6 @@ dependencies:
   - jsonapi_extras:jsonapi_extras
   - maxlength:maxlength
   - media_entity_imagemagick:media_entity_imagemagick
-  - media_entity_video:media_entity_video
   - media_upload:media_upload
   - redirect_after_login:redirect_after_login
   - taxonomy_access_fix:taxonomy_access_fix

@@ -47,7 +47,6 @@
         "drupal/jsonapi_extras": "^3.13",
         "drupal/maxlength": "^1.0",
         "drupal/media_entity_imagemagick": "^3.0",
-        "drupal/media_entity_video": "^2.0",
         "drupal/php_ffmpeg": "^1.1",
         "drupal/r4032login": "^1.1",
         "drupal/redirect_after_login": "^2.5",
@@ -73,10 +72,6 @@
             },
             "drupal/filehash": {
                 "Check duplicates only for media last revision. Link media on duplicate.": "https://raw.githubusercontent.com/brainsum/composer-patches/master/drupal-module/filehash/1.x/filehash-validate-last-media-revision-link-media.2.patch"
-            },
-            "drupal/media_entity_video": {
-                "Core media compatibility issues": "https://www.drupal.org/files/issues/2020-01-05/media_entity_video-2930974-8.patch",
-                "Migrate to core video_file media source": "https://www.drupal.org/files/issues/2020-06-11/3149789-4.patch"
             },
             "drupal/google_cloud_vision": {
                 "S3FS compatibility of fopen().": "https://www.drupal.org/files/issues/2020-05-25/fopen-user-error-when-using-s3fs-13644864-3.patch"
