@@ -12,7 +12,6 @@ dependencies:
     - field.field.media.image.field_keywords
     - media.type.image
   module:
-    - datetime
     - field_group
     - text
 third_party_settings:
