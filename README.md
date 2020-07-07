@@ -25,12 +25,13 @@ Sites created with `0.26.2` or prior need to do the following manual steps befor
 
 Note, although uninstalled from Drupal, the composer.json still contains them. They are deprecated, and are going to be removed in `0.28.0`.
 
-Upgrade path from 0.26 or earlier:
+### Upgrade path from 0.26 or earlier:
 - Step 1: Upgrade to `0.27.2`, do a full release.
 - Step 2: Upgrade to `0.27.4`, do a full release.
 - Final step: Upgrade to `0.28.0`, do a full release.
 
-Changelog
+### Changelog
+
 - 0.27.0:
     - `better_formats` is a dead module with no D9 compatibility. If you need features from it:
         - Back up your config and prepare to migrate to `allowed_formats`
