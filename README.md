@@ -31,7 +31,7 @@ Drupal 9 blocker issues:
 
 Upgrade path from 0.26 or earlier:
 - Step 1: Upgrade to `0.27.2`, do a full release.
-- Step 2: Upgrade to `0.27.6`, do a full release.
+- Step 2: Upgrade to `0.27.8`, do a full release.
 - Final step: Upgrade to `0.28.0`, do a full release.
 
 Changelog
@@ -58,4 +58,5 @@ Changelog
    - Revert uninstall of `media_entity_video`
 - 0.27.7:
    - Allow some major version upgrades
-   
+- 0.27.8:
+   - Bugfixes
