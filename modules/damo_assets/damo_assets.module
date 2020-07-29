@@ -423,12 +423,17 @@ function damo_assets_media_view_alter(array &$build, MediaInterface $media, Enti
   elseif ($bundle === 'video_file') {
     // @todo: Get this from the default view, don't hardcode.
     $displayOptions = [
-      'type' => 'video_player_html5',
+      'type' => 'file_video',
       'weight' => '1',
       'label' => 'hidden',
       'settings' => [
-        'video_attributes' => 'controls preload="auto"',
-        'provide_download_link' => 0,
+        'controls' => TRUE,
+        'multiple_file_display_type' => 'tags',
+        'width' => 640,
+        'height' => 480,
+        'autoplay' => FALSE,
+        'loop' => FALSE,
+        'muted' => FALSE,
       ],
       'third_party_settings' => [],
       'region' => 'content',
