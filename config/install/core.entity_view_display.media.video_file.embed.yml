@@ -7,8 +7,6 @@ dependencies:
     - field.field.media.video_file.field_keywords
     - field.field.media.video_file.field_video_file
     - media.type.video_file
-  module:
-    - media_entity_video
 id: media.video_file.embed
 targetEntityType: media
 bundle: video_file
@@ -18,10 +16,13 @@ content:
     weight: 3
     label: hidden
     settings:
-      video_attributes: 'controls preload="auto"'
+      controls: true
+      autoplay: false
+      loop: true
+      video_attributes: 'preload="auto"'
       provide_download_link: 0
     third_party_settings: {  }
-    type: video_player_html5
+    type: file_video
     region: content
 hidden:
   created: true
