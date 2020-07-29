@@ -25,6 +25,10 @@ Sites created with `0.26.2` or prior need to do the following manual steps befor
 
 Note, although uninstalled from Drupal, the composer.json still contains them. They are deprecated, and are going to be removed in `0.28.0`.
 
+Drupal 9 blocker issues:
+- [Exif](https://www.drupal.org/project/exif) is not ready (Note: dev is ready, but there's no release that's compatible)
+- [Term Merge](https://www.drupal.org/project/term_merge) is not ready (Note: dev is ready, but there's no release that's compatible)
+
 Upgrade path from 0.26 or earlier:
 - Step 1: Upgrade to `0.27.2`, do a full release.
 - Step 2: Upgrade to `0.27.6`, do a full release.
@@ -52,5 +56,6 @@ Changelog
         - `media_entity_video` is no longer needed, so it's getting uninstalled.
 - 0.27.6:
    - Revert uninstall of `media_entity_video`
-   - 
+- 0.27.7:
+   - Allow some major version upgrades
    
