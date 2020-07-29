@@ -27,7 +27,7 @@ Note, although uninstalled from Drupal, the composer.json still contains them. T
 
 Upgrade path from 0.26 or earlier:
 - Step 1: Upgrade to `0.27.2`, do a full release.
-- Step 2: Upgrade to `0.27.4`, do a full release.
+- Step 2: Upgrade to `0.27.6`, do a full release.
 - Final step: Upgrade to `0.28.0`, do a full release.
 
 Changelog
@@ -48,4 +48,9 @@ Changelog
     - `media_entity_video` is no longer needed as core has a `video_file` media source. This version includes the community patch that does the migration to the core media source.
 - 0.27.4:
    - `r4032login` is incompatible with Drupal 9, so it's getting uninstalled.
-   - `media_entity_video` is no longer needed, so it's getting uninstalled.
+   - Reverted in `0.27.6` to avoid the uninstall happening before the module's update hooks are running:
+        - `media_entity_video` is no longer needed, so it's getting uninstalled.
+- 0.27.6:
+   - Revert uninstall of `media_entity_video`
+   - 
+   
