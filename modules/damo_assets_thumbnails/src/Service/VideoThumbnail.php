@@ -115,6 +115,7 @@ class VideoThumbnail {
    *   The base folder for thumbnails (including the uri scheme).
    */
   private function baseTargetFolder(): string {
+    // @todo: This seems to be wrong occasionally.
     return "{$this->uriScheme}://" . static::BASE_FOLDER_NAME;
   }
 
