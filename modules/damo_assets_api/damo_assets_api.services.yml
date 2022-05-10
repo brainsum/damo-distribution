@@ -1,7 +1,7 @@
 services:
   damo_assets_api.normalizer.media_entity:
     class: Drupal\damo_assets_api\Normalizer\MediaEntityNormalizer
-    arguments: ['@entity_type.manager']
+    arguments: ['@entity_type.manager', '@entity_type.repository', '@entity_field.manager']
     tags:
       - { name: normalizer, priority: 9 }
 

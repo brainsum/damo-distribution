@@ -3,6 +3,8 @@
 namespace Drupal\damo_assets_api\Normalizer;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Entity\EntityTypeRepositoryInterface;
+use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\media\MediaInterface;
 use Drupal\damo_common\Temporary\ImageStyleLoader;
@@ -46,18 +48,22 @@ class MediaEntityNormalizer extends ContentEntityNormalizer {
   /**
    * MediaEntityNormalizer constructor.
    *
-   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
-   *   Entity type manager.
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
+   *   The entity type manager.
+   * @param \Drupal\Core\Entity\EntityTypeRepositoryInterface $entity_type_repository
+   *   The entity type repository.
+   * @param \Drupal\Core\Entity\EntityFieldManagerInterface $entity_field_manager
+   *   The entity field manager.
    *
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
-  public function __construct(EntityTypeManagerInterface $entityTypeManager) {
-    parent::__construct($entityTypeManager);
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, EntityTypeRepositoryInterface $entity_type_repository, EntityFieldManagerInterface $entity_field_manager) {
+    parent::__construct($entity_type_manager, $entity_type_repository, $entity_field_manager);
 
-    $this->fileStorage = $entityTypeManager->getStorage('file');
-    $this->imageStyleStorage = $entityTypeManager->getStorage('image_style');
-    $this->termStorage = $entityTypeManager->getStorage('taxonomy_term');
+    $this->fileStorage = $entity_type_manager->getStorage('file');
+    $this->imageStyleStorage = $entity_type_manager->getStorage('image_style');
+    $this->termStorage = $entity_type_manager->getStorage('taxonomy_term');
 
     $this->supportedInterfaceOrClass = MediaInterface::class;
   }
