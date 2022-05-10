@@ -10,6 +10,26 @@ Heavily under development, not yet usable.
 
 Using the [DAMo composer project](https://github.com/brainsum/damo-project) is recommended.
 
+Since [drupal/google_cloud_vision](https://www.drupal.org/project/google_cloud_vision) is Drupal 9 ready, but requirements have not been updated you need to add the following repository to the main composer.json file, so the patch for issue [#3153801](https://www.drupal.org/project/google_cloud_vision/issues/3153801) can be applied,
+
+```
+    "repositories": [
+        ...
+        {
+            "type": "package",
+            "package": {
+                "name": "drupal/google_cloud_vision",
+                "type": "drupal-module",
+                "version": "1.1",
+                "source": {
+                    "type": "git",
+                    "url": "https://git.drupalcode.org/project/google_cloud_vision.git",
+                    "reference": "4eea9cd20a6d1edb3fdfc6bbccd8dc083432ccc5"
+                }
+            }
+        },
+```
+
 ## User roles
 
 * **Media API** user is for the API users, e.g. for an interconnected Drupal system where the https://www.drupal.org/project/filefield_sources_jsonapi module is installed.
@@ -43,8 +63,8 @@ Changelog
         - See: <https://www.drupal.org/project/allowed_formats>
     - `brainsum/jquery_ui_datepicker` was built on the core datepicker library but that has been removed in D9, meaning the module has been removed.
         - If it's still needed, some compatibility waw achieved in the new 3.0 version, but the CSS is broken (although the widget is still usable).
-            - Users should not upgrade to this but use a different module instead. As of now no replacement module is available. 
-        - In line with this module getting removed the `field_expiration_date` field has been also removed from the default config.     
+            - Users should not upgrade to this but use a different module instead. As of now no replacement module is available.
+        - In line with this module getting removed the `field_expiration_date` field has been also removed from the default config.
 - 0.27.1:
     - `maillog` has no Drupal 9 compatibility. Recommended alternative is to send mails to a middleman services (e.g mailhog) until `maillog` receives proper support.
     - `exception_mailer` has no Drupal 9 compatibility. There's no recommended alternative, you need to wait for proper Drupal 9 support.
