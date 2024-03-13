@@ -35,7 +35,7 @@
         "drupal/better_exposed_filters": "^5.2",
         "drupal/better_formats": "^1.0",
         "drupal/core": ">=8.8",
-        "drupal/dropzonejs": "^2.10",
+        "drupal/dropzonejs": "^2.1",
         "drupal/entity_browser": "^2.10",
         "drupal/entity_embed": "^1.5",
         "drupal/exception_mailer": "^4.0",
