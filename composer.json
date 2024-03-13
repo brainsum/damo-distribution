@@ -58,7 +58,7 @@
         "drupal/search_api": "^1.23",
         "drupal/search_api_solr": "^4.1",
         "drupal/select2": "^1.13",
-        "drupal/taxonomy_access_fix": "^3.3",
+        "drupal/taxonomy_access_fix": "^4.0",
         "drupal/term_merge": "^1.x-dev@dev",
         "drupal/userprotect": "^1.2",
         "drupal/video_embed_field": "^2.4",
