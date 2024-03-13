@@ -32,7 +32,7 @@
         "brainsum/jquery_ui_datepicker": "^4.0",
         "brainsum/media_upload": "^4.4",
         "drupal/adminimal_admin_toolbar": "1.x-dev",
-        "drupal/better_exposed_filters": "^6.0",
+        "drupal/better_exposed_filters": "^5.2",
         "drupal/better_formats": "^1.0",
         "drupal/core": ">=8.8",
         "drupal/dropzonejs": "^2.10",
