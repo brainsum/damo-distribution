@@ -29,7 +29,7 @@
         "ext-json": "*",
         "ext-zip": "*",
         "brainsum/damo_theme": ">=0.3 <1.0",
-        "brainsum/jquery_ui_datepicker": "^4.0",
+        "brainsum/jquery_ui_datepicker": "^4.0.1",
         "brainsum/media_upload": "^4.4",
         "drupal/adminimal_admin_toolbar": "1.x-dev",
         "drupal/better_exposed_filters": "^5.2",
