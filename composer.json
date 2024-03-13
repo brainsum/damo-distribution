@@ -14,16 +14,29 @@
     "config": {
         "sort-packages": true
     },
-    "repositories": {
-        "drupal-8": {
+    "repositories": [
+        {
+            "type": "package",
+            "package": {
+                "name": "drupal/google_cloud_vision",
+                "type": "drupal-module",
+                "version": "dev-8.x-1.x",
+                "source": {
+                    "type": "git",
+                    "url": "https://git.drupalcode.org/issue/google_cloud_vision-3153801.git",
+                    "reference": "68ebc041d8b2ba1b8cdf68dd49c26fd747ffb70e"
+                }
+            }
+        },
+        {
             "type": "composer",
             "url": "https://packages.drupal.org/8"
         },
-        "asset-packagist": {
+        {
             "type": "composer",
             "url": "https://asset-packagist.org"
         }
-    },
+    ],
     "require": {
         "php": ">=7.4",
         "ext-json": "*",
@@ -43,7 +56,7 @@
         "drupal/field_group": "^3.4",
         "drupal/filehash": "^2.0",
         "drupal/focal_point": "^2.0",
-        "drupal/google_cloud_vision": "1.x-dev@dev",
+        "drupal/google_cloud_vision": "dev-8.x-1.x",
         "drupal/image_effects": "^3.0",
         "drupal/imagemagick": "^3.1",
         "drupal/inline_entity_form": "^3.0@RC",
@@ -84,8 +97,7 @@
                 "Migrate to core video_file media source": "https://www.drupal.org/files/issues/2020-06-11/3149789-4.patch"
             },
             "drupal/google_cloud_vision": {
-                "S3FS compatibility of fopen().": "https://www.drupal.org/files/issues/2020-05-25/fopen-user-error-when-using-s3fs-13644864-3.patch",
-                "Drupal 9 readiness": "https://www.drupal.org/files/issues/2021-11-23/google_cloud_vision_version_requirnment.patch"
+                "S3FS compatibility of fopen().": "https://www.drupal.org/files/issues/2020-05-25/fopen-user-error-when-using-s3fs-13644864-3.patch"
             }
         },
         "drupal-scaffold": {
