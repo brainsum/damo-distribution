@@ -90,9 +90,6 @@
             "drupal/filehash": {
                 "Check duplicates only for media last revision. Link media on duplicate.": "https://raw.githubusercontent.com/brainsum/composer-patches/master/drupal-module/filehash/1.x/filehash-validate-last-media-revision-link-media.2.patch"
             },
-            "drupal/media_entity_video": {
-                "Migrate to core video_file media source": "https://www.drupal.org/files/issues/2020-06-11/3149789-4.patch"
-            },
             "drupal/google_cloud_vision": {
                 "S3FS compatibility of fopen().": "https://www.drupal.org/files/issues/2020-05-25/fopen-user-error-when-using-s3fs-13644864-3.patch"
             }
