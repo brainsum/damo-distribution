@@ -33,7 +33,7 @@
         "brainsum/media_upload": "^3.0",
         "drupal/adminimal_admin_toolbar": "1.x-dev",
         "drupal/better_exposed_filters": "^6.0",
-        "drupal/better_formats": "1.0@beta",
+        "drupal/better_formats": "^1.0",
         "drupal/core": ">=8.8",
         "drupal/dropzonejs": "^2.10",
         "drupal/entity_browser": "^2.10",
