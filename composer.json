@@ -38,7 +38,7 @@
         "drupal/dropzonejs": "^2.1",
         "drupal/entity_browser": "^2.10",
         "drupal/entity_embed": "^1.5",
-        "drupal/exception_mailer": "^4.0",
+        "drupal/exception_mailer": "^3.1",
         "drupal/exif": "^2.5",
         "drupal/field_group": "^3.4",
         "drupal/filehash": "^2.0",
