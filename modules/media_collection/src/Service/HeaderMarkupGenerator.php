@@ -6,8 +6,6 @@ use Drupal\Core\Cache\Cache;
 use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\Core\StringTranslation\TranslationInterface;
 use Drupal\Core\Url;
-use function drupal_get_path;
-use function file_create_url;
 
 /**
  * Class HeaderMarkupGenerator.
@@ -63,7 +61,9 @@ final class HeaderMarkupGenerator {
     $this->collectionHandler = $handler;
     $this->currentUser = $currentUser;
 
-    $this->modulePath = drupal_get_path('module', 'media_collection');
+    /** @var \Drupal\Core\Extension\ExtensionPathResolver $resolver */
+    $resolver = \Drupal::service('extension.path.resolver');
+    $this->modulePath = $resolver->getPath('module', 'media_collection');
   }
 
   /**
@@ -219,7 +219,10 @@ final class HeaderMarkupGenerator {
    *   Generated URI.
    */
   private function generateFileUri($filePath): string {
-    return Url::fromUri(file_create_url($filePath))->getUri();
+    /** @var \Drupal\Core\File\FileUrlGeneratorInterface $generator */
+    $generator = \Drupal::service('file_url_generator');
+
+    return $generator->generate($filePath)->getUri();
   }
 
 }

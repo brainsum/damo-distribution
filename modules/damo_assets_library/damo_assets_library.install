@@ -190,7 +190,7 @@ function damo_assets_library_update_8004() {
     throw new Exception("Required encrypt key doesn't exist or isn't readable.");
   }
 
-  Drupal::service('module_installer')->install(['dbee']);
+  \Drupal::service('module_installer')->install(['dbee']);
 
   $projectConfigPath = Settings::get('config_sync_directory');
   $source = new FileStorage($projectConfigPath);
@@ -206,7 +206,7 @@ function damo_assets_library_update_8004() {
   }
 
   // @todo: How to handle this? Require dbee?
-  module_load_include('inc', 'dbee', 'dbee.users');
+  \Drupal::moduleHandler()->loadInclude('dbee', 'inc', 'dbee.users');
   dbee_update_crypt_all('encrypt');
 }
 

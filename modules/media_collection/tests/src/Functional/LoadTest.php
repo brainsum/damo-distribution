@@ -17,7 +17,14 @@ class LoadTest extends BrowserTestBase {
    *
    * @var array
    */
-  public static $modules = ['media_collection'];
+  protected static $modules = ['media_collection'];
+
+  /**
+   * The default theme to use.
+   *
+   * @var string
+   */
+  protected $defaultTheme = 'stark';
 
   /**
    * A user with permission to administer site configuration.

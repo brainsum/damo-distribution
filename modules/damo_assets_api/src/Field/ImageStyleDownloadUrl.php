@@ -8,7 +8,6 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\TypedData\DataDefinitionInterface;
 use Drupal\Core\TypedData\TypedDataInterface;
 use RuntimeException;
-use function file_url_transform_relative;
 use function strpos;
 
 /**
@@ -63,8 +62,11 @@ class ImageStyleDownloadUrl extends FieldItemList {
       throw new RuntimeException('The "' . self::IMAGE_STYLE . '" image style cannot be loaded.');
     }
 
+    /** @var \Drupal\Core\File\FileUrlGeneratorInterface $generator */
+    $generator = \Drupal::service('file_url_generator');
     $url = $style->buildUrl($uri);
-    return file_url_transform_relative(file_create_url($url));
+
+    return $generator->transformRelative($url);
   }
 
   /**

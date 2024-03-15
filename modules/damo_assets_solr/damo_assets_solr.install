@@ -17,8 +17,11 @@ function damo_assets_solr_install() {
     'views.view.asset_search',
     'views.view.unpublished_assets',
   ];
-
-  $configSource = new FileStorage(drupal_get_path('module', 'damo_assets_solr') . '/config/optional');
+  /** @var \Drupal\Core\Extension\ExtensionPathResolver $resolver */
+  $resolver = \Drupal::service('extension.path.resolver');
+  $directory = $resolver->getPath('module', 'damo_assets_solr');
+  $directory .= '/config/optional';
+  $configSource = new FileStorage($directory);
   $configStorage = Drupal::service('config.storage');
   $uuid = Drupal::service('uuid');
 
@@ -44,7 +47,11 @@ function damo_assets_solr_install() {
  * Update the unpublished assets view.
  */
 function damo_assets_solr_update_8701() {
-  $configSource = new FileStorage(drupal_get_path('module', 'damo_assets_solr') . '/config/optional');
+  /** @var \Drupal\Core\Extension\ExtensionPathResolver $resolver */
+  $resolver = \Drupal::service('extension.path.resolver');
+  $directory = $resolver->getPath('module', 'damo_assets_solr');
+  $directory .= '/config/optional';
+  $configSource = new FileStorage($directory);
   /** @var array $newConfig */
   $newConfig = $configSource->read('views.view.unpublished_assets');
   $newConfig['uuid'] = Drupal::service('uuid')->generate();

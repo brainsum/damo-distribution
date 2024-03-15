@@ -3,12 +3,8 @@
 namespace Drupal\damo_assets\Form;
 
 use Drupal\Component\Render\PlainTextOutput;
-use Drupal\Core\Entity\EntityFieldManagerInterface;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Logger\LoggerChannelFactoryInterface;
-use Drupal\Core\Utility\Token;
 use Drupal\media\MediaTypeInterface;
 use Drupal\media_upload\Form\BulkMediaUploadForm as ContribForm;
 use Drupal\taxonomy\TermInterface;
@@ -17,7 +13,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use function array_map;
 use function explode;
 use function file_get_contents;
-use function file_save_data;
 use function in_array;
 use function preg_match;
 use function strtolower;
@@ -46,42 +41,11 @@ class BulkMediaUploadForm extends ContribForm {
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
   public static function create(ContainerInterface $container) {
-    return new static(
-      $container->get('entity_type.manager'),
-      $container->get('entity_field.manager'),
-      $container->get('logger.factory'),
-      $container->get('token'),
-      $container->get('file_system')
-    );
-  }
+    $instance = parent::create($container);
+    $instance->termStorage = $container->get('entity_type.manager')
+      ->getStorage('taxonomy_term');
 
-  /**
-   * BulkMediaUploadForm constructor.
-   *
-   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
-   *   Entity type manager.
-   * @param \Drupal\Core\Entity\EntityFieldManagerInterface $entityFieldManager
-   *   Entity field manager.
-   * @param \Drupal\Core\Logger\LoggerChannelFactoryInterface $logger
-   *   Logger for the media_upload module.
-   * @param \Drupal\Core\Utility\Token $token
-   *   Token service.
-   * @param \Drupal\Core\File\FileSystemInterface $fileSystem
-   *   The file system.
-   *
-   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
-   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
-   */
-  public function __construct(
-    EntityTypeManagerInterface $entityTypeManager,
-    EntityFieldManagerInterface $entityFieldManager,
-    LoggerChannelFactoryInterface $logger,
-    Token $token,
-    FileSystemInterface $fileSystem
-  ) {
-    parent::__construct($entityTypeManager, $entityFieldManager, $logger, $token, $fileSystem);
-
-    $this->termStorage = $entityTypeManager->getStorage('taxonomy_term');
+    return $instance;
   }
 
   /**
@@ -211,7 +175,8 @@ class BulkMediaUploadForm extends ContribForm {
 
         $destination = $targetDirectory . '/' . $file['filename'];
         $data = file_get_contents($file['path']);
-        $fileEntity = file_save_data($data, $destination);
+
+        $fileEntity = $this->fileRepository->writeData($data, $destination);
 
         if (FALSE === $fileEntity) {
           $errorFlag = TRUE;

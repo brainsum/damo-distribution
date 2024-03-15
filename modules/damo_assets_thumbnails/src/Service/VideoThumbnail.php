@@ -211,7 +211,10 @@ class VideoThumbnail {
       return $video->getFileUri();
     }
 
-    return file_create_url($video->getFileUri());
+    /** @var \Drupal\Core\File\FileUrlGeneratorInterface $generator */
+    $generator = \Drupal::service('file_url_generator');
+
+    return $generator->generateString($video->getFileUri());
   }
 
   /**
