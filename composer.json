@@ -23,8 +23,21 @@
                 "version": "dev-8.x-1.x",
                 "source": {
                     "type": "git",
-                    "url": "https://git.drupalcode.org/issue/google_cloud_vision-3153801.git",
-                    "reference": "68ebc041d8b2ba1b8cdf68dd49c26fd747ffb70e"
+                    "url": "https://git.drupalcode.org/issue/google_cloud_vision-3427974.git",
+                    "reference": "a276c8490efe64bae8170f8a5aefc704ede62afc"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "drupal/media_entity_video",
+                "type": "drupal-module",
+                "version": "dev-8.x-1.x",
+                "source": {
+                    "type": "git",
+                    "url": "https://git.drupalcode.org/issue/media_entity_video-3297609.git",
+                    "reference": "c9aec85065b038709a4977edda337a65efd3de7c"
                 }
             }
         },
@@ -45,7 +58,7 @@
         "brainsum/jquery_ui_datepicker": "^4.0.1",
         "brainsum/media_upload": "^4.4",
         "drupal/adminimal_admin_toolbar": "1.x-dev",
-        "drupal/better_exposed_filters": "^5.2",
+        "drupal/better_exposed_filters": "^6.0",
         "drupal/better_formats": "^1.0",
         "drupal/core": ">=8.8",
         "drupal/dropzonejs": "^2.1",
@@ -64,7 +77,7 @@
         "drupal/maillog": "^1.0@beta",
         "drupal/maxlength": "^2.0",
         "drupal/media_entity_imagemagick": "^3.0@alpha",
-        "drupal/media_entity_video": "^3.0@alpha",
+        "drupal/media_entity_video": "dev-8.x-1.x",
         "drupal/php_ffmpeg": "^1.1",
         "drupal/r4032login": "^2.1",
         "drupal/redirect_after_login": "^2.7",
