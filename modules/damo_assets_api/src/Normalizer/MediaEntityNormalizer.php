@@ -80,7 +80,7 @@ class MediaEntityNormalizer extends ContentEntityNormalizer {
   /**
    * {@inheritdoc}
    */
-  public function normalize($entity, $format = NULL, array $context = []) {
+  public function normalize($entity, $format = NULL, array $context = []): array|string|int|float|bool|\ArrayObject|NULL {
     $attributes = [];
     /** @var \Drupal\Core\Field\FieldItemListInterface $field */
     foreach ($entity as $name => $field) {
